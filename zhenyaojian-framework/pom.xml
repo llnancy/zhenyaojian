@@ -2,21 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>sunchaser-zhenyaojian</artifactId>
+        <groupId>com.sunchaser.shushan</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.sunchaser.shushan</groupId>
-    <artifactId>sunchaser-zhenyaojian</artifactId>
-    <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
-
-    <description>
-        镇妖剑：原本是神界将军飞蓬的佩剑，因在新仙界与重楼战败而流落人间。镇妖剑具有震慑妖魔的神力，被蜀山仙剑派奉为镇派之宝。
-    </description>
-
-    <modules>
-        <module>zhenyaojian-framework</module>
-        <module>zhenyaojian-system</module>
-    </modules>
+    <artifactId>zhenyaojian-framework</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
