@@ -1,10 +1,8 @@
-create
-database `sunchaser_zyj` default character set utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE DATABASE `sunchaser_zyj` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
-use
-`sunchaser_zyj`;
+USE `sunchaser_zyj`;
 
-drop table if exists `zyj_department`;
+DROP TABLE if EXISTS `zyj_department`;
 CREATE TABLE `sunchaser_zyj`.`zyj_department`
 (
     `id`            bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
@@ -23,7 +21,7 @@ CREATE TABLE `sunchaser_zyj`.`zyj_department`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '部门表';
 
-drop table if exists `zyj_position`;
+DROP TABLE if EXISTS `zyj_position`;
 CREATE TABLE `sunchaser_zyj`.`zyj_position`
 (
     `id`          bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
@@ -39,7 +37,7 @@ CREATE TABLE `sunchaser_zyj`.`zyj_position`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '岗位表';
 
-drop table if exists `zyj_user`;
+DROP TABLE if EXISTS `zyj_user`;
 CREATE TABLE `sunchaser_zyj`.`zyj_user`
 (
     `id`            bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
@@ -61,7 +59,7 @@ CREATE TABLE `sunchaser_zyj`.`zyj_user`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表';
 
-drop table if exists `zyj_role`;
+DROP TABLE if EXISTS `zyj_role`;
 CREATE TABLE `sunchaser_zyj`.`zyj_role`
 (
     `id`          bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
@@ -77,7 +75,7 @@ CREATE TABLE `sunchaser_zyj`.`zyj_role`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色表';
 
-drop table if exists `zyj_permission`;
+DROP TABLE if EXISTS `zyj_permission`;
 CREATE TABLE `sunchaser_zyj`.`zyj_permission`
 (
     `id`          bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
@@ -98,7 +96,7 @@ CREATE TABLE `sunchaser_zyj`.`zyj_permission`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '权限表';
 
-drop table if exists `zyj_user_role`;
+DROP TABLE if EXISTS `zyj_user_role`;
 CREATE TABLE `sunchaser_zyj`.`zyj_user_role`
 (
     `id`          bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
@@ -113,7 +111,7 @@ CREATE TABLE `sunchaser_zyj`.`zyj_user_role`
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户角色关联表';
 
 
-drop table if exists `zyj_role_permission`;
+DROP TABLE if EXISTS `zyj_role_permission`;
 CREATE TABLE `sunchaser_zyj`.`zyj_role_permission`
 (
     `id`            bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
