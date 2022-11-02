@@ -26,14 +26,15 @@
         </dependency>
         <dependency>
             <groupId>com.sunchaser.shushan</groupId>
-            <artifactId>zhenyaojian-system</artifactId>
+            <artifactId>zhenyaojian-framework</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sunchaser.shushan</groupId>
-            <artifactId>sunchaser-mojian-all</artifactId>
-            <version>${mojian.version}</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/resources/lib/sunchaser-mojian-all-0.0.1-SNAPSHOT.jar</systemPath>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
     </dependencies>
 </project>

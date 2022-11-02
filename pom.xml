@@ -43,6 +43,11 @@
             </dependency>
             <dependency>
                 <groupId>com.sunchaser.shushan</groupId>
+                <artifactId>zhenyaojian-framework</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sunchaser.shushan</groupId>
                 <artifactId>zhenyaojian-system</artifactId>
                 <version>${revision}</version>
             </dependency>

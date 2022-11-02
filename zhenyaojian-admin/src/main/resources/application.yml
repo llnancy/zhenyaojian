@@ -1,3 +1,20 @@
 server:
   servlet:
     context-path: /zyj/admin/
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sunchaser_zyj?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: 123456
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true # 开启 HiddenHttpMethodFilter 支持 restful 风格 URL
+  application:
+    name: shushan-zhenyaojian
+
+# 打印执行 sql，生产环境关闭
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

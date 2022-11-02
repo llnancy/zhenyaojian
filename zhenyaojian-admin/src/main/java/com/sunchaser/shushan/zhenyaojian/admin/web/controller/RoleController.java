@@ -21,6 +21,6 @@ public class RoleController {
     private final RoleService roleService;
 
     public MultiResponse<RoleEntity> list() {
-        return null;
+        return MultiResponse.success(roleService.list());
     }
 }
