@@ -2,6 +2,7 @@ package com.sunchaser.shushan.zhenyaojian.framework.service;
 
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.LoginRequest;
 import com.sunchaser.shushan.zhenyaojian.framework.security.LoginUser;
+import com.sunchaser.shushan.zhenyaojian.framework.service.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
