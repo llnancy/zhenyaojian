@@ -34,6 +34,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .eq(UserEntity::getAccount, username);
         UserEntity userEntity = userMapper.selectOne(queryWrapper);
         if (Objects.isNull(userEntity)) {
+            // UsernameNotFoundException 异常会被 Spring Security 将错误信息转化为：用户名或密码错误
+            // 详见 AbstractUserDetailsAuthenticationProvider.java:141
             throw new UsernameNotFoundException("用户 " + username + " 不存在！");
         }
         if (TableStatusFieldEnum.isForbidden(userEntity.getStatus())) {

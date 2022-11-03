@@ -1,6 +1,7 @@
 package com.sunchaser.shushan.zhenyaojian.framework.config.property;
 
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import static org.springframework.security.config.Elements.JWT;
@@ -15,7 +16,7 @@ import static org.springframework.security.config.Elements.JWT;
 @ConfigurationProperties(prefix = JWT)
 public class JwtProperties {
 
-    private Long expiration;
+    private Long expiration = 60 * 3600L;
 
     private SignType signType = SignType.SECRET;
 
@@ -25,7 +26,13 @@ public class JwtProperties {
 
     private String privateKeyLocation;
 
+    @Getter
     public enum SignType {
+
+        /**
+         * 不签名
+         */
+        NONE,
 
         /**
          * SECRET: 秘钥

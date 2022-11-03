@@ -18,7 +18,11 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# JWT 配置
 jwt:
   signType: public_private_key
   public-key-location: public.key
   private-key-location: private.key
+  secret: K7S8Kri2kAdzFOTTz1Emf8bVN/L+Gku4i9CqMVs7+j8=
+

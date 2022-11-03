@@ -28,6 +28,12 @@ public class PublicPrivateKeyJwtServiceImpl extends AbstractJwtService {
         super(jwtProperties);
     }
 
+    /**
+     * 创建 JWT
+     *
+     * @param user LoginUser
+     * @return JWT
+     */
     @Override
     public String createJwt(LoginUser user) {
         Claims claims = Jwts.claims();
@@ -41,6 +47,12 @@ public class PublicPrivateKeyJwtServiceImpl extends AbstractJwtService {
                 .compact();
     }
 
+    /**
+     * 解析 JWT
+     *
+     * @param jwt JWT
+     * @return Claims
+     */
     @Override
     public Claims parseJwt(String jwt) {
         return Jwts.parserBuilder()
