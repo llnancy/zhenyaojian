@@ -6,6 +6,7 @@ import com.sunchaser.shushan.zhenyaojian.framework.service.jwt.JwtService;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -36,8 +37,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+                                    @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
         String jwt = request.getHeader("Authorization");
         if (StringUtils.isBlank(jwt) || !jwt.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
