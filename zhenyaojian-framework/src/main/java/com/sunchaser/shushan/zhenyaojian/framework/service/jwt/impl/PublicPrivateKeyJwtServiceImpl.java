@@ -2,8 +2,8 @@ package com.sunchaser.shushan.zhenyaojian.framework.service.jwt.impl;
 
 import cn.hutool.core.io.FileUtil;
 import com.sunchaser.shushan.zhenyaojian.framework.config.property.JwtProperties;
-import com.sunchaser.shushan.zhenyaojian.framework.security.LoginUser;
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import lombok.SneakyThrows;
@@ -14,7 +14,6 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Date;
 
 /**
  * jwt implementation based on public-private key encryption
@@ -28,38 +27,17 @@ public class PublicPrivateKeyJwtServiceImpl extends AbstractJwtService {
         super(jwtProperties);
     }
 
-    /**
-     * 创建 JWT
-     *
-     * @param user LoginUser
-     * @return JWT
-     */
     @Override
-    public String createJwt(LoginUser user) {
-        Claims claims = Jwts.claims();
-        claims.setSubject(user.getUsername());
-        Date now = new Date();
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + jwtProperties.getExpiration()))
-                .signWith(getPrivateKey())
+    protected String doCreateJwt(JwtBuilder jwtBuilder) {
+        return jwtBuilder.signWith(getPrivateKey())
                 .compact();
     }
 
-    /**
-     * 解析 JWT
-     *
-     * @param jwt JWT
-     * @return Claims
-     */
     @Override
-    public Claims parseJwt(String jwt) {
+    protected JwtParser buildJwtParser() {
         return Jwts.parserBuilder()
                 .setSigningKey(getPublicKey())
-                .build()
-                .parseClaimsJws(jwt)
-                .getBody();
+                .build();
     }
 
     @SneakyThrows

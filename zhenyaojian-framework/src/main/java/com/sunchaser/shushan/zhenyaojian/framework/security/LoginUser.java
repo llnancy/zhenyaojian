@@ -20,7 +20,8 @@ public class LoginUser extends User {
     @Setter
     private UserEntity userEntity;
 
-    public LoginUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, authorities);
+    public LoginUser(UserEntity userEntity, Collection<? extends GrantedAuthority> authorities) {
+        super(userEntity.getAccount(), userEntity.getPassword(), authorities);
+        this.userEntity = userEntity;
     }
 }

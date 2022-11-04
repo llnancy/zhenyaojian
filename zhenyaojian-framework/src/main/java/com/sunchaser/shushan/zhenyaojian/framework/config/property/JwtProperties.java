@@ -16,7 +16,7 @@ import static org.springframework.security.config.Elements.JWT;
 @ConfigurationProperties(prefix = JWT)
 public class JwtProperties {
 
-    private Long expiration = 60 * 3600L;
+    private Long expiration = 24 * 60 * 3600L;
 
     private SignType signType = SignType.SECRET;
 

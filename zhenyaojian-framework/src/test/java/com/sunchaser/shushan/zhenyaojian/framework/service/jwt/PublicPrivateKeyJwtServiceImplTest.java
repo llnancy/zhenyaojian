@@ -3,6 +3,7 @@ package com.sunchaser.shushan.zhenyaojian.framework.service.jwt;
 import com.sunchaser.shushan.zhenyaojian.framework.config.property.JwtProperties;
 import com.sunchaser.shushan.zhenyaojian.framework.security.LoginUser;
 import com.sunchaser.shushan.zhenyaojian.framework.service.jwt.impl.PublicPrivateKeyJwtServiceImpl;
+import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserEntity;
 import io.jsonwebtoken.Claims;
 
 import java.util.Collections;
@@ -25,7 +26,10 @@ class PublicPrivateKeyJwtServiceImplTest {
         jwtProperties.setSignType(JwtProperties.SignType.PUBLIC_PRIVATE_KEY);
         jwtProperties.setPublicKeyLocation("public.key");
         jwtProperties.setPrivateKeyLocation("private.key");
-        loginUser = new LoginUser("aaa", "bbb", Collections.emptyList());
+        UserEntity userEntity = new UserEntity();
+        userEntity.setAccount("aaa");
+        userEntity.setPassword("bbb");
+        loginUser = new LoginUser(userEntity, Collections.emptyList());
         jwtService = new PublicPrivateKeyJwtServiceImpl(jwtProperties);
     }
 

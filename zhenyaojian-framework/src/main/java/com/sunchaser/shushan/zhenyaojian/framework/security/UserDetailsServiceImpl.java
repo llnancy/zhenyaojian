@@ -8,6 +8,7 @@ import com.sunchaser.shushan.zhenyaojian.framework.exception.ZyjBizException;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -41,6 +42,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (TableStatusFieldEnum.isForbidden(userEntity.getStatus())) {
             throw new ZyjBizException(ResponseEnum.USER_DISABLE, username);
         }
-        return new LoginUser(userEntity.getAccount(), userEntity.getPassword(), Collections.emptyList());
+        return new LoginUser(userEntity, Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
     }
 }

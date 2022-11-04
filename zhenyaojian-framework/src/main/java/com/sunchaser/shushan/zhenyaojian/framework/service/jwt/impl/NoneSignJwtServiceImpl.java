@@ -1,11 +1,9 @@
 package com.sunchaser.shushan.zhenyaojian.framework.service.jwt.impl;
 
 import com.sunchaser.shushan.zhenyaojian.framework.config.property.JwtProperties;
-import com.sunchaser.shushan.zhenyaojian.framework.security.LoginUser;
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
-
-import java.util.Date;
 
 /**
  * jwt implementation with none sign
@@ -20,22 +18,13 @@ public class NoneSignJwtServiceImpl extends AbstractJwtService {
     }
 
     @Override
-    public String createJwt(LoginUser user) {
-        Claims claims = Jwts.claims();
-        claims.setSubject(user.getUsername());
-        Date now = new Date();
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + jwtProperties.getExpiration()))
-                .compact();
+    protected String doCreateJwt(JwtBuilder jwtBuilder) {
+        return jwtBuilder.compact();
     }
 
     @Override
-    public Claims parseJwt(String jwt) {
+    protected JwtParser buildJwtParser() {
         return Jwts.parserBuilder()
-                .build()
-                .parseClaimsJwt(jwt)
-                .getBody();
+                .build();
     }
 }

@@ -3,6 +3,7 @@ package com.sunchaser.shushan.zhenyaojian.framework.service.jwt;
 import com.sunchaser.shushan.zhenyaojian.framework.config.property.JwtProperties;
 import com.sunchaser.shushan.zhenyaojian.framework.security.LoginUser;
 import com.sunchaser.shushan.zhenyaojian.framework.service.jwt.impl.NoneSignJwtServiceImpl;
+import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserEntity;
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +24,10 @@ class NoneSignJwtServiceImplTest {
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
         JwtProperties jwtProperties = new JwtProperties();
-        loginUser = new LoginUser("aaa", "bbb", Collections.emptyList());
+        UserEntity userEntity = new UserEntity();
+        userEntity.setAccount("aaa");
+        userEntity.setPassword("bbb");
+        loginUser = new LoginUser(userEntity, Collections.emptyList());
         jwtService = new NoneSignJwtServiceImpl(jwtProperties);
     }
 

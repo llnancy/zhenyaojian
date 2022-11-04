@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,10 +24,9 @@ public class LoginService {
     private final JwtService jwtService;
 
     public String login(LoginRequest loginRequest) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getAccount(), loginRequest.getPassword());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(loginRequest.getAccount(), loginRequest.getPassword());
         // 内部会调用 UserDetailsServiceImpl.loadUserByUsername 方法
-        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        Authentication authenticate = authenticationManager.authenticate(authentication);
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
         return jwtService.createJwt(loginUser);
     }

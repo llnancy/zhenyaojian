@@ -1,14 +1,13 @@
 package com.sunchaser.shushan.zhenyaojian.framework.service.jwt.impl;
 
 import com.sunchaser.shushan.zhenyaojian.framework.config.property.JwtProperties;
-import com.sunchaser.shushan.zhenyaojian.framework.security.LoginUser;
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 import java.security.Key;
-import java.util.Date;
 
 /**
  * jwt implementation based on secret encryption
@@ -22,38 +21,17 @@ public class SecretJwtServiceImpl extends AbstractJwtService {
         super(jwtProperties);
     }
 
-    /**
-     * 创建 JWT
-     *
-     * @param user LoginUser
-     * @return JWT
-     */
     @Override
-    public String createJwt(LoginUser user) {
-        Claims claims = Jwts.claims();
-        claims.setSubject(user.getUsername());
-        Date now = new Date();
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + jwtProperties.getExpiration()))
-                .signWith(getSecretKey())
+    protected String doCreateJwt(JwtBuilder jwtBuilder) {
+        return jwtBuilder.signWith(getSecretKey())
                 .compact();
     }
 
-    /**
-     * 解析 JWT
-     *
-     * @param jwt JWT
-     * @return Claims
-     */
     @Override
-    public Claims parseJwt(String jwt) {
+    protected JwtParser buildJwtParser() {
         return Jwts.parserBuilder()
                 .setSigningKey(getSecretKey())
-                .build()
-                .parseClaimsJws(jwt)
-                .getBody();
+                .build();
     }
 
     private Key getSecretKey() {

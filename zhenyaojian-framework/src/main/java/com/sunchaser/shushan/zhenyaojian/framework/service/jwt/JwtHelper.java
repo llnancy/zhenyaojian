@@ -20,9 +20,11 @@ import java.security.PublicKey;
  */
 public class JwtHelper {
 
+    /*
     public static void main(String[] args) {
         generateSecret();
     }
+     */
 
     public static void generateRsaKey() {
         KeyPair keyPair = Keys.keyPairFor(SignatureAlgorithm.RS256);

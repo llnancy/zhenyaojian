@@ -1,6 +1,6 @@
 server:
   servlet:
-    context-path: /zyj/admin/
+    context-path: /zyj/admin
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -25,4 +25,3 @@ jwt:
   public-key-location: public.key
   private-key-location: private.key
   secret: K7S8Kri2kAdzFOTTz1Emf8bVN/L+Gku4i9CqMVs7+j8=
-
