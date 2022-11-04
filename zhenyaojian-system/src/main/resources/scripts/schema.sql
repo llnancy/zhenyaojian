@@ -72,7 +72,8 @@ CREATE TABLE `sunchaser_zyj`.`zyj_role`
     `create_time` datetime    NOT NULL COMMENT '创建时间',
     `update_user` varchar(64) NOT NULL COMMENT '更新人',
     `update_time` datetime    NOT NULL COMMENT '更新时间',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_name` (`name`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色表';
 
 DROP TABLE if EXISTS `zyj_permission`;

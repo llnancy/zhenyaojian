@@ -1,5 +1,6 @@
 package com.sunchaser.shushan.zhenyaojian.system.generate;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
@@ -9,6 +10,7 @@ import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.IColumnType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.baomidou.mybatisplus.generator.fill.Column;
 import com.baomidou.mybatisplus.generator.keywords.MySqlKeyWordsHandler;
 
 import java.time.LocalDate;
@@ -65,6 +67,10 @@ public class MybatisPlusGenerator {
                             .enableLombok() // 开启 lombok
                             .formatFileName("%sEntity") // 实体类以 Entity 结尾
                             .logicDeleteColumnName("is_deleted") // 逻辑删除字段
+                            .addTableFills(new Column("create_user", FieldFill.INSERT))
+                            .addTableFills(new Column("create_time", FieldFill.INSERT))
+                            .addTableFills(new Column("update_user", FieldFill.INSERT_UPDATE))
+                            .addTableFills(new Column("update_time", FieldFill.INSERT_UPDATE))
                             .serviceBuilder() // Service 策略配置
                             .formatServiceFileName("%sService");// service 接口以 Service 结尾
                 })
