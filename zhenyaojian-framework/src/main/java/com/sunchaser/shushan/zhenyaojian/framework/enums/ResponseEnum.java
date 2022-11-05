@@ -15,9 +15,13 @@ import lombok.Getter;
 public enum ResponseEnum implements Response {
 
     /**
-     * 业务错误码
+     * 业务码
      */
-    USER_DISABLE(50001, "对不起，您的账号{}已停用");
+    USER_DISABLE(50001, "对不起，您的账号{}已停用"),
+    ILLEGAL_ROLE(50002, "角色编码不存在"),
+
+    LOGOUT_SUCCESS(20002, "退出成功")
+    ;
 
     private final Integer code;
 

@@ -4,7 +4,7 @@ import com.sunchaser.shushan.mojian.base.entity.response.IResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiResponse;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.CreateRoleRequest;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.RoleEntity;
-import com.sunchaser.shushan.zhenyaojian.system.service.RoleService;
+import com.sunchaser.shushan.zhenyaojian.system.service.IRoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class RoleController {
 
-    private final RoleService roleService;
+    private final IRoleService roleService;
 
     public MultiResponse<RoleEntity> list() {
         return MultiResponse.success(roleService.list());
@@ -28,10 +28,12 @@ public class RoleController {
 
     @PostMapping("/role")
     public IResponse create(@RequestBody CreateRoleRequest request) {
-        RoleEntity role = new RoleEntity();
-        role.setCode(request.getCode());
-        role.setName(request.getName());
-        roleService.save(role);
+        roleService.save(
+                RoleEntity.builder()
+                        .code(request.getCode())
+                        .name(request.getName())
+                        .build()
+        );
         return IResponse.SUCCESS;
     }
 }
