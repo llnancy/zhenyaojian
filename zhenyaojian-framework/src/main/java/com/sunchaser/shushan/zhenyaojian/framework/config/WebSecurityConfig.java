@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 /**
  * web security config
@@ -20,17 +21,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @author sunchaser admin@lilu.org.cn
  * @since JDK8 2022/11/3
  */
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final String LOGIN_SERVLET_PATH = "/auth/login";
+
+    public static final String LOGOUT_SERVLET_PATH = "/auth/logout";
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     private final AuthenticationEntryPoint authenticationEntryPoint;
 
     private final AccessDeniedHandler accessDeniedHandler;
+
+    private final LogoutSuccessHandler logoutSuccessHandler;
 
     @Bean
     @Override
@@ -66,6 +71,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler);
+
+        http.logout()
+                .logoutUrl(LOGOUT_SERVLET_PATH)
+                .logoutSuccessHandler(logoutSuccessHandler);
 
         // Add JwtAuthenticationFilter
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
