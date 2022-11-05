@@ -9,15 +9,21 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 部门表
  *
  * @author sunchaser admin@lilu.org.cn
- * @since JDK8 2022/11/04
+ * @since JDK8 2022/11/05
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @TableName("zyj_department")
 public class DepartmentEntity implements Serializable {
 

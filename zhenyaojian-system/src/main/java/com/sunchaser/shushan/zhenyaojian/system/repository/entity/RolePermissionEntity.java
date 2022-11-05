@@ -9,15 +9,21 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 角色权限关联表
  *
  * @author sunchaser admin@lilu.org.cn
- * @since JDK8 2022/11/04
+ * @since JDK8 2022/11/05
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @TableName("zyj_role_permission")
 public class RolePermissionEntity implements Serializable {
 

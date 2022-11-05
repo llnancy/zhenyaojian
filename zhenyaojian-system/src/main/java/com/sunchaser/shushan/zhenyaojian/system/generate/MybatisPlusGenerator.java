@@ -72,7 +72,7 @@ public class MybatisPlusGenerator {
                             .addTableFills(new Column("update_user", FieldFill.INSERT_UPDATE))
                             .addTableFills(new Column("update_time", FieldFill.INSERT_UPDATE))
                             .serviceBuilder() // Service 策略配置
-                            .formatServiceFileName("%sService");// service 接口以 Service 结尾
+                            .formatServiceFileName("I%sService");// service 接口以 Service 结尾
                 })
                 .templateConfig(builder -> {
                     builder.disable(TemplateType.CONTROLLER) // 不生成 controller

@@ -7,8 +7,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * 用户表 服务类
  *
  * @author sunchaser admin@lilu.org.cn
- * @since JDK8 2022/11/04
+ * @since JDK8 2022/11/05
  */
-public interface UserService extends IService<UserEntity> {
+public interface IUserService extends IService<UserEntity> {
 
 }
