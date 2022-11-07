@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
  * 用户表
  *
  * @author sunchaser admin@lilu.org.cn
- * @since JDK8 2022/11/05
+ * @since JDK8 2022/11/07
  */
 @Data
 @AllArgsConstructor

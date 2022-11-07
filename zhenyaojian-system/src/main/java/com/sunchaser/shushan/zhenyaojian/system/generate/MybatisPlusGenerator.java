@@ -75,11 +75,9 @@ public class MybatisPlusGenerator {
                             .formatServiceFileName("I%sService");// service 接口以 Service 结尾
                 })
                 .templateConfig(builder -> {
-                    builder.disable(TemplateType.CONTROLLER) // 不生成 controller
+                    builder.disable(TemplateType.CONTROLLER, TemplateType.SERVICE, TemplateType.SERVICEIMPL) // 不生成 controller/service/serviceImpl
                             .entity("/templates/entity.java") // 配置自定义的 entity 模板位置（不用带 .ftl 模板引擎后缀名），使用 @Data 注解
-                            .mapper("/templates/mapper.java") // 自定义 mapper 模板位置，去掉默认的 <p></p> 标签
-                            .service("/templates/service.java") // 自定义 service 模板位置，去掉默认的 <p></p> 标签
-                            .serviceImpl("/templates/serviceImpl.java"); // 自定义 serviceImpl 模板位置，去掉默认的 <p></p> 标签
+                            .mapper("/templates/mapper.java"); // 自定义 mapper 模板位置，去掉默认的 <p></p> 标签
                 })
                 // 使用 Freemarker 引擎模板，默认的是 Velocity 引擎模板
                 .templateEngine(new FreemarkerTemplateEngine())
