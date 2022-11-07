@@ -2,6 +2,8 @@ package com.sunchaser.shushan.zhenyaojian.framework.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sunchaser.shushan.zhenyaojian.framework.enums.ResponseEnum;
 import com.sunchaser.shushan.zhenyaojian.framework.exception.ZyjBizException;
 import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.UserMapstruct;
@@ -9,9 +11,7 @@ import com.sunchaser.shushan.zhenyaojian.framework.model.request.CreateUserReque
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.RoleEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserRoleEntity;
-import com.sunchaser.shushan.zhenyaojian.system.service.IRoleService;
-import com.sunchaser.shushan.zhenyaojian.system.service.IUserRoleService;
-import com.sunchaser.shushan.zhenyaojian.system.service.IUserService;
+import com.sunchaser.shushan.zhenyaojian.system.repository.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,13 +26,11 @@ import java.util.Objects;
  */
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService extends ServiceImpl<UserMapper, UserEntity> implements IService<UserEntity> {
 
-    private final IUserService userService;
+    private final RoleService roleService;
 
-    private final IRoleService roleService;
-
-    private final IUserRoleService userRoleService;
+    private final UserRoleService userRoleService;
 
     private final UserMapstruct userMapstruct;
 
@@ -46,7 +44,7 @@ public class UserService {
             throw new ZyjBizException(ResponseEnum.ILLEGAL_ROLE);
         }
         UserEntity user = userMapstruct.convert(request);
-        userService.save(user);
+        this.save(user);
         UserRoleEntity userRole = UserRoleEntity.builder()
                 .userId(user.getId())
                 .roleId(role.getId())
