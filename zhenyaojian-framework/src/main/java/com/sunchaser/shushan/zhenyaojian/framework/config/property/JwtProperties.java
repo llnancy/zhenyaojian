@@ -1,7 +1,7 @@
 package com.sunchaser.shushan.zhenyaojian.framework.config.property;
 
-import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import static org.springframework.security.config.Elements.JWT;
@@ -12,7 +12,8 @@ import static org.springframework.security.config.Elements.JWT;
  * @author sunchaser admin@lilu.org.cn
  * @since JDK8 2022/11/3
  */
-@Data
+@Getter
+@Setter
 @ConfigurationProperties(prefix = JWT)
 public class JwtProperties {
 
@@ -26,7 +27,6 @@ public class JwtProperties {
 
     private String privateKeyLocation;
 
-    @Getter
     public enum SignType {
 
         /**
