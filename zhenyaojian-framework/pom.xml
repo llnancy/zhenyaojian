@@ -17,26 +17,35 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jjwt.version>0.11.5</jjwt.version>
-        <mapstruct.version>1.5.3.Final</mapstruct.version>
     </properties>
 
     <dependencies>
+        <!-- springmvc -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
         </dependency>
+        <!-- validation -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <!-- aop -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
+        <!-- jackson -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-json</artifactId>
         </dependency>
+        <!-- unit test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
+        <!-- spring security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -53,6 +62,14 @@
             <artifactId>spring-boot-autoconfigure-processor</artifactId>
             <optional>true</optional>
         </dependency>
+        <!-- devtools -->
+         <dependency>
+             <groupId>org.springframework.boot</groupId>
+             <artifactId>spring-boot-devtools</artifactId>
+             <optional>true</optional>
+             <scope>runtime</scope>
+         </dependency>
+        <!-- servlet -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -116,12 +133,6 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
             <version>${mapstruct.version}</version>
-        </dependency>
-        <!-- org.projectlombok/lombok-mapstruct-binding -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok-mapstruct-binding</artifactId>
-            <version>0.2.0</version>
         </dependency>
     </dependencies>
 </project>

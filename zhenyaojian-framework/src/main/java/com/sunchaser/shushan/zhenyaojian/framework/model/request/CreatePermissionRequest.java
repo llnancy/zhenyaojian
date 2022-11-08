@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+
 /**
  * create permission request
  *
@@ -30,6 +33,8 @@ public class CreatePermissionRequest {
     /**
      * 权限类型（0：目录；1：菜单；2：按钮）
      */
+    @NotNull
+    @Max(value = 2)
     private Integer type;
 
     /**
@@ -43,14 +48,14 @@ public class CreatePermissionRequest {
     private String path;
 
     /**
-     * 组件路径
+     * 组件名称
      */
     private String component;
 
     /**
      * 权限标识
      */
-    private String permissions;
+    private String permission;
 
     /**
      * 显示排序

@@ -27,9 +27,11 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
 
     public void createPermission(CreatePermissionRequest request) {
         Long parentId = request.getParentId();
-        PermissionEntity parentPermission = this.getById(parentId);
-        if (Objects.isNull(parentPermission)) {
-            throw new ZyjBizException(ResponseEnum.INVALID_PARAM);
+        if (Objects.nonNull(parentId) && parentId != 0L) {
+            PermissionEntity parentPermission = this.getById(parentId);
+            if (Objects.isNull(parentPermission)) {
+                throw new ZyjBizException(ResponseEnum.INVALID_PARAM);
+            }
         }
         PermissionEntity permission = permissionMapstruct.convert(request);
         this.save(permission);
