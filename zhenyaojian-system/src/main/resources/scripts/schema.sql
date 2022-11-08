@@ -1,6 +1,8 @@
-CREATE DATABASE `sunchaser_zyj` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE
+DATABASE `sunchaser_zyj` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
-USE `sunchaser_zyj`;
+USE
+`sunchaser_zyj`;
 
 DROP TABLE if EXISTS `zyj_department`;
 CREATE TABLE `sunchaser_zyj`.`zyj_department`
@@ -83,10 +85,10 @@ CREATE TABLE `sunchaser_zyj`.`zyj_permission`
     `name`        varchar(12)  NOT NULL COMMENT '权限名称',
     `parent_id`   bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '父级权限ID',
     `type`        tinyint(1) UNSIGNED NOT NULL COMMENT '权限类型（0：目录；1：菜单；2：按钮）',
-    `icon`        varchar(128) NOT NULL COMMENT '权限图标',
+    `icon`        varchar(128) NOT NULL DEFAULT '' COMMENT '权限图标',
     `path`        varchar(128) NOT NULL COMMENT '路由地址',
-    `component`   varchar(128) NOT NULL COMMENT '组件路径',
-    `permissions` varchar(128) NOT NULL COMMENT '权限标识',
+    `component`   varchar(128) NOT NULL COMMENT '组件名称',
+    `permission`  varchar(128) NOT NULL COMMENT '权限标识',
     `sort_value`  int(4) NOT NULL DEFAULT 0 COMMENT '显示排序',
     `status`      tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '权限状态（0：显示；1：隐藏）',
     `is_deleted`  tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '逻辑删除（0：正常；1：删除）',

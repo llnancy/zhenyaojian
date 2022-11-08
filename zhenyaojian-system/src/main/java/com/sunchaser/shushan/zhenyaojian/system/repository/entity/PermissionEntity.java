@@ -64,7 +64,7 @@ public class PermissionEntity implements Serializable {
     private String path;
 
     /**
-     * 组件路径
+     * 组件名称
      */
     @TableField("`component`")
     private String component;
@@ -72,7 +72,7 @@ public class PermissionEntity implements Serializable {
     /**
      * 权限标识
      */
-    private String permissions;
+    private String permission;
 
     /**
      * 显示排序
