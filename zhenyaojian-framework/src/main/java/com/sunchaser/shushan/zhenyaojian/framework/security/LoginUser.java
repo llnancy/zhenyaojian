@@ -16,6 +16,8 @@ import java.util.Collection;
  */
 public class LoginUser extends User {
 
+    private static final long serialVersionUID = 4645395678551767717L;
+
     @Getter
     @Setter
     private UserEntity userEntity;
@@ -23,5 +25,13 @@ public class LoginUser extends User {
     public LoginUser(UserEntity userEntity, Collection<? extends GrantedAuthority> authorities) {
         super(userEntity.getAccount(), userEntity.getPassword(), authorities);
         this.userEntity = userEntity;
+    }
+
+    public boolean isSuperAdmin() {
+        return this.getUserId() == 1L;
+    }
+
+    public Long getUserId() {
+        return this.userEntity.getId();
     }
 }

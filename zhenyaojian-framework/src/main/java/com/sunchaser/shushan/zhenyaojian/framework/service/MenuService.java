@@ -1,13 +1,10 @@
 package com.sunchaser.shushan.zhenyaojian.framework.service;
 
 import com.sunchaser.shushan.zhenyaojian.framework.enums.PermissionTypeEnum;
-import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.MenuMapstruct;
+import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.PermissionMapstruct;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.MenuTreeNode;
-import com.sunchaser.shushan.zhenyaojian.framework.security.LoginUser;
-import com.sunchaser.shushan.zhenyaojian.framework.util.SecurityUtils;
 import com.sunchaser.shushan.zhenyaojian.framework.util.TreeBuilder;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.PermissionEntity;
-import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +22,7 @@ public class MenuService {
 
     private final PermissionService permissionService;
 
-    private final MenuMapstruct menuMapstruct;
+    private final PermissionMapstruct permissionMapstruct;
 
     /**
      * build menu tree node
@@ -33,16 +30,6 @@ public class MenuService {
      * @return menu tree
      */
     public List<MenuTreeNode> menuInfo() {
-        LoginUser loginUser = SecurityUtils.getLoginUser();
-        UserEntity userEntity = loginUser.getUserEntity();
-        Long userId = userEntity.getId();
-        List<PermissionEntity> permissions;
-        if (userId == 1L) {
-            // 内部超级管理员拥有全部权限
-            permissions = permissionService.list();
-        } else {
-            permissions = permissionService.queryPermissionsByUserId(userId);
-        }
         return new TreeBuilder<PermissionEntity, MenuTreeNode>() {
             @Override
             protected void postProcessAfterBuildTree(MenuTreeNode root, List<MenuTreeNode> children) {
@@ -51,7 +38,7 @@ public class MenuService {
                     root.setRedirect(first.getPath());
                 }
             }
-        }.build(permissions, menuMapstruct::convert);
+        }.build(permissionService.queryCurrentUserPermissions(), permissionMapstruct::convertToMenuTreeNode);
     }
 
 }

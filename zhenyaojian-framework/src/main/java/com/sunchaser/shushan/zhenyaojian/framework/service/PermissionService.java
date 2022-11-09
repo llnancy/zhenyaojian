@@ -8,7 +8,11 @@ import com.sunchaser.shushan.mojian.base.enums.ResponseEnum;
 import com.sunchaser.shushan.zhenyaojian.framework.exception.ZyjBizException;
 import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.PermissionMapstruct;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.CreatePermissionRequest;
+import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionTreeNode;
+import com.sunchaser.shushan.zhenyaojian.framework.security.LoginUser;
+import com.sunchaser.shushan.zhenyaojian.framework.util.SecurityUtils;
 import com.sunchaser.shushan.zhenyaojian.framework.util.Streams;
+import com.sunchaser.shushan.zhenyaojian.framework.util.TreeBuilder;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.PermissionEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.RolePermissionEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserRoleEntity;
@@ -48,15 +52,19 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
     }
 
     /**
-     * 根据 userId 查询对应权限
+     * 获取当前登录用户拥有的权限
      * userId -> roles -> permissions
      *
-     * @param userId userId
      * @return 权限列表
      */
-    public List<PermissionEntity> queryPermissionsByUserId(Long userId) {
+    public List<PermissionEntity> queryCurrentUserPermissions() {
+        LoginUser loginUser = SecurityUtils.getLoginUser();
+        if (loginUser.isSuperAdmin()) {
+            // 内部超级管理员拥有全部权限
+            return this.list();
+        }
         LambdaQueryWrapper<UserRoleEntity> userRoleWrapper = Wrappers.<UserRoleEntity>lambdaQuery()
-                .eq(UserRoleEntity::getUserId, userId);
+                .eq(UserRoleEntity::getUserId, loginUser.getUserId());
         // userId -> roles
         List<UserRoleEntity> userRoles = userRoleService.list(userRoleWrapper);
         List<Long> roleIds = Streams.mapToList(userRoles, UserRoleEntity::getRoleId);
@@ -68,5 +76,10 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
         LambdaQueryWrapper<PermissionEntity> permissionWrapper = Wrappers.<PermissionEntity>lambdaQuery()
                 .in(PermissionEntity::getId, permissionIds);
         return this.list(permissionWrapper);
+    }
+
+    public List<PermissionTreeNode> permissionsTree() {
+        return new TreeBuilder<PermissionEntity, PermissionTreeNode>()
+                .build(queryCurrentUserPermissions(), permissionMapstruct::convert);
     }
 }

@@ -14,7 +14,7 @@ import java.util.function.Function;
  * @author sunchaser admin@lilu.org.cn
  * @since JDK8 2022/11/9
  */
-public abstract class TreeBuilder<T, R extends TreeNode> {
+public class TreeBuilder<T, R extends TreeNode> {
 
     public List<R> build(List<T> sources, Function<T, R> mapper) {
         List<R> treeNodes = Streams.mapToList(sources, mapper);
@@ -23,7 +23,7 @@ public abstract class TreeBuilder<T, R extends TreeNode> {
         return doBuildTree(parentIdNodeMap, rootNodes);
     }
 
-    protected List<R> doBuildTree(Map<Long, List<R>> parentIdNodeMap, List<R> rootNodes) {
+    private List<R> doBuildTree(Map<Long, List<R>> parentIdNodeMap, List<R> rootNodes) {
         for (R root : rootNodes) {
             Long id = root.getId();
             List<R> children = parentIdNodeMap.get(id);
@@ -37,5 +37,6 @@ public abstract class TreeBuilder<T, R extends TreeNode> {
         return rootNodes;
     }
 
-    protected abstract void postProcessAfterBuildTree(R root, List<R> children);
+    protected void postProcessAfterBuildTree(R root, List<R> children) {
+    }
 }
