@@ -1,35 +1,25 @@
 package com.sunchaser.shushan.zhenyaojian.framework.model.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.List;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
- * menu
+ * menu tree node
  *
  * @author sunchaser admin@lilu.org.cn
- * @since JDK8 2022/11/8
+ * @since JDK8 2022/11/9
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class Menu {
-
-    private String path;
-
-    @JsonIgnore
-    private Long id;
-
-    @JsonIgnore
-    private Long parentId;
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class MenuTreeNode extends TreeNode {
 
     @JsonIgnore
     private Integer type;
+
+    private String path;
 
     private String component;
 
@@ -37,12 +27,7 @@ public class Menu {
 
     private String redirect;
 
-    private List<Menu> children;
-
     @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
     public static class Meta {
 
         private String title;
@@ -51,4 +36,5 @@ public class Menu {
 
         private String permission;
     }
+
 }

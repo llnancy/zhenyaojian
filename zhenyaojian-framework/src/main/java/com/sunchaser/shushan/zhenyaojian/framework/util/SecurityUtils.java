@@ -1,5 +1,6 @@
-package com.sunchaser.shushan.zhenyaojian.framework.security;
+package com.sunchaser.shushan.zhenyaojian.framework.util;
 
+import com.sunchaser.shushan.zhenyaojian.framework.security.LoginUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
