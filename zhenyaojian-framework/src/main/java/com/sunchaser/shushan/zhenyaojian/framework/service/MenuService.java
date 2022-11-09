@@ -1,21 +1,17 @@
 package com.sunchaser.shushan.zhenyaojian.framework.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.sunchaser.shushan.zhenyaojian.framework.enums.PermissionTypeEnum;
-import com.sunchaser.shushan.zhenyaojian.framework.model.response.Menu;
+import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.MenuMapstruct;
+import com.sunchaser.shushan.zhenyaojian.framework.model.response.MenuTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.security.LoginUser;
-import com.sunchaser.shushan.zhenyaojian.framework.security.SecurityUtils;
+import com.sunchaser.shushan.zhenyaojian.framework.util.SecurityUtils;
+import com.sunchaser.shushan.zhenyaojian.framework.util.TreeBuilder;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.PermissionEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserEntity;
-import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserRoleEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * menu service
@@ -29,70 +25,33 @@ public class MenuService {
 
     private final PermissionService permissionService;
 
-    private final UserRoleService userRoleService;
+    private final MenuMapstruct menuMapstruct;
 
     /**
-     * TODO
+     * build menu tree node
      *
      * @return menu tree
      */
-    public List<Menu> menuInfo() {
+    public List<MenuTreeNode> menuInfo() {
         LoginUser loginUser = SecurityUtils.getLoginUser();
         UserEntity userEntity = loginUser.getUserEntity();
         Long userId = userEntity.getId();
-        List<Menu> menuTree = null;
+        List<PermissionEntity> permissions;
         if (userId == 1L) {
             // 内部超级管理员拥有全部权限
-            List<PermissionEntity> all = permissionService.list();
-            List<Menu> menuList = all.stream()
-                    .map(el -> {
-                                Menu.Meta meta = Menu.Meta.builder()
-                                        .title(el.getName())
-                                        .icon(el.getIcon())
-                                        .permission(el.getPermission())
-                                        .build();
-                                return Menu.builder()
-                                        .path(el.getPath())
-                                        .id(el.getId())
-                                        .parentId(el.getParentId())
-                                        .type(el.getType())
-                                        .component(el.getComponent())
-                                        .meta(meta)
-                                        .build();
-                            }
-                    ).collect(Collectors.toList());
-
-            Map<Long, List<Menu>> parentIdMenuMap = menuList.stream()
-                    .collect(Collectors.groupingBy(Menu::getParentId));
-
-            List<Menu> root = menuList.stream()
-                    .filter(el -> el.getParentId() == 0L)
-                    .collect(Collectors.toList());
-
-            menuTree = buildMenuTree(parentIdMenuMap, root);
+            permissions = permissionService.list();
         } else {
-            LambdaQueryWrapper<UserRoleEntity> queryWrapper = Wrappers.<UserRoleEntity>lambdaQuery()
-                    .eq(UserRoleEntity::getUserId, userId);
-            List<UserRoleEntity> userRoleEntityList = userRoleService.list(queryWrapper);
+            permissions = permissionService.queryPermissionsByUserId(userId);
         }
-        return menuTree;
+        return new TreeBuilder<PermissionEntity, MenuTreeNode>() {
+            @Override
+            protected void postProcessAfterBuildTree(MenuTreeNode root, List<MenuTreeNode> children) {
+                if (PermissionTypeEnum.isCatalog(root.getType())) {
+                    MenuTreeNode first = children.get(0);
+                    root.setRedirect(first.getPath());
+                }
+            }
+        }.build(permissions, menuMapstruct::convert);
     }
 
-    private static List<Menu> buildMenuTree(Map<Long, List<Menu>> parentIdMenuMap, List<Menu> root) {
-        return root.stream()
-                .peek(el -> {
-                    Long id = el.getId();
-                    List<Menu> children = parentIdMenuMap.get(id);
-                    if (CollectionUtils.isNotEmpty(children)) {
-                        buildMenuTree(parentIdMenuMap, children);
-                        el.setChildren(children);
-                        Integer type = el.getType();
-                        if (PermissionTypeEnum.isCatalog(type)) {
-                            Menu first = children.get(0);
-                            el.setRedirect(first.getPath());
-                        }
-                    }
-                })
-                .collect(Collectors.toList());
-    }
 }
