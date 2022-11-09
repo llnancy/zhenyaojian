@@ -9,7 +9,10 @@ import io.swagger.annotations.ApiModelProperty;
 </#if>
 <#if entityLombokModel>
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
     <#if chainModel>
 import lombok.experimental.Accessors;
     </#if>
@@ -23,6 +26,9 @@ import lombok.experimental.Accessors;
  */
 <#if entityLombokModel>
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
     <#if chainModel>
 @Accessors(chain = true)
     </#if>

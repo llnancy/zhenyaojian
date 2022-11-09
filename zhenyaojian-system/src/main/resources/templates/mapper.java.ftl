@@ -19,6 +19,5 @@ import org.apache.ibatis.annotations.Mapper;
 interface ${table.mapperName} : ${superMapperClass}<${entity}>
 <#else>
 public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
-
 }
 </#if>
