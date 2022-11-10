@@ -82,9 +82,9 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
 
     /**
      * 新建菜单时：
-     * 1. 新建目录类型 -> 只能选择目录（不能在菜单下建立目录）
-     * 2. 新建菜单类型 -> 只能选择目录（不能在菜单下建立菜单）
-     * 3. 新建按钮类型 -> 只能选择菜单（不能在目录下建立按钮）
+     * 1. 新建目录类型 -> 上级菜单只能选择目录（不能在菜单下建立目录）
+     * 2. 新建菜单类型 -> 上级菜单只能选择目录（不能在菜单下建立菜单）
+     * 3. 新建按钮类型 -> 上级菜单只能选择菜单（不能在目录下建立按钮）
      *
      * @param filter 过滤条件
      * @return Permission Tree
