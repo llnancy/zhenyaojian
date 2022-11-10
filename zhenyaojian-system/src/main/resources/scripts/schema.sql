@@ -88,7 +88,7 @@ CREATE TABLE `sunchaser_zyj`.`zyj_permission`
     `icon`        varchar(128) NOT NULL DEFAULT '' COMMENT '权限图标',
     `path`        varchar(128) NOT NULL COMMENT '路由地址',
     `component`   varchar(128) NOT NULL COMMENT '组件名称',
-    `permission`  varchar(128) NOT NULL COMMENT '权限标识',
+    `permission`  varchar(128) NOT NULL DEFAULT '' COMMENT '权限标识',
     `sort_value`  int(4) NOT NULL DEFAULT 0 COMMENT '显示排序',
     `status`      tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '权限状态（0：显示；1：隐藏）',
     `is_deleted`  tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '逻辑删除（0：正常；1：删除）',
