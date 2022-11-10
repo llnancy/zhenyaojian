@@ -16,4 +16,6 @@ import lombok.ToString;
 public class PermissionTreeNode extends TreeNode {
 
     private String name;
+
+    private Boolean disabled = Boolean.FALSE;
 }

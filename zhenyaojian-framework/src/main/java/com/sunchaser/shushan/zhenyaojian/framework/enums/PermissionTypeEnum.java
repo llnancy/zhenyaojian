@@ -19,26 +19,24 @@ public enum PermissionTypeEnum {
     /**
      * 目录
      */
-    CATALOG(0),
+    CATALOG,
 
     /**
      * 菜单
      */
-    MENU(1),
+    MENU,
 
     /**
      * 按钮
      */
-    BUTTON(2)
+    BUTTON
     ;
-
-    private final Integer type;
 
     private static final Map<Integer, PermissionTypeEnum> ENUM_MAP = Maps.newHashMap();
 
     static {
         for (PermissionTypeEnum value : PermissionTypeEnum.values()) {
-            ENUM_MAP.put(value.type, value);
+            ENUM_MAP.put(value.ordinal(), value);
         }
     }
 
@@ -48,5 +46,13 @@ public enum PermissionTypeEnum {
 
     public static boolean isCatalog(Integer type) {
         return CATALOG == match(type);
+    }
+
+    public static boolean isNotCatalog(Integer type) {
+        return !isCatalog(type);
+    }
+
+    public static boolean isNotMenu(Integer type) {
+        return MENU != match(type);
     }
 }

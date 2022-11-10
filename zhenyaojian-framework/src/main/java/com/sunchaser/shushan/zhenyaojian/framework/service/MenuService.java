@@ -1,14 +1,15 @@
 package com.sunchaser.shushan.zhenyaojian.framework.service;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.sunchaser.shushan.zhenyaojian.framework.enums.PermissionTypeEnum;
 import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.PermissionMapstruct;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.MenuTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.util.TreeBuilder;
-import com.sunchaser.shushan.zhenyaojian.system.repository.entity.PermissionEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 
 /**
  * menu service
@@ -30,15 +31,20 @@ public class MenuService {
      * @return menu tree
      */
     public List<MenuTreeNode> menuInfo() {
-        return new TreeBuilder<PermissionEntity, MenuTreeNode>() {
-            @Override
-            protected void postProcessAfterBuildTree(MenuTreeNode root, List<MenuTreeNode> children) {
-                if (PermissionTypeEnum.isCatalog(root.getType())) {
-                    MenuTreeNode first = children.get(0);
-                    root.setRedirect(first.getPath());
-                }
-            }
-        }.build(permissionService.queryCurrentUserPermissions(), permissionMapstruct::convertToMenuTreeNode);
+        return TreeBuilder.build(
+                permissionService.queryCurrentUserPermissions(),
+                permissionMapstruct::convertToMenuTreeNode,
+                MENU_TREE_BI_CONSUMER
+        );
     }
 
+    private static final BiConsumer<MenuTreeNode, List<MenuTreeNode>> MENU_TREE_BI_CONSUMER = (root, children) -> {
+        if (CollectionUtils.isEmpty(children)) {
+            return;
+        }
+        if (PermissionTypeEnum.isCatalog(root.getType())) {
+            MenuTreeNode first = children.get(0);
+            root.setRedirect(first.getPath());
+        }
+    };
 }
