@@ -121,9 +121,7 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
                     treeNode.setDisabled(Boolean.TRUE);
                 }
             }
-        }
-
-        ;
+        };
 
         abstract void filter(PermissionTreeNode treeNode);
     }
