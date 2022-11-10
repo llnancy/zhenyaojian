@@ -103,25 +103,6 @@
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <!-- 和 Spring Boot 引入版本保持一致 -->
-                            <version>1.18.22</version>
-                        </path>
-                        <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <version>${mapstruct.version}</version>
-                        </path>
-                        <!-- org.projectlombok/lombok-mapstruct-binding -->
-                        <dependency>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok-mapstruct-binding</artifactId>
-                            <version>0.2.0</version>
-                        </dependency>
-                    </annotationProcessorPaths>
                     <compilerArgs>
                         <!-- 忽略 mapstruct 未映射属性警告 -->
                         <compilerArg>
