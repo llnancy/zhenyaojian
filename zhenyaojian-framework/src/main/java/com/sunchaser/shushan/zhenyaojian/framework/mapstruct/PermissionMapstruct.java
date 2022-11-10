@@ -42,5 +42,5 @@ public interface PermissionMapstruct {
      * @param permissionEntity PermissionEntity
      * @return PermissionTreeNode
      */
-    PermissionTreeNode convert(PermissionEntity permissionEntity);
+    PermissionTreeNode convertToPermissionTreeNode(PermissionEntity permissionEntity);
 }

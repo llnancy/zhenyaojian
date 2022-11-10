@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -38,8 +39,8 @@ public class PermissionController {
     }
 
     @GetMapping("/permissions/tree")
-    public MultiResponse<PermissionTreeNode> permissionsTree() {
-        return MultiResponse.success(permissionService.permissionsTree());
+    public MultiResponse<PermissionTreeNode> permissionsTree(@RequestParam String filter) {
+        return MultiResponse.success(permissionService.permissionsTree(filter));
     }
 
     @DeleteMapping("/permission/{id}")

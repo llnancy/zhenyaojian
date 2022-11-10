@@ -16,9 +16,6 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class MenuTreeNode extends TreeNode {
 
-    @JsonIgnore
-    private Integer type;
-
     private String path;
 
     private String component;

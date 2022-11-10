@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sunchaser.shushan.mojian.base.enums.ResponseEnum;
+import com.sunchaser.shushan.zhenyaojian.framework.enums.PermissionTypeEnum;
 import com.sunchaser.shushan.zhenyaojian.framework.exception.ZyjBizException;
 import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.PermissionMapstruct;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.CreatePermissionRequest;
@@ -60,7 +61,7 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
     public List<PermissionEntity> queryCurrentUserPermissions() {
         LoginUser loginUser = SecurityUtils.getLoginUser();
         if (loginUser.isSuperAdmin()) {
-            // 内部超级管理员拥有全部权限
+            // 内部超级管理员查询所有权限
             return this.list();
         }
         LambdaQueryWrapper<UserRoleEntity> userRoleWrapper = Wrappers.<UserRoleEntity>lambdaQuery()
@@ -78,8 +79,52 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
         return this.list(permissionWrapper);
     }
 
-    public List<PermissionTreeNode> permissionsTree() {
-        return new TreeBuilder<PermissionEntity, PermissionTreeNode>()
-                .build(queryCurrentUserPermissions(), permissionMapstruct::convert);
+
+    /**
+     * 新建菜单时：
+     * 1. 新建目录类型 -> 只能选择目录（不能在菜单下建立目录）
+     * 2. 新建菜单类型 -> 只能选择目录（不能在菜单下建立菜单）
+     * 3. 新建按钮类型 -> 只能选择菜单（不能在目录下建立按钮）
+     *
+     * @param filter 过滤条件
+     * @return Permission Tree
+     */
+    public List<PermissionTreeNode> permissionsTree(String filter) {
+        return TreeBuilder.build(
+                queryCurrentUserPermissions(),
+                permissionMapstruct::convertToPermissionTreeNode,
+                (root, children) -> PermissionFilterEnum.valueOf(filter).filter(root)
+        );
+    }
+
+    public enum PermissionFilterEnum {
+
+        /**
+         * 获取目录
+         */
+        FILTER_CATALOG() {
+            @Override
+            void filter(PermissionTreeNode treeNode) {
+                if (PermissionTypeEnum.isNotCatalog(treeNode.getType())) {
+                    treeNode.setDisabled(Boolean.TRUE);
+                }
+            }
+        },
+
+        /**
+         * 获取菜单
+         */
+        FILTER_MENU() {
+            @Override
+            void filter(PermissionTreeNode treeNode) {
+                if (PermissionTypeEnum.isNotMenu(treeNode.getType())) {
+                    treeNode.setDisabled(Boolean.TRUE);
+                }
+            }
+        }
+
+        ;
+
+        abstract void filter(PermissionTreeNode treeNode);
     }
 }
