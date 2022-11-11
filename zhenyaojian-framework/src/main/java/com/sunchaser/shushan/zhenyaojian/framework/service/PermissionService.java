@@ -9,6 +9,7 @@ import com.sunchaser.shushan.zhenyaojian.framework.enums.PermissionTypeEnum;
 import com.sunchaser.shushan.zhenyaojian.framework.exception.ZyjBizException;
 import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.PermissionMapstruct;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.CreatePermissionRequest;
+import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionDetailTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.security.LoginUser;
 import com.sunchaser.shushan.zhenyaojian.framework.util.SecurityUtils;
@@ -50,6 +51,10 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
         }
         PermissionEntity permission = permissionMapstruct.convert(request);
         this.save(permission);
+    }
+
+    public List<PermissionDetailTreeNode> permissionDetailTreeList() {
+        return TreeBuilder.build(queryCurrentUserPermissions(), permissionMapstruct::convertToPermissionDetailTreeNode);
     }
 
     /**

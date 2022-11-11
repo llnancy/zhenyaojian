@@ -3,6 +3,7 @@ package com.sunchaser.shushan.zhenyaojian.admin.web.controller;
 import com.sunchaser.shushan.mojian.base.entity.response.IResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiResponse;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.CreatePermissionRequest;
+import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionDetailTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.service.PermissionService;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +35,8 @@ public class PermissionController {
     }
 
     @GetMapping("/permissions")
-    public MultiResponse<String> permissions() {
-        return MultiResponse.success(null);
+    public MultiResponse<PermissionDetailTreeNode> permissions() {
+        return MultiResponse.success(permissionService.permissionDetailTreeList());
     }
 
     @GetMapping("/permissions/tree")

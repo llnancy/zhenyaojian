@@ -1,5 +1,6 @@
 package com.sunchaser.shushan.zhenyaojian.framework.model.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -14,6 +15,9 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class PermissionTreeNode extends TreeNode {
+
+    @JsonIgnore
+    private Integer type;
 
     private String name;
 
