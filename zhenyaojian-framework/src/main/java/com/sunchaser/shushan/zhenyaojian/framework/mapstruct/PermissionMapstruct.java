@@ -2,6 +2,7 @@ package com.sunchaser.shushan.zhenyaojian.framework.mapstruct;
 
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.CreatePermissionRequest;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.MenuTreeNode;
+import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionDetailTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionTreeNode;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.PermissionEntity;
 import org.mapstruct.Mapper;
@@ -43,4 +44,12 @@ public interface PermissionMapstruct {
      * @return PermissionTreeNode
      */
     PermissionTreeNode convertToPermissionTreeNode(PermissionEntity permissionEntity);
+
+    /**
+     * convert PermissionEntity to PermissionDetailTreeNode
+     *
+     * @param permissionEntity PermissionEntity
+     * @return PermissionDetailTreeNode
+     */
+    PermissionDetailTreeNode convertToPermissionDetailTreeNode(PermissionEntity permissionEntity);
 }

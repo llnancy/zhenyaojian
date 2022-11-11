@@ -18,6 +18,11 @@ import java.util.function.Function;
 public final class TreeBuilder {
 
     public static <T, R extends TreeNode> List<R> build(List<T> sources,
+                                                        Function<T, R> mapper) {
+        return build(sources, mapper, (r, rs) -> {});
+    }
+
+    public static <T, R extends TreeNode> List<R> build(List<T> sources,
                                                         Function<T, R> mapper,
                                                         BiConsumer<R, List<R>> postProcessAfterBuildTree) {
         List<R> treeNodes = Streams.mapToList(sources, mapper);
