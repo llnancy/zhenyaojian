@@ -34,6 +34,6 @@ public class RoleController {
                         .name(request.getName())
                         .build()
         );
-        return IResponse.SUCCESS;
+        return IResponse.ofSuccess();
     }
 }
