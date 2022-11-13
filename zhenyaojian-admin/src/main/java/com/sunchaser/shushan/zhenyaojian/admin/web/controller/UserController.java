@@ -52,7 +52,7 @@ public class UserController {
     @PostMapping("/user")
     public IResponse createUser(@RequestBody CreateUserRequest request) {
         userService.createUser(request);
-        return IResponse.SUCCESS;
+        return IResponse.ofSuccess();
     }
 
     @GetMapping("/user/menu")
