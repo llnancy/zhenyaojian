@@ -31,3 +31,4 @@ build/
 /logs/
 
 **/.flattened-pom.xml
+.DS_Store
