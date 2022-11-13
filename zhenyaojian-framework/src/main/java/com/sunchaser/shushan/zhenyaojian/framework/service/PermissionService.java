@@ -4,11 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sunchaser.shushan.mojian.base.enums.ResponseEnum;
+import com.google.common.base.Preconditions;
 import com.sunchaser.shushan.zhenyaojian.framework.enums.PermissionTypeEnum;
-import com.sunchaser.shushan.zhenyaojian.framework.exception.ZyjBizException;
 import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.PermissionMapstruct;
-import com.sunchaser.shushan.zhenyaojian.framework.model.request.CreatePermissionRequest;
+import com.sunchaser.shushan.zhenyaojian.framework.model.request.PermissionOps;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionDetailTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.security.LoginUser;
@@ -41,16 +40,22 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
 
     private final PermissionMapstruct permissionMapstruct;
 
-    public void createPermission(CreatePermissionRequest request) {
-        Long parentId = request.getParentId();
+    public void createPermission(PermissionOps create) {
+        Long parentId = create.getParentId();
         if (Objects.nonNull(parentId) && parentId != 0L) {
             PermissionEntity parentPermission = this.getById(parentId);
-            if (Objects.isNull(parentPermission)) {
-                throw new ZyjBizException(ResponseEnum.INVALID_PARAM);
-            }
+            Preconditions.checkNotNull(parentPermission, "父级菜单不存在");
+            // 菜单下只能添加按钮
+            Preconditions.checkArgument(!(PermissionTypeEnum.isMenu(parentPermission.getType()) && PermissionTypeEnum.isNotButton(create.getType())), "菜单类型下只能添加按钮类型");
+            // 按钮下不能添加子菜单
+            Preconditions.checkArgument(PermissionTypeEnum.isNotButton(parentPermission.getType()), "按钮下不能添加子菜单");
         }
-        PermissionEntity permission = permissionMapstruct.convert(request);
+        PermissionEntity permission = permissionMapstruct.convert(create);
         this.save(permission);
+    }
+
+    public void updatePermission(PermissionOps update) {
+        this.updateById(permissionMapstruct.convert(update));
     }
 
     public List<PermissionDetailTreeNode> permissionDetailTreeList() {

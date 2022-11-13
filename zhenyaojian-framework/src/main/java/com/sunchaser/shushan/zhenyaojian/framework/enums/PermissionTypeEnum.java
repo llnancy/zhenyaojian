@@ -52,7 +52,19 @@ public enum PermissionTypeEnum {
         return !isCatalog(type);
     }
 
+    public static boolean isMenu(Integer type) {
+        return MENU == match(type);
+    }
+
     public static boolean isNotMenu(Integer type) {
-        return MENU != match(type);
+        return !isMenu(type);
+    }
+
+    public static boolean isButton(Integer type) {
+        return BUTTON == match(type);
+    }
+
+    public static boolean isNotButton(Integer type) {
+        return !isButton(type);
     }
 }
