@@ -47,6 +47,11 @@ public class PermissionController {
         return MultiResponse.success(permissionService.permissionDetailTreeList());
     }
 
+    @GetMapping("/permissions/search")
+    public MultiResponse<PermissionDetailTreeNode> permissionsSearch(@RequestParam String name) {
+        return MultiResponse.success(permissionService.permissionsSearch(name));
+    }
+
     @GetMapping("/permissions/tree")
     public MultiResponse<PermissionTreeNode> permissionsTree(@RequestParam String filter) {
         return MultiResponse.success(permissionService.permissionsTree(filter));
@@ -54,7 +59,7 @@ public class PermissionController {
 
     @DeleteMapping("/permission/{id}")
     public IResponse deletePermission(@PathVariable Long id) {
-        permissionService.removeById(id);
-        return IResponse.SUCCESS;
+        permissionService.deletePermission(id);
+        return IResponse.ofSuccess();
     }
 }
