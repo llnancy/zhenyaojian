@@ -1,5 +1,7 @@
 package com.sunchaser.shushan.zhenyaojian.framework.service;
 
+import cn.hutool.core.lang.PatternPool;
+import cn.hutool.core.util.ReUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -8,6 +10,7 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.google.common.base.Preconditions;
 import com.sunchaser.shushan.mojian.base.util.Optionals;
 import com.sunchaser.shushan.zhenyaojian.framework.enums.PermissionTypeEnum;
+import com.sunchaser.shushan.zhenyaojian.framework.enums.TableStatusFieldEnum;
 import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.PermissionMapstruct;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.PermissionOps;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionDetailTreeNode;
@@ -21,6 +24,8 @@ import com.sunchaser.shushan.zhenyaojian.system.repository.entity.RolePermission
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserRoleEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.mapper.PermissionMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,9 +57,37 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
             // 按钮下不能添加子菜单
             Preconditions.checkArgument(PermissionTypeEnum.isNotButton(parentPermission.getType()), "按钮下不能添加子菜单");
         }
+        // 校验权限名称唯一性
+        verifyNameUniqueness(create);
+        // 校验路由地址唯一性
+        verifyPathUniqueness(create);
         PermissionEntity permission = permissionMapstruct.convert(create);
         // 此处 parentId 不能被删除
         this.save(permission);
+    }
+
+    private void verifyPathUniqueness(PermissionOps ops) {
+        String path = ops.getPath();
+        if (ReUtil.isMatch(PatternPool.URL_HTTP, path)) {
+            return;
+        }
+        // 不是网址则校验路由地址的唯一性
+        LambdaQueryWrapper<PermissionEntity> wrapper = Wrappers.<PermissionEntity>lambdaQuery()
+                .eq(PermissionEntity::getPath, path);
+        PermissionEntity exist = this.getOne(wrapper);
+        // 修改时如果查询到的 exist.id 和传入的 ops.id 不相等，说明路由地址已存在，进行相应错误提示；否则 exist 就是待修改记录本身，允许修改。
+        Preconditions.checkArgument(!(Objects.nonNull(exist) && ObjectUtils.notEqual(exist.getId(), ops.getId())), "路由地址为[" + path + "]的菜单已存在");
+    }
+
+    private void verifyNameUniqueness(PermissionOps ops) {
+        Long parentId = ops.getParentId();
+        String name = ops.getName();
+        LambdaQueryWrapper<PermissionEntity> wrapper = Wrappers.<PermissionEntity>lambdaQuery()
+                .eq(PermissionEntity::getName, name)
+                .eq(PermissionEntity::getParentId, parentId);
+        PermissionEntity exist = this.getOne(wrapper);
+        // 修改时如果查询到的 exist.id 和传入的 ops.id 不相等，说明菜单名称已存在，进行相应错误提示；否则 exist 就是待修改记录本身，允许修改。
+        Preconditions.checkArgument(!(Objects.nonNull(exist) && ObjectUtils.notEqual(exist.getId(), ops.getId())), "菜单名称[" + name + "]已存在");
     }
 
     public void updatePermission(PermissionOps update) {
@@ -66,17 +99,17 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
         // 如果存在子菜单且修改了 permission 的类型 type
         // 做法一：将所有子菜单的 parentId 修改为 当前菜单的 parentId（需批量更新，业务上较为复杂）
         // 做法二：提示用户存在子菜单不允许修改菜单类型（√）
-        Preconditions.checkArgument(!(SqlHelper.retBool(childrenCount) && !exist.getType().equals(update.getType())), "该菜单下存在子菜单，暂不允许修改菜单类型~");
+        Preconditions.checkArgument(!(SqlHelper.retBool(childrenCount) && ObjectUtils.notEqual(exist.getType(), update.getType())), "该菜单下存在子菜单，暂不允许修改菜单类型。");
+        // 校验权限名称唯一性
+        verifyNameUniqueness(update);
+        // 校验路由地址唯一性
+        verifyPathUniqueness(update);
         this.updateById(permissionMapstruct.convert(update));
     }
 
-    public List<PermissionDetailTreeNode> permissionDetailTreeList() {
-        return TreeBuilder.build(queryCurrentUserPermissions(), permissionMapstruct::convertToPermissionDetailTreeNode);
-    }
-
-    public List<PermissionDetailTreeNode> permissionsSearch(String name) {
+    public List<PermissionDetailTreeNode> permissionDetailTreeList(String name) {
         LambdaQueryWrapper<PermissionEntity> condition = Wrappers.<PermissionEntity>lambdaQuery()
-                .likeRight(PermissionEntity::getName, name);
+                .likeRight(StringUtils.isNotBlank(name), PermissionEntity::getName, name);
         return TreeBuilder.build(queryCurrentUserPermissionsByCondition(condition), permissionMapstruct::convertToPermissionDetailTreeNode);
     }
 
@@ -85,6 +118,7 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
      * 1. 新建目录类型 -> 上级菜单只能选择目录（不能在菜单下建立目录）
      * 2. 新建菜单类型 -> 上级菜单只能选择目录（不能在菜单下建立菜单）
      * 3. 新建按钮类型 -> 上级菜单只能选择菜单（不能在目录下建立按钮）
+     * 且不能选择已隐藏的菜单
      *
      * @param filter 过滤条件
      * @return Permission Tree
@@ -116,11 +150,9 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
      * @return 权限列表
      */
     public List<PermissionEntity> queryCurrentUserPermissions() {
-        return queryCurrentUserPermissionsByCondition();
-    }
-
-    public List<PermissionEntity> queryCurrentUserPermissionsByCondition() {
-        return queryCurrentUserPermissionsByCondition(Wrappers.lambdaQuery());
+        LambdaQueryWrapper<PermissionEntity> condition = Wrappers.<PermissionEntity>lambdaQuery()
+                .eq(PermissionEntity::getStatus, TableStatusFieldEnum.NORMAL.ordinal());
+        return queryCurrentUserPermissionsByCondition(condition);
     }
 
     public List<PermissionEntity> queryCurrentUserPermissionsByCondition(LambdaQueryWrapper<PermissionEntity> condition) {
