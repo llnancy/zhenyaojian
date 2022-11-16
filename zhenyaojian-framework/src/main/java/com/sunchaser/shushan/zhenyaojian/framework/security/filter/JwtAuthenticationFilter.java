@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Objects;
 
 /**
  * jwt filter
@@ -57,7 +58,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         // 登录接口不过滤
-        return WebSecurityConfig.LOGIN_SERVLET_PATH.equals(request.getServletPath())
-                || "/zyj/admin/auth/init".equals(request.getRequestURI());
+        return Objects.equals(WebSecurityConfig.LOGIN_SERVLET_PATH, request.getServletPath());
     }
 }

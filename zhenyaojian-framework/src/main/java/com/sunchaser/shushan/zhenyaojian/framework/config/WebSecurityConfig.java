@@ -61,7 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 // The pattern does not contain the servlet context-path, see AntPathRequestMatcher.matcher method.
-                .antMatchers(LOGIN_SERVLET_PATH, "/auth/init")
+                .antMatchers(LOGIN_SERVLET_PATH)
                 .permitAll()
                 // Disallow everything else..
                 .anyRequest()
