@@ -2,6 +2,7 @@ package com.sunchaser.shushan.zhenyaojian.admin.web.controller;
 
 import com.sunchaser.shushan.mojian.base.entity.response.IResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiResponse;
+import com.sunchaser.shushan.mojian.log.annotation.MjLog;
 import com.sunchaser.shushan.mojian.web.validation.groups.Update;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.PermissionOps;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionDetailTreeNode;
@@ -37,19 +38,15 @@ public class PermissionController {
     }
 
     @PatchMapping("/permission")
+    @MjLog
     public IResponse updatePermission(@Validated({Update.class}) @RequestBody PermissionOps request) {
         permissionService.updatePermission(request);
         return IResponse.ofSuccess();
     }
 
     @GetMapping("/permissions")
-    public MultiResponse<PermissionDetailTreeNode> permissions() {
-        return MultiResponse.success(permissionService.permissionDetailTreeList());
-    }
-
-    @GetMapping("/permissions/search")
-    public MultiResponse<PermissionDetailTreeNode> permissionsSearch(@RequestParam String name) {
-        return MultiResponse.success(permissionService.permissionsSearch(name));
+    public MultiResponse<PermissionDetailTreeNode> permissions(@RequestParam(required = false) String name) {
+        return MultiResponse.success(permissionService.permissionDetailTreeList(name));
     }
 
     @GetMapping("/permissions/tree")
