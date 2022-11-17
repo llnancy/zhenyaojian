@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -42,6 +43,16 @@ public final class Streams {
 
     public static <T, R> List<R> mapToList(Collection<T> coll, Function<? super T, ? extends R> mapper) {
         return mapToList(coll, mapper, false);
+    }
+
+    public static <T, R> Set<R> mapToSet(Collection<T> coll, Function<? super T, ? extends R> mapper, boolean isParallel) {
+        return Streams.of(coll, isParallel)
+                .map(mapper)
+                .collect(Collectors.toSet());
+    }
+
+    public static <T, R> Set<R> mapToSet(Collection<T> coll, Function<? super T, ? extends R> mapper) {
+        return mapToSet(coll, mapper, false);
     }
 
     public static <K, T> Map<K, List<T>> groupingBy(Collection<T> coll, Function<? super T, ? extends K> classifier, boolean isParallel) {
