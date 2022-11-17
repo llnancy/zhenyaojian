@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PermissionOps {
+public class PermissionOpsCommand {
 
     /**
      * 自增ID

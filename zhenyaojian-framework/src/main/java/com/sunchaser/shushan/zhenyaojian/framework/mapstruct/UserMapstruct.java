@@ -1,6 +1,7 @@
 package com.sunchaser.shushan.zhenyaojian.framework.mapstruct;
 
-import com.sunchaser.shushan.zhenyaojian.framework.model.request.CreateUserRequest;
+import com.sunchaser.shushan.zhenyaojian.framework.model.request.UserOpsCommand;
+import com.sunchaser.shushan.zhenyaojian.framework.model.response.UserInfo;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.UserInfoResponse;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserEntity;
 import org.mapstruct.Mapper;
@@ -16,12 +17,12 @@ import org.mapstruct.MappingConstants;
 public interface UserMapstruct {
 
     /**
-     * convert CreateUserRequest to UserEntity
+     * convert UserOpsCommand to UserEntity
      *
-     * @param request CreateUserRequest
+     * @param command UserOpsCommand
      * @return UserEntity
      */
-    UserEntity convert(CreateUserRequest request);
+    UserEntity convert(UserOpsCommand command);
 
     /**
      * convert UserEntity to UserInfoResponse
@@ -30,4 +31,6 @@ public interface UserMapstruct {
      * @return UserInfoResponse
      */
     UserInfoResponse convert(UserEntity userEntity);
+
+    UserInfo convertToUserInfo(UserEntity userEntity);
 }
