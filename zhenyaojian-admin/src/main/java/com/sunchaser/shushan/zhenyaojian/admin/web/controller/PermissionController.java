@@ -4,7 +4,7 @@ import com.sunchaser.shushan.mojian.base.entity.response.IResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiResponse;
 import com.sunchaser.shushan.mojian.log.annotation.MjLog;
 import com.sunchaser.shushan.mojian.web.validation.groups.Update;
-import com.sunchaser.shushan.zhenyaojian.framework.model.request.PermissionOps;
+import com.sunchaser.shushan.zhenyaojian.framework.model.request.PermissionOpsCommand;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionDetailTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.service.PermissionService;
@@ -32,15 +32,15 @@ public class PermissionController {
     private final PermissionService permissionService;
 
     @PostMapping("/permission")
-    public IResponse createPermission(@Validated @RequestBody PermissionOps request) {
-        permissionService.createPermission(request);
+    public IResponse createPermission(@Validated @RequestBody PermissionOpsCommand command) {
+        permissionService.createPermission(command);
         return IResponse.ofSuccess();
     }
 
     @PatchMapping("/permission")
     @MjLog
-    public IResponse updatePermission(@Validated({Update.class}) @RequestBody PermissionOps request) {
-        permissionService.updatePermission(request);
+    public IResponse updatePermission(@Validated({Update.class}) @RequestBody PermissionOpsCommand command) {
+        permissionService.updatePermission(command);
         return IResponse.ofSuccess();
     }
 

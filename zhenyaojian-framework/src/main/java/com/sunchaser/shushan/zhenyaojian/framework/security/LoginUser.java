@@ -27,10 +27,6 @@ public class LoginUser extends User {
         this.userEntity = userEntity;
     }
 
-    public boolean isSuperAdmin() {
-        return this.getUserId() == 1L;
-    }
-
     public Long getUserId() {
         return this.userEntity.getId();
     }

@@ -12,10 +12,9 @@ import com.sunchaser.shushan.mojian.base.util.Optionals;
 import com.sunchaser.shushan.zhenyaojian.framework.enums.PermissionTypeEnum;
 import com.sunchaser.shushan.zhenyaojian.framework.enums.TableStatusFieldEnum;
 import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.PermissionMapstruct;
-import com.sunchaser.shushan.zhenyaojian.framework.model.request.PermissionOps;
+import com.sunchaser.shushan.zhenyaojian.framework.model.request.PermissionOpsCommand;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionDetailTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionTreeNode;
-import com.sunchaser.shushan.zhenyaojian.framework.security.LoginUser;
 import com.sunchaser.shushan.zhenyaojian.framework.util.SecurityUtils;
 import com.sunchaser.shushan.zhenyaojian.framework.util.Streams;
 import com.sunchaser.shushan.zhenyaojian.framework.util.TreeBuilder;
@@ -47,27 +46,27 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
 
     private final PermissionMapstruct permissionMapstruct;
 
-    public void createPermission(PermissionOps create) {
-        Long parentId = create.getParentId();
+    public void createPermission(PermissionOpsCommand command) {
+        Long parentId = command.getParentId();
         if (Objects.nonNull(parentId) && parentId != 0L) {
             PermissionEntity parentPermission = this.getById(parentId);
             Preconditions.checkNotNull(parentPermission, "父级菜单不存在");
             // 菜单下只能添加按钮
-            Preconditions.checkArgument(!(PermissionTypeEnum.isMenu(parentPermission.getType()) && PermissionTypeEnum.isNotButton(create.getType())), "菜单类型下只能添加按钮类型");
+            Preconditions.checkArgument(!(PermissionTypeEnum.isMenu(parentPermission.getType()) && PermissionTypeEnum.isNotButton(command.getType())), "菜单类型下只能添加按钮类型");
             // 按钮下不能添加子菜单
             Preconditions.checkArgument(PermissionTypeEnum.isNotButton(parentPermission.getType()), "按钮下不能添加子菜单");
         }
         // 校验权限名称唯一性
-        verifyNameUniqueness(create);
+        verifyNameUniqueness(command);
         // 校验路由地址唯一性
-        verifyPathUniqueness(create);
-        PermissionEntity permission = permissionMapstruct.convert(create);
+        verifyPathUniqueness(command);
+        PermissionEntity permission = permissionMapstruct.convert(command);
         // 此处 parentId 不能被删除
         this.save(permission);
     }
 
-    private void verifyPathUniqueness(PermissionOps ops) {
-        String path = ops.getPath();
+    private void verifyPathUniqueness(PermissionOpsCommand command) {
+        String path = command.getPath();
         if (ReUtil.isMatch(PatternPool.URL_HTTP, path)) {
             return;
         }
@@ -76,22 +75,22 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
                 .eq(PermissionEntity::getPath, path);
         PermissionEntity exist = this.getOne(wrapper);
         // 修改时如果查询到的 exist.id 和传入的 ops.id 不相等，说明路由地址已存在，进行相应错误提示；否则 exist 就是待修改记录本身，允许修改。
-        Preconditions.checkArgument(!(Objects.nonNull(exist) && ObjectUtils.notEqual(exist.getId(), ops.getId())), "路由地址为[" + path + "]的菜单已存在");
+        Preconditions.checkArgument(!(Objects.nonNull(exist) && ObjectUtils.notEqual(exist.getId(), command.getId())), "路由地址为[" + path + "]的菜单已存在");
     }
 
-    private void verifyNameUniqueness(PermissionOps ops) {
-        Long parentId = ops.getParentId();
-        String name = ops.getName();
+    private void verifyNameUniqueness(PermissionOpsCommand command) {
+        Long parentId = command.getParentId();
+        String name = command.getName();
         LambdaQueryWrapper<PermissionEntity> wrapper = Wrappers.<PermissionEntity>lambdaQuery()
                 .eq(PermissionEntity::getName, name)
                 .eq(PermissionEntity::getParentId, parentId);
         PermissionEntity exist = this.getOne(wrapper);
         // 修改时如果查询到的 exist.id 和传入的 ops.id 不相等，说明菜单名称已存在，进行相应错误提示；否则 exist 就是待修改记录本身，允许修改。
-        Preconditions.checkArgument(!(Objects.nonNull(exist) && ObjectUtils.notEqual(exist.getId(), ops.getId())), "菜单名称[" + name + "]已存在");
+        Preconditions.checkArgument(!(Objects.nonNull(exist) && ObjectUtils.notEqual(exist.getId(), command.getId())), "菜单名称[" + name + "]已存在");
     }
 
-    public void updatePermission(PermissionOps update) {
-        Long id = update.getId();
+    public void updatePermission(PermissionOpsCommand command) {
+        Long id = command.getId();
         PermissionEntity exist = this.getById(id);
         LambdaQueryWrapper<PermissionEntity> wrapper = Wrappers.<PermissionEntity>lambdaQuery()
                 .eq(PermissionEntity::getParentId, id);
@@ -99,12 +98,12 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
         // 如果存在子菜单且修改了 permission 的类型 type
         // 做法一：将所有子菜单的 parentId 修改为 当前菜单的 parentId（需批量更新，业务上较为复杂）
         // 做法二：提示用户存在子菜单不允许修改菜单类型（√）
-        Preconditions.checkArgument(!(SqlHelper.retBool(childrenCount) && ObjectUtils.notEqual(exist.getType(), update.getType())), "该菜单下存在子菜单，暂不允许修改菜单类型。");
+        Preconditions.checkArgument(!(SqlHelper.retBool(childrenCount) && ObjectUtils.notEqual(exist.getType(), command.getType())), "该菜单下存在子菜单，暂不允许修改菜单类型。");
         // 校验权限名称唯一性
-        verifyNameUniqueness(update);
+        verifyNameUniqueness(command);
         // 校验路由地址唯一性
-        verifyPathUniqueness(update);
-        this.updateById(permissionMapstruct.convert(update));
+        verifyPathUniqueness(command);
+        this.updateById(permissionMapstruct.convert(command));
     }
 
     public List<PermissionDetailTreeNode> permissionDetailTreeList(String name) {
@@ -135,11 +134,11 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
         LambdaQueryWrapper<PermissionEntity> wrapper = Wrappers.<PermissionEntity>lambdaQuery()
                 .eq(PermissionEntity::getParentId, id);
         long count = this.count(wrapper);
-        Preconditions.checkArgument(!SqlHelper.retBool(count), "该菜单下存在子菜单，不允许删除~");
+        Preconditions.checkArgument(!SqlHelper.retBool(count), "该菜单下存在子菜单，不允许删除");
         LambdaQueryWrapper<RolePermissionEntity> rpWrapper = Wrappers.<RolePermissionEntity>lambdaQuery()
                 .eq(RolePermissionEntity::getPermissionId, id);
         long rpCount = rolePermissionService.count(rpWrapper);
-        Preconditions.checkArgument(!SqlHelper.retBool(rpCount), "该菜单已分配给相关角色，不允许删除~");
+        Preconditions.checkArgument(!SqlHelper.retBool(rpCount), "该菜单已分配给相关角色，不允许删除");
         this.removeById(id);
     }
 
@@ -156,14 +155,14 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
     }
 
     public List<PermissionEntity> queryCurrentUserPermissionsByCondition(LambdaQueryWrapper<PermissionEntity> condition) {
-        LoginUser loginUser = SecurityUtils.getLoginUser();
+        Long userId = SecurityUtils.getLoginUserId();
         condition = Optionals.of(condition, Wrappers.lambdaQuery());
-        if (loginUser.isSuperAdmin()) {
+        if (SecurityUtils.isSuperAdmin(userId)) {
             // 内部超级管理员查询所有权限
             return this.list(condition);
         }
         LambdaQueryWrapper<UserRoleEntity> urWrapper = Wrappers.<UserRoleEntity>lambdaQuery()
-                .eq(UserRoleEntity::getUserId, loginUser.getUserId());
+                .eq(UserRoleEntity::getUserId, userId);
         // userId -> roles
         List<UserRoleEntity> userRoles = userRoleService.list(urWrapper);
         List<Long> roleIds = Streams.mapToList(userRoles, UserRoleEntity::getRoleId);

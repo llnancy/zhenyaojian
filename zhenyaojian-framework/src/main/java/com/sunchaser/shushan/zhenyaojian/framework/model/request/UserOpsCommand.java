@@ -1,12 +1,16 @@
 package com.sunchaser.shushan.zhenyaojian.framework.model.request;
 
+import com.sunchaser.shushan.mojian.web.validation.groups.Update;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+import java.util.Set;
+
 /**
- * create user request
+ * user ops command
  *
  * @author sunchaser admin@lilu.org.cn
  * @since JDK8 2022/11/5
@@ -15,12 +19,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateUserRequest {
+public class UserOpsCommand {
 
     /**
-     * 所属角色编码
+     * 自增ID
      */
-    private String roleCode;
+    @NotNull(message = "自增ID不能为空", groups = {Update.class})
+    private Long id;
+
+    /**
+     * 所属角色
+     */
+    private Set<Long> roleIds;
 
     /**
      * 用户账号
