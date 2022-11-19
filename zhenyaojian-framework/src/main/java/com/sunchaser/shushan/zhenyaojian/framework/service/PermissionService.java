@@ -3,6 +3,7 @@ package com.sunchaser.shushan.zhenyaojian.framework.service;
 import cn.hutool.core.lang.PatternPool;
 import cn.hutool.core.util.ReUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -23,6 +24,7 @@ import com.sunchaser.shushan.zhenyaojian.system.repository.entity.RolePermission
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserRoleEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.mapper.PermissionMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -92,9 +94,10 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
     public void updatePermission(PermissionOpsCommand command) {
         Long id = command.getId();
         PermissionEntity exist = this.getById(id);
-        LambdaQueryWrapper<PermissionEntity> wrapper = Wrappers.<PermissionEntity>lambdaQuery()
-                .eq(PermissionEntity::getParentId, id);
-        long childrenCount = this.count(wrapper);
+        long childrenCount = this.count(
+                Wrappers.<PermissionEntity>lambdaQuery()
+                        .eq(PermissionEntity::getParentId, id)
+        );
         // 如果存在子菜单且修改了 permission 的类型 type
         // 做法一：将所有子菜单的 parentId 修改为 当前菜单的 parentId（需批量更新，业务上较为复杂）
         // 做法二：提示用户存在子菜单不允许修改菜单类型（√）
@@ -103,7 +106,20 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
         verifyNameUniqueness(command);
         // 校验路由地址唯一性
         verifyPathUniqueness(command);
-        this.updateById(permissionMapstruct.convert(command));
+        PermissionEntity permission = permissionMapstruct.convert(command);
+        // 动态 SQL
+        LambdaUpdateWrapper<PermissionEntity> updateWrapper = Wrappers.<PermissionEntity>lambdaUpdate()
+                .set(StringUtils.isNotBlank(command.getName()), PermissionEntity::getName, permission.getName())
+                .set(Objects.nonNull(command.getParentId()), PermissionEntity::getParentId, permission.getParentId())
+                .set(Objects.nonNull(command.getType()), PermissionEntity::getType, permission.getType())
+                .set(StringUtils.isNotBlank(command.getIcon()), PermissionEntity::getIcon, permission.getIcon())
+                .set(StringUtils.isNotBlank(command.getPath()), PermissionEntity::getPath, permission.getPath())
+                .set(StringUtils.isNotBlank(command.getComponent()), PermissionEntity::getComponent, permission.getComponent())
+                .set(StringUtils.isNotBlank(command.getPermission()), PermissionEntity::getPermission, permission.getPermission())
+                .set(Objects.nonNull(command.getSortValue()), PermissionEntity::getSortValue, permission.getSortValue())
+                .set(Objects.nonNull(command.getStatus()), PermissionEntity::getStatus, permission.getStatus())
+                .eq(PermissionEntity::getId, id);
+        this.update(updateWrapper);
     }
 
     public List<PermissionDetailTreeNode> permissionDetailTreeList(String name) {
@@ -167,11 +183,11 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
         List<UserRoleEntity> userRoles = userRoleService.list(urWrapper);
         List<Long> roleIds = Streams.mapToList(userRoles, UserRoleEntity::getRoleId);
         LambdaQueryWrapper<RolePermissionEntity> rpWrapper = Wrappers.<RolePermissionEntity>lambdaQuery()
-                .in(RolePermissionEntity::getRoleId, roleIds);
+                .in(CollectionUtils.isNotEmpty(roleIds), RolePermissionEntity::getRoleId, roleIds);
         // roles -> permissions
         List<RolePermissionEntity> rolePermissions = rolePermissionService.list(rpWrapper);
         List<Long> permissionIds = Streams.mapToList(rolePermissions, RolePermissionEntity::getPermissionId);
-        condition.in(PermissionEntity::getId, permissionIds);
+        condition.in(CollectionUtils.isNotEmpty(permissionIds), PermissionEntity::getId, permissionIds);
         return this.list(condition);
     }
 
