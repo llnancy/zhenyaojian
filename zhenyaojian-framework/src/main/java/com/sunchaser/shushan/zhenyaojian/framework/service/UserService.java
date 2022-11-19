@@ -1,6 +1,7 @@
 package com.sunchaser.shushan.zhenyaojian.framework.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -9,6 +10,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.sunchaser.shushan.mojian.base.entity.request.BasePageRequest;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiPageResponse;
+import com.sunchaser.shushan.zhenyaojian.framework.config.WebSecurityConfig;
 import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.UserMapstruct;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.UserOpsCommand;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.UserInfo;
@@ -22,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,12 +47,24 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
 
     private final UserMapstruct userMapstruct;
 
-    private final PasswordEncoder passwordEncoder;
+    /**
+     * 提供给 {@link UserMapstruct} 转换器使用的密码加密静态方法。
+     * 需要放置在 {@link UserMapstruct} 外部，否则会应用于所有 {@link String} 类型的属性。
+     *
+     * @param password 明文密码
+     * @return 密文
+     */
+    public static String encryptPassword(String password) {
+        if (StringUtils.isBlank(password)) {
+            return password;
+        }
+        return WebSecurityConfig.B_CRYPT_PASSWORD_ENCODER.encode(password);
+    }
 
     /**
-     * create user
+     * create {@link UserEntity}.
      *
-     * @param command UserOpsCommand
+     * @param command {@link UserOpsCommand}
      */
     @Transactional(rollbackFor = Exception.class)
     public void createUser(UserOpsCommand command) {
@@ -60,7 +73,6 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
         verifyEmailUniqueness(command);
         verifyRoleExistence(command);
         UserEntity user = userMapstruct.convert(command);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         this.save(user);
         userRoleService.batchInsert(user.getId(), command.getRoleIds());
     }
@@ -68,7 +80,7 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
     /**
      * 校验角色存在性
      *
-     * @param command UserOpsCommand
+     * @param command {@link UserOpsCommand}
      */
     private void verifyRoleExistence(UserOpsCommand command) {
         Set<Long> roleIds = command.getRoleIds();
@@ -84,7 +96,7 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
     /**
      * 校验邮箱唯一性
      *
-     * @param command UserOpsCommand
+     * @param command {@link UserOpsCommand}
      */
     private void verifyEmailUniqueness(UserOpsCommand command) {
         String email = command.getEmail();
@@ -100,7 +112,7 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
     /**
      * 校验手机号码唯一性
      *
-     * @param command UserOpsCommand
+     * @param command {@link UserOpsCommand}
      */
     private void verifyPhoneNumberUniqueness(UserOpsCommand command) {
         String phoneNumber = command.getPhoneNumber();
@@ -116,10 +128,13 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
     /**
      * 校验账号唯一性
      *
-     * @param command UserOpsCommand
+     * @param command {@link UserOpsCommand}
      */
     private void verifyAccountUniqueness(UserOpsCommand command) {
         String account = command.getAccount();
+        if (StringUtils.isBlank(account)) {
+            return;
+        }
         LambdaQueryWrapper<UserEntity> wrapper = Wrappers.<UserEntity>lambdaQuery()
                 .eq(UserEntity::getAccount, account);
         UserEntity exist = this.getOne(wrapper);
@@ -127,9 +142,9 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
     }
 
     /**
-     * update user
+     * update {@link UserEntity}.
      *
-     * @param command UserOpsCommand
+     * @param command {@link UserOpsCommand}
      */
     @Transactional(rollbackFor = Exception.class)
     public void updateUser(UserOpsCommand command) {
@@ -139,33 +154,57 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
         verifyPhoneNumberUniqueness(command);
         verifyEmailUniqueness(command);
         verifyRoleExistence(command);
-        List<UserRoleEntity> oldUserRoles = userRoleService.listByUserId(userId);
-        Set<Long> oldRoleIds = Streams.mapToSet(oldUserRoles, UserRoleEntity::getRoleId);
         Set<Long> newRoleIds = command.getRoleIds();
-        // 待删除：旧角色列表相对于新角色列表的差集
-        Sets.SetView<Long> removeRoleIds = Sets.difference(oldRoleIds, newRoleIds);
-        // 待新增：新角色列表相对于旧角色列表的差集
-        Sets.SetView<Long> insertRoleIds = Sets.difference(newRoleIds, oldRoleIds);
-        userRoleService.removeByUserIdAndRoleIds(userId, removeRoleIds);
-        userRoleService.batchInsert(userId, insertRoleIds);
-        this.updateById(userMapstruct.convert(command));
+        if (CollectionUtils.isNotEmpty(newRoleIds)) {
+            List<UserRoleEntity> oldUserRoles = userRoleService.listByUserId(userId);
+            Set<Long> oldRoleIds = Streams.mapToSet(oldUserRoles, UserRoleEntity::getRoleId);
+            // 待删除：旧角色列表相对于新角色列表的差集
+            Sets.SetView<Long> removeRoleIds = Sets.difference(oldRoleIds, newRoleIds);
+            // 待新增：新角色列表相对于旧角色列表的差集
+            Sets.SetView<Long> insertRoleIds = Sets.difference(newRoleIds, oldRoleIds);
+            userRoleService.removeByUserIdAndRoleIds(userId, removeRoleIds);
+            userRoleService.batchInsert(userId, insertRoleIds);
+        }
+        UserEntity user = userMapstruct.convert(command);
+        // 动态 SQL
+        LambdaUpdateWrapper<UserEntity> wrapper = Wrappers.<UserEntity>lambdaUpdate()
+                .set(StringUtils.isNotBlank(command.getPassword()), UserEntity::getPassword, user.getPassword())
+                .set(StringUtils.isNotBlank(command.getNickName()), UserEntity::getNickName, user.getNickName())
+                .set(StringUtils.isNotBlank(command.getAvatar()), UserEntity::getAvatar, user.getAvatar())
+                .set(StringUtils.isNotBlank(command.getSex()), UserEntity::getSex, user.getSex())
+                .set(StringUtils.isNotBlank(command.getEmail()), UserEntity::getEmail, user.getEmail())
+                .set(StringUtils.isNotBlank(command.getPhoneNumber()), UserEntity::getPhoneNumber, user.getPhoneNumber())
+                .set(Objects.nonNull(command.getStatus()), UserEntity::getStatus, user.getStatus())
+                .eq(UserEntity::getId, userId);
+        this.update(wrapper);
     }
 
     /**
-     * 校验操作合法性：不能操作系统超级管理员账户
+     * 校验操作合法性：禁止操作超级管理员账户
      *
-     * @param userId user id
+     * @param userId {@link Long}
      */
     private void verifyOpsLegality(Long userId) {
         Preconditions.checkArgument(SecurityUtils.isNotSuperAdmin(userId), "不允许操作超级管理员账户");
     }
 
+    /**
+     * Paging query users.
+     *
+     * @param request {@link BasePageRequest}
+     * @return paging data
+     */
     public MultiPageResponse<UserInfo> users(BasePageRequest request) {
         Page<UserEntity> page = new Page<>(request.getPageNo(), request.getPageSize());
         Page<UserEntity> list = this.getBaseMapper().selectPage(page, Wrappers.emptyWrapper());
         return MultiPageResponse.success(list, userMapstruct::convertToUserInfo);
     }
 
+    /**
+     * delete a {@link UserEntity} based on userId.
+     *
+     * @param userId {@link Long}
+     */
     @Transactional(rollbackFor = Exception.class)
     public void deleteUser(Long userId) {
         verifyOpsLegality(userId);

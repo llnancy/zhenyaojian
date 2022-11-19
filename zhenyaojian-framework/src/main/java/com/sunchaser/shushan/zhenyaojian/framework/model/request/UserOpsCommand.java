@@ -68,6 +68,11 @@ public class UserOpsCommand {
     private String phoneNumber;
 
     /**
+     * 用户状态
+     */
+    private Integer status;
+
+    /**
      * 所属部门ID
      */
     private Long departmentId;

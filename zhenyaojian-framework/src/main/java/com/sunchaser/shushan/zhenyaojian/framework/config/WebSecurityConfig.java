@@ -29,6 +29,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final String LOGOUT_SERVLET_PATH = "/auth/logout";
 
+    public static final PasswordEncoder B_CRYPT_PASSWORD_ENCODER = new BCryptPasswordEncoder();
+
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     private final AuthenticationEntryPoint authenticationEntryPoint;
@@ -45,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return B_CRYPT_PASSWORD_ENCODER;
     }
 
     @Override
