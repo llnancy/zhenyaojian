@@ -2,12 +2,12 @@ package com.sunchaser.shushan.zhenyaojian.framework.security;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.sunchaser.shushan.zhenyaojian.framework.enums.ResponseEnum;
+import com.google.common.base.Preconditions;
 import com.sunchaser.shushan.zhenyaojian.framework.enums.TableStatusFieldEnum;
-import com.sunchaser.shushan.zhenyaojian.framework.exception.ZyjBizException;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -39,9 +39,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             // 详见 AbstractUserDetailsAuthenticationProvider.java:141
             throw new UsernameNotFoundException("用户 " + username + " 不存在！");
         }
-        if (TableStatusFieldEnum.isForbidden(userEntity.getStatus())) {
-            throw new ZyjBizException(ResponseEnum.USER_DISABLE, username);
-        }
+        Preconditions.checkArgument(ObjectUtils.notEqual(TableStatusFieldEnum.FORBIDDEN.ordinal(), userEntity.getStatus()), "对不起，您的账号已被停用，请联系管理员");
         return new LoginUser(userEntity, Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
     }
 }

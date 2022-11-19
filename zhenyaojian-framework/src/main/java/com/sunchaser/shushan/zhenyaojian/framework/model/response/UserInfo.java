@@ -14,6 +14,11 @@ import java.time.LocalDateTime;
 public class UserInfo {
 
     /**
+     * 主键ID
+     */
+    private Long id;
+
+    /**
      * 用户账号
      */
     private String account;
@@ -49,7 +54,7 @@ public class UserInfo {
     private Integer status;
 
     /**
-     * 创建时间
+     * 更新时间
      */
     private LocalDateTime updateTime;
 }

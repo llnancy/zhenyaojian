@@ -22,6 +22,10 @@ public final class SecurityUtils {
         return (LoginUser) authentication.getPrincipal();
     }
 
+    public static String getLoginUsername() {
+        return getLoginUser().getUsername();
+    }
+
     public static Long getLoginUserId() {
         return getLoginUser().getUserId();
     }
