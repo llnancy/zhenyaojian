@@ -1,11 +1,20 @@
 package com.sunchaser.shushan.zhenyaojian.admin.web.controller;
 
 import com.sunchaser.shushan.mojian.base.entity.response.IResponse;
+import com.sunchaser.shushan.mojian.base.entity.response.MultiPageResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiResponse;
-import com.sunchaser.shushan.zhenyaojian.framework.model.request.CreateRoleRequest;
+import com.sunchaser.shushan.mojian.base.entity.response.SingleResponse;
+import com.sunchaser.shushan.zhenyaojian.framework.model.request.RoleOpsCommand;
+import com.sunchaser.shushan.zhenyaojian.framework.model.request.RolePageRequest;
+import com.sunchaser.shushan.zhenyaojian.framework.model.response.RoleItemInfo;
 import com.sunchaser.shushan.zhenyaojian.framework.service.RoleService;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.RoleEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,13 +36,24 @@ public class RoleController {
     }
 
     @PostMapping("/role")
-    public IResponse create(@RequestBody CreateRoleRequest request) {
-        roleService.save(
-                RoleEntity.builder()
-                        .code(request.getCode())
-                        .name(request.getName())
-                        .build()
-        );
+    public SingleResponse<Long> createRole(@Validated @RequestBody RoleOpsCommand command) {
+        return SingleResponse.success(roleService.createRole(command));
+    }
+
+    @PatchMapping("/role")
+    public IResponse updateRole(@Validated @RequestBody RoleOpsCommand command) {
+        roleService.updateRole(command);
+        return IResponse.ofSuccess();
+    }
+
+    @GetMapping("/roles")
+    public MultiPageResponse<RoleItemInfo> roles(RolePageRequest request) {
+        return roleService.roles(request);
+    }
+
+    @DeleteMapping("/role/{id}")
+    public IResponse deleteRole(@PathVariable Long id) {
+        roleService.deleteRole(id);
         return IResponse.ofSuccess();
     }
 }
