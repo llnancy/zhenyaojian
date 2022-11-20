@@ -1,13 +1,13 @@
 package com.sunchaser.shushan.zhenyaojian.admin.web.controller;
 
 import com.google.common.collect.Lists;
-import com.sunchaser.shushan.mojian.base.entity.request.BasePageRequest;
 import com.sunchaser.shushan.mojian.base.entity.response.IResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiPageResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.SingleResponse;
 import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.UserMapstruct;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.UserOpsCommand;
+import com.sunchaser.shushan.zhenyaojian.framework.model.request.UserPageRequest;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.MenuTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionInfo;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.RoleInfo;
@@ -74,7 +74,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public MultiPageResponse<UserInfo> users(BasePageRequest request) {
+    public MultiPageResponse<UserInfo> users(UserPageRequest request) {
         return userService.users(request);
     }
 
