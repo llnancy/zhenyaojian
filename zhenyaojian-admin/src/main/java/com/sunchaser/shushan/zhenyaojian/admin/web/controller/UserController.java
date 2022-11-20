@@ -14,7 +14,7 @@ import com.sunchaser.shushan.zhenyaojian.framework.model.response.RoleInfo;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.UserInfo;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.UserInfoResponse;
 import com.sunchaser.shushan.zhenyaojian.framework.security.LoginUser;
-import com.sunchaser.shushan.zhenyaojian.framework.service.MenuService;
+import com.sunchaser.shushan.zhenyaojian.framework.service.PermissionService;
 import com.sunchaser.shushan.zhenyaojian.framework.service.UserService;
 import com.sunchaser.shushan.zhenyaojian.framework.util.SecurityUtils;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserEntity;
@@ -40,7 +40,7 @@ public class UserController {
 
     private final UserService userService;
 
-    private final MenuService menuService;
+    private final PermissionService permissionService;
 
     private final UserMapstruct userMapstruct;
 
@@ -58,13 +58,12 @@ public class UserController {
 
     @GetMapping("/user/menu")
     public MultiResponse<MenuTreeNode> menuInfo() {
-        return MultiResponse.success(menuService.menuInfo());
+        return MultiResponse.success(permissionService.menuInfo());
     }
 
     @PostMapping("/user")
-    public IResponse createUser(@Validated @RequestBody UserOpsCommand request) {
-        userService.createUser(request);
-        return IResponse.ofSuccess();
+    public SingleResponse<Long> createUser(@Validated @RequestBody UserOpsCommand request) {
+        return SingleResponse.success(userService.createUser(request));
     }
 
     @PatchMapping("/user")

@@ -65,16 +65,19 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
      * create {@link UserEntity}.
      *
      * @param command {@link UserOpsCommand}
+     * @return user ID {@link Long}
      */
     @Transactional(rollbackFor = Exception.class)
-    public void createUser(UserOpsCommand command) {
+    public Long createUser(UserOpsCommand command) {
         verifyAccountUniqueness(command);
         verifyPhoneNumberUniqueness(command);
         verifyEmailUniqueness(command);
         verifyRoleExistence(command);
         UserEntity user = userMapstruct.convert(command);
         this.save(user);
-        userRoleService.batchInsert(user.getId(), command.getRoleIds());
+        Long userId = user.getId();
+        userRoleService.batchInsert(userId, command.getRoleIds());
+        return userId;
     }
 
     /**
@@ -106,7 +109,7 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
         LambdaQueryWrapper<UserEntity> wrapper = Wrappers.<UserEntity>lambdaQuery()
                 .eq(UserEntity::getEmail, email);
         UserEntity exist = this.getOne(wrapper);
-        Preconditions.checkArgument(!(Objects.nonNull(exist) && ObjectUtils.notEqual(exist.getId(), command.getId())), "邮箱[" + "]已存在");
+        Preconditions.checkArgument(!(Objects.nonNull(exist) && ObjectUtils.notEqual(exist.getId(), command.getId())), "邮箱[" + email + "]已存在");
     }
 
     /**
@@ -192,7 +195,7 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
      * Paging query users.
      *
      * @param request {@link UserPageRequest}
-     * @return paging data
+     * @return paging data of {@link UserInfo}
      */
     public MultiPageResponse<UserInfo> users(UserPageRequest request) {
         String account = request.getAccount();
@@ -204,15 +207,15 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
     }
 
     /**
-     * delete a {@link UserEntity} based on userId.
+     * delete user by id.
      *
-     * @param userId {@link Long}
+     * @param id user id {@link Long}
      */
     @Transactional(rollbackFor = Exception.class)
-    public void deleteUser(Long userId) {
-        verifyOpsLegality(userId);
-        Preconditions.checkArgument(SecurityUtils.isNotLoginUser(userId), "不允许操作当前登录账户");
-        userRoleService.removeByUserId(userId);
-        this.removeById(userId);
+    public void deleteUser(Long id) {
+        verifyOpsLegality(id);
+        Preconditions.checkArgument(SecurityUtils.isNotLoginUser(id), "不允许操作当前登录账户");
+        userRoleService.removeByUserId(id);
+        this.removeById(id);
     }
 }

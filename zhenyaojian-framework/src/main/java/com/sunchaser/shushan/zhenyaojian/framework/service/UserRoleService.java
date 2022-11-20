@@ -13,6 +13,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -55,6 +56,6 @@ public class UserRoleService extends ServiceImpl<UserRoleMapper, UserRoleEntity>
 
     private LambdaQueryWrapper<UserRoleEntity> eqUserIdWrapper(Long userId) {
         return Wrappers.<UserRoleEntity>lambdaQuery()
-                .eq(UserRoleEntity::getUserId, userId);
+                .eq(Objects.nonNull(userId), UserRoleEntity::getUserId, userId);
     }
 }
