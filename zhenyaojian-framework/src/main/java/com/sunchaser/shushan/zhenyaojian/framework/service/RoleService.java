@@ -45,6 +45,8 @@ public class RoleService extends ServiceImpl<RoleMapper, RoleEntity> implements 
     public Long createRole(RoleOpsCommand command) {
         verifyRoleNameUniqueness(command);
         RoleEntity role = roleMapstruct.convert(command);
+        // todo code?
+        role.setCode(StringUtils.EMPTY);
         this.save(role);
         return role.getId();
     }
@@ -77,6 +79,8 @@ public class RoleService extends ServiceImpl<RoleMapper, RoleEntity> implements 
         RoleEntity role = roleMapstruct.convert(command);
         LambdaUpdateWrapper<RoleEntity> wrapper = Wrappers.<RoleEntity>lambdaUpdate()
                 .set(StringUtils.isNotBlank(command.getName()), RoleEntity::getName, role.getName())
+                .set(Objects.nonNull(command.getSortValue()), RoleEntity::getSortValue, role.getSortValue())
+                .set(Objects.nonNull(command.getStatus()), RoleEntity::getStatus, role.getStatus())
                 .eq(RoleEntity::getId, id);
         this.update(wrapper);
     }
@@ -100,7 +104,7 @@ public class RoleService extends ServiceImpl<RoleMapper, RoleEntity> implements 
         String name = request.getName();
         LambdaQueryWrapper<RoleEntity> wrapper = Wrappers.<RoleEntity>lambdaQuery()
                 .likeRight(StringUtils.isNotBlank(name), RoleEntity::getName, name)
-                .orderByDesc(RoleEntity::getSortValue);
+                .orderByAsc(RoleEntity::getSortValue);
         Page<RoleEntity> page = Page.of(request.getPageNo(), request.getPageSize());
         Page<RoleEntity> list = this.getBaseMapper().selectPage(page, wrapper);
         return MultiPageResponse.success(list, roleMapstruct::convert);

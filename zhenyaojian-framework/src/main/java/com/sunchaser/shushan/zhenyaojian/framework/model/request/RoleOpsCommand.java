@@ -41,4 +41,9 @@ public class RoleOpsCommand {
      * 显示排序
      */
     private Integer sortValue;
+
+    /**
+     * 角色状态（0：正常；1：停用）
+     */
+    private Integer status;
 }
