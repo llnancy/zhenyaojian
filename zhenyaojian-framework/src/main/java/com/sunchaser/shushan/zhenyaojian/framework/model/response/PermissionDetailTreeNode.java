@@ -1,6 +1,5 @@
 package com.sunchaser.shushan.zhenyaojian.framework.model.response;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

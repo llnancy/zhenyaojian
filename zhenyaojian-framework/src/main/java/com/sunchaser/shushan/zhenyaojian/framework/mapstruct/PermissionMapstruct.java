@@ -19,18 +19,18 @@ import org.mapstruct.MappingConstants;
 public interface PermissionMapstruct {
 
     /**
-     * convert PermissionOpsCommand to PermissionEntity
+     * convert {@link PermissionOpsCommand} to {@link PermissionEntity}
      *
-     * @param command PermissionOpsCommand
-     * @return PermissionEntity
+     * @param command {@link PermissionOpsCommand}
+     * @return {@link PermissionEntity}
      */
     PermissionEntity convert(PermissionOpsCommand command);
 
     /**
-     * convert PermissionEntity to MenuTreeNode
+     * convert {@link PermissionEntity} to {@link MenuTreeNode}
      *
-     * @param permissionEntity PermissionEntity
-     * @return MenuTreeNode
+     * @param permissionEntity {@link PermissionEntity}
+     * @return {@link MenuTreeNode}
      */
     @Mapping(source = "name", target = "meta.title")
     @Mapping(source = "icon", target = "meta.icon")
@@ -38,18 +38,18 @@ public interface PermissionMapstruct {
     MenuTreeNode convertToMenuTreeNode(PermissionEntity permissionEntity);
 
     /**
-     * convert PermissionEntity to PermissionTreeNode
+     * convert {@link PermissionEntity} to {@link PermissionTreeNode}
      *
-     * @param permissionEntity PermissionEntity
-     * @return PermissionTreeNode
+     * @param permissionEntity {@link PermissionEntity}
+     * @return {@link PermissionTreeNode}
      */
     PermissionTreeNode convertToPermissionTreeNode(PermissionEntity permissionEntity);
 
     /**
-     * convert PermissionEntity to PermissionDetailTreeNode
+     * convert {@link PermissionEntity} to {@link PermissionDetailTreeNode}
      *
-     * @param permissionEntity PermissionEntity
-     * @return PermissionDetailTreeNode
+     * @param permissionEntity {@link PermissionEntity}
+     * @return {@link PermissionDetailTreeNode}
      */
     PermissionDetailTreeNode convertToPermissionDetailTreeNode(PermissionEntity permissionEntity);
 }

@@ -14,6 +14,7 @@ import com.sunchaser.shushan.zhenyaojian.framework.enums.PermissionTypeEnum;
 import com.sunchaser.shushan.zhenyaojian.framework.enums.TableStatusFieldEnum;
 import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.PermissionMapstruct;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.PermissionOpsCommand;
+import com.sunchaser.shushan.zhenyaojian.framework.model.response.MenuTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionDetailTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.util.SecurityUtils;
@@ -31,6 +32,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 
 /**
  * permission service
@@ -48,7 +50,36 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
 
     private final PermissionMapstruct permissionMapstruct;
 
-    public void createPermission(PermissionOpsCommand command) {
+    private static final BiConsumer<MenuTreeNode, List<MenuTreeNode>> MENU_TREE_BI_CONSUMER = (root, children) -> {
+        if (CollectionUtils.isEmpty(children)) {
+            return;
+        }
+        if (PermissionTypeEnum.isCatalog(root.getType())) {
+            MenuTreeNode first = children.get(0);
+            root.setRedirect(first.getPath());
+        }
+    };
+
+    /**
+     * build menu tree node
+     *
+     * @return list of {@link MenuTreeNode}
+     */
+    public List<MenuTreeNode> menuInfo() {
+        return TreeBuilder.build(
+                queryCurrentUserPermissions(),
+                permissionMapstruct::convertToMenuTreeNode,
+                MENU_TREE_BI_CONSUMER
+        );
+    }
+
+    /**
+     * create {@link PermissionEntity}
+     *
+     * @param command {@link PermissionOpsCommand}
+     * @return permission ID {@link Long}
+     */
+    public Long createPermission(PermissionOpsCommand command) {
         Long parentId = command.getParentId();
         if (Objects.nonNull(parentId) && parentId != 0L) {
             PermissionEntity parentPermission = this.getById(parentId);
@@ -65,8 +96,14 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
         PermissionEntity permission = permissionMapstruct.convert(command);
         // 此处 parentId 不能被删除
         this.save(permission);
+        return permission.getId();
     }
 
+    /**
+     * 校验路由地址唯一性
+     *
+     * @param command {@link PermissionOpsCommand}
+     */
     private void verifyPathUniqueness(PermissionOpsCommand command) {
         String path = command.getPath();
         if (ReUtil.isMatch(PatternPool.URL_HTTP, path)) {
@@ -80,6 +117,11 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
         Preconditions.checkArgument(!(Objects.nonNull(exist) && ObjectUtils.notEqual(exist.getId(), command.getId())), "路由地址为[" + path + "]的菜单已存在");
     }
 
+    /**
+     * 校验权限名称唯一性
+     *
+     * @param command {@link PermissionOpsCommand}
+     */
     private void verifyNameUniqueness(PermissionOpsCommand command) {
         Long parentId = command.getParentId();
         String name = command.getName();
@@ -91,6 +133,11 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
         Preconditions.checkArgument(!(Objects.nonNull(exist) && ObjectUtils.notEqual(exist.getId(), command.getId())), "菜单名称[" + name + "]已存在");
     }
 
+    /**
+     * update {@link PermissionEntity}
+     *
+     * @param command {@link PermissionOpsCommand}
+     */
     public void updatePermission(PermissionOpsCommand command) {
         Long id = command.getId();
         PermissionEntity exist = this.getById(id);
@@ -122,6 +169,12 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
         this.update(updateWrapper);
     }
 
+    /**
+     * 根据条件查询全部菜单列表
+     *
+     * @param name 菜单名称
+     * @return list of {@link PermissionDetailTreeNode}
+     */
     public List<PermissionDetailTreeNode> permissionDetailTreeList(String name) {
         LambdaQueryWrapper<PermissionEntity> condition = Wrappers.<PermissionEntity>lambdaQuery()
                 .likeRight(StringUtils.isNotBlank(name), PermissionEntity::getName, name);
@@ -136,7 +189,7 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
      * 且不能选择已隐藏的菜单
      *
      * @param filter 过滤条件
-     * @return Permission Tree
+     * @return list of {@link PermissionTreeNode}
      */
     public List<PermissionTreeNode> permissionsTree(String filter) {
         return TreeBuilder.build(
@@ -146,6 +199,11 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
         );
     }
 
+    /**
+     * delete permission by id
+     *
+     * @param id permission id {@link Long}
+     */
     public void deletePermission(Long id) {
         LambdaQueryWrapper<PermissionEntity> wrapper = Wrappers.<PermissionEntity>lambdaQuery()
                 .eq(PermissionEntity::getParentId, id);
@@ -170,6 +228,12 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
         return queryCurrentUserPermissionsByCondition(condition);
     }
 
+    /**
+     * 根据条件查询当前登录用户拥有的权限
+     *
+     * @param condition query condition {@link LambdaQueryWrapper}
+     * @return list of {@link PermissionEntity}
+     */
     public List<PermissionEntity> queryCurrentUserPermissionsByCondition(LambdaQueryWrapper<PermissionEntity> condition) {
         Long userId = SecurityUtils.getLoginUserId();
         condition = Optionals.of(condition, Wrappers.lambdaQuery());
@@ -191,6 +255,9 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
         return this.list(condition);
     }
 
+    /**
+     * permission filter enum
+     */
     public enum PermissionFilterEnum {
 
         /**
@@ -217,6 +284,11 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
             }
         };
 
+        /**
+         * filter strategy
+         *
+         * @param treeNode {@link PermissionTreeNode}
+         */
         abstract void filter(PermissionTreeNode treeNode);
     }
 }

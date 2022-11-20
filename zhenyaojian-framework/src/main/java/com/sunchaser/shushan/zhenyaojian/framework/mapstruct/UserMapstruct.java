@@ -10,8 +10,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 /**
  * user mapstruct
  *
@@ -42,5 +40,11 @@ public interface UserMapstruct {
      */
     UserInfoResponse convert(UserEntity userEntity);
 
+    /**
+     * convert {@link UserEntity} to {@link UserInfo}
+     *
+     * @param userEntity {@link UserEntity}
+     * @return {@link UserInfo}
+     */
     UserInfo convertToUserInfo(UserEntity userEntity);
 }

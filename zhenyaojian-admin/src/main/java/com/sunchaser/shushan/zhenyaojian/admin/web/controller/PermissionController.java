@@ -2,6 +2,7 @@ package com.sunchaser.shushan.zhenyaojian.admin.web.controller;
 
 import com.sunchaser.shushan.mojian.base.entity.response.IResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiResponse;
+import com.sunchaser.shushan.mojian.base.entity.response.SingleResponse;
 import com.sunchaser.shushan.mojian.log.annotation.MjLog;
 import com.sunchaser.shushan.mojian.web.validation.groups.Update;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.PermissionOpsCommand;
@@ -32,9 +33,8 @@ public class PermissionController {
     private final PermissionService permissionService;
 
     @PostMapping("/permission")
-    public IResponse createPermission(@Validated @RequestBody PermissionOpsCommand command) {
-        permissionService.createPermission(command);
-        return IResponse.ofSuccess();
+    public SingleResponse<Long> createPermission(@Validated @RequestBody PermissionOpsCommand command) {
+        return SingleResponse.success(permissionService.createPermission(command));
     }
 
     @PatchMapping("/permission")
