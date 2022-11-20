@@ -8,11 +8,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
-import com.sunchaser.shushan.mojian.base.entity.request.BasePageRequest;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiPageResponse;
 import com.sunchaser.shushan.zhenyaojian.framework.config.WebSecurityConfig;
 import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.UserMapstruct;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.UserOpsCommand;
+import com.sunchaser.shushan.zhenyaojian.framework.model.request.UserPageRequest;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.UserInfo;
 import com.sunchaser.shushan.zhenyaojian.framework.util.SecurityUtils;
 import com.sunchaser.shushan.zhenyaojian.framework.util.Streams;
@@ -191,12 +191,15 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
     /**
      * Paging query users.
      *
-     * @param request {@link BasePageRequest}
+     * @param request {@link UserPageRequest}
      * @return paging data
      */
-    public MultiPageResponse<UserInfo> users(BasePageRequest request) {
+    public MultiPageResponse<UserInfo> users(UserPageRequest request) {
+        String account = request.getAccount();
+        LambdaQueryWrapper<UserEntity> wrapper = Wrappers.<UserEntity>lambdaQuery()
+                .likeRight(StringUtils.isNotBlank(account), UserEntity::getAccount, account);
         Page<UserEntity> page = new Page<>(request.getPageNo(), request.getPageSize());
-        Page<UserEntity> list = this.getBaseMapper().selectPage(page, Wrappers.emptyWrapper());
+        Page<UserEntity> list = this.getBaseMapper().selectPage(page, wrapper);
         return MultiPageResponse.success(list, userMapstruct::convertToUserInfo);
     }
 
