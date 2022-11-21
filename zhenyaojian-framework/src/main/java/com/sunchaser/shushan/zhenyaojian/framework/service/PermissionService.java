@@ -261,6 +261,11 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
     public enum PermissionFilterEnum {
 
         /**
+         * 获取全部
+         */
+        FILTER_NONE,
+
+        /**
          * 获取目录
          */
         FILTER_CATALOG() {
@@ -289,6 +294,7 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
          *
          * @param treeNode {@link PermissionTreeNode}
          */
-        abstract void filter(PermissionTreeNode treeNode);
+        void filter(PermissionTreeNode treeNode) {
+        }
     }
 }

@@ -2,13 +2,11 @@ package com.sunchaser.shushan.zhenyaojian.admin.web.controller;
 
 import com.sunchaser.shushan.mojian.base.entity.response.IResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiPageResponse;
-import com.sunchaser.shushan.mojian.base.entity.response.MultiResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.SingleResponse;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.RoleOpsCommand;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.RolePageRequest;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.RoleItemInfo;
 import com.sunchaser.shushan.zhenyaojian.framework.service.RoleService;
-import com.sunchaser.shushan.zhenyaojian.system.repository.entity.RoleEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,10 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class RoleController {
 
     private final RoleService roleService;
-
-    public MultiResponse<RoleEntity> list() {
-        return MultiResponse.success(roleService.list());
-    }
 
     @PostMapping("/role")
     public SingleResponse<Long> createRole(@Validated @RequestBody RoleOpsCommand command) {

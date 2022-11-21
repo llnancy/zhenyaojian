@@ -68,6 +68,19 @@ public class RoleService extends ServiceImpl<RoleMapper, RoleEntity> implements 
     }
 
     /**
+     * 校验角色存在性
+     *
+     * @param roleId role id {@link Long}
+     */
+    public void verifyRoleIdExistence(Long roleId) {
+        if (Objects.isNull(roleId) || roleId < 0L) {
+            return;
+        }
+        RoleEntity exist = this.getById(roleId);
+        Preconditions.checkArgument(Objects.nonNull(exist), "角色不存在");
+    }
+
+    /**
      * update {@link RoleEntity}
      *
      * @param command {@link RoleOpsCommand}
