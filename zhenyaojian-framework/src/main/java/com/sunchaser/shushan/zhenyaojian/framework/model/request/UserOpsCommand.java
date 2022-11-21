@@ -24,7 +24,7 @@ public class UserOpsCommand {
     /**
      * 自增ID
      */
-    @NotNull(message = "自增ID不能为空", groups = {Update.class})
+    @NotNull(message = "ID 不能为空", groups = {Update.class})
     private Long id;
 
     /**

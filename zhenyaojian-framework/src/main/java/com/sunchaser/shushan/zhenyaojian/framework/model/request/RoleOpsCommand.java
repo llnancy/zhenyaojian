@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
 
@@ -35,6 +36,7 @@ public class RoleOpsCommand {
      * 角色名称
      */
     @NotNull(message = "角色名称不能为空")
+    @Length(max = 16, message = "角色名称不能超过 16 个字符")
     private String name;
 
     /**

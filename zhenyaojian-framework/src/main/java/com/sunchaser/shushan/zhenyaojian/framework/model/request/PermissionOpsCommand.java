@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
@@ -25,19 +26,20 @@ public class PermissionOpsCommand {
     /**
      * 自增ID
      */
-    @NotNull(message = "自增ID不能为空", groups = {Update.class})
+    @NotNull(message = "ID 不能为空", groups = {Update.class})
     private Long id;
 
     /**
      * 权限名称
      */
     @NotBlank(message = "权限名称不能为空")
+    @Length(max = 12, message = "权限名称不能超过 12 个字符")
     private String name;
 
     /**
      * 父级权限ID
      */
-    @NotNull(message = "父级权限ID不能为空")
+    @NotNull(message = "父级权限 ID 不能为空")
     private Long parentId;
 
     /**
