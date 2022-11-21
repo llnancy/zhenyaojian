@@ -66,7 +66,7 @@ CREATE TABLE `sunchaser_zyj`.`zyj_role`
 (
     `id`          bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
     `code`        varchar(32) NOT NULL COMMENT '角色编码',
-    `name`        varchar(32) NOT NULL COMMENT '角色名称',
+    `name`        varchar(16) NOT NULL COMMENT '角色名称',
     `sort_value`  int(4) NOT NULL DEFAULT 0 COMMENT '显示排序',
     `status`      tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '角色状态（0：正常；1：停用）',
     `is_deleted`  tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '逻辑删除（0：正常；1：删除）',
