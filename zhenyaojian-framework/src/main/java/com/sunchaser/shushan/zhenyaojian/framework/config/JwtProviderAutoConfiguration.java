@@ -1,10 +1,10 @@
 package com.sunchaser.shushan.zhenyaojian.framework.config;
 
 import com.sunchaser.shushan.zhenyaojian.framework.config.property.JwtProperties;
-import com.sunchaser.shushan.zhenyaojian.framework.service.jwt.JwtService;
-import com.sunchaser.shushan.zhenyaojian.framework.service.jwt.impl.NoneSignJwtServiceImpl;
-import com.sunchaser.shushan.zhenyaojian.framework.service.jwt.impl.PublicPrivateKeyJwtServiceImpl;
-import com.sunchaser.shushan.zhenyaojian.framework.service.jwt.impl.SecretJwtServiceImpl;
+import com.sunchaser.shushan.zhenyaojian.framework.service.jwt.JwtProvider;
+import com.sunchaser.shushan.zhenyaojian.framework.service.jwt.impl.NoneSignJwtProviderImpl;
+import com.sunchaser.shushan.zhenyaojian.framework.service.jwt.impl.PublicPrivateKeyJwtProviderImpl;
+import com.sunchaser.shushan.zhenyaojian.framework.service.jwt.impl.SecretJwtProviderImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Elements;
 
 /**
- * JwtService configuration
+ * JwtProvider configuration
  *
  * @author sunchaser admin@lilu.org.cn
  * @since JDK8 2022/11/3
@@ -20,7 +20,7 @@ import org.springframework.security.config.Elements;
 @Configuration
 @EnableConfigurationProperties({JwtProperties.class})
 @ConditionalOnProperty(prefix = Elements.JWT, value = "enabled", matchIfMissing = true)
-public class JwtServiceAutoConfiguration {
+public class JwtProviderAutoConfiguration {
 
     // jwt.sign-type 只能用短横线，不能用驼峰
 
@@ -28,19 +28,19 @@ public class JwtServiceAutoConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = JWT_SIGN_TYPE, havingValue = "NONE")
-    public JwtService noneSignJwtService(JwtProperties properties) {
-        return new NoneSignJwtServiceImpl(properties);
+    public JwtProvider noneSignJwtService(JwtProperties properties) {
+        return new NoneSignJwtProviderImpl(properties);
     }
 
     @Bean
     @ConditionalOnProperty(name = JWT_SIGN_TYPE, havingValue = "SECRET")
-    public JwtService secretJwtService(JwtProperties properties) {
-        return new SecretJwtServiceImpl(properties);
+    public JwtProvider secretJwtService(JwtProperties properties) {
+        return new SecretJwtProviderImpl(properties);
     }
 
     @Bean
     @ConditionalOnProperty(name = JWT_SIGN_TYPE, havingValue = "PUBLIC_PRIVATE_KEY")
-    public JwtService publicPrivateKeyJwtService(JwtProperties properties) {
-        return new PublicPrivateKeyJwtServiceImpl(properties);
+    public JwtProvider publicPrivateKeyJwtService(JwtProperties properties) {
+        return new PublicPrivateKeyJwtProviderImpl(properties);
     }
 }

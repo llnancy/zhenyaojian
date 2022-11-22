@@ -1,6 +1,5 @@
 package com.sunchaser.shushan.zhenyaojian.framework.service.jwt;
 
-import com.sunchaser.shushan.zhenyaojian.framework.security.LoginUser;
 import io.jsonwebtoken.Claims;
 
 /**
@@ -19,15 +18,15 @@ import io.jsonwebtoken.Claims;
  * @author sunchaser admin@lilu.org.cn
  * @since JDK8 2022/11/3
  */
-public interface JwtService {
+public interface JwtProvider {
 
     /**
      * 创建 JWT
      *
-     * @param user LoginUser
+     * @param subject 主题（用户名）
      * @return JWT
      */
-    String createJwt(LoginUser user);
+    String createJwt(String subject);
 
     /**
      * 解析 JWT

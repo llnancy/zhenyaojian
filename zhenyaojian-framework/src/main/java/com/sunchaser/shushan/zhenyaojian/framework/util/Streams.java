@@ -73,4 +73,20 @@ public final class Streams {
     public static <T> List<T> filterToList(Collection<T> coll, Predicate<? super T> predicate) {
         return filterToList(coll, predicate, false);
     }
+
+    public static <T, R> Set<R> filterAndMapToSet(Collection<T> coll,
+                                                  Predicate<? super T> predicate,
+                                                  Function<? super T, ? extends R> mapper,
+                                                  boolean isParallel) {
+        return of(coll, isParallel)
+                .filter(predicate)
+                .map(mapper)
+                .collect(Collectors.toSet());
+    }
+
+    public static <T, R> Set<R> filterAndMapToSet(Collection<T> coll,
+                                                  Predicate<? super T> predicate,
+                                                  Function<? super T, ? extends R> mapper) {
+        return filterAndMapToSet(coll, predicate, mapper, false);
+    }
 }

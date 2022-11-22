@@ -217,25 +217,39 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
     }
 
     /**
-     * 获取当前登录用户拥有的权限
+     * 获取当前登录用户拥有的权限（不包含已隐藏的菜单）
      * userId -> roles -> permissions
      *
      * @return 权限列表
      */
     public List<PermissionEntity> queryCurrentUserPermissions() {
-        LambdaQueryWrapper<PermissionEntity> condition = Wrappers.<PermissionEntity>lambdaQuery()
-                .eq(PermissionEntity::getStatus, TableStatusFieldEnum.NORMAL.ordinal());
-        return queryCurrentUserPermissionsByCondition(condition);
+        return queryPermissionsByUserId(SecurityUtils.getLoginUserId());
+    }
+
+    private List<PermissionEntity> queryCurrentUserPermissionsByCondition(LambdaQueryWrapper<PermissionEntity> condition) {
+        return queryPermissionsByUserIdAndCondition(SecurityUtils.getLoginUserId(), condition);
     }
 
     /**
-     * 根据条件查询当前登录用户拥有的权限
+     * 查询指定用户拥有的权限
      *
+     * @param userId user id
+     * @return list of {@link PermissionEntity}
+     */
+    public List<PermissionEntity> queryPermissionsByUserId(Long userId) {
+        LambdaQueryWrapper<PermissionEntity> condition = Wrappers.<PermissionEntity>lambdaQuery()
+                .eq(PermissionEntity::getStatus, TableStatusFieldEnum.NORMAL.ordinal());
+        return queryPermissionsByUserIdAndCondition(userId, condition);
+    }
+
+    /**
+     * 根据条件查询指定用户所拥有的权限
+     *
+     * @param userId    user id
      * @param condition query condition {@link LambdaQueryWrapper}
      * @return list of {@link PermissionEntity}
      */
-    public List<PermissionEntity> queryCurrentUserPermissionsByCondition(LambdaQueryWrapper<PermissionEntity> condition) {
-        Long userId = SecurityUtils.getLoginUserId();
+    public List<PermissionEntity> queryPermissionsByUserIdAndCondition(Long userId, LambdaQueryWrapper<PermissionEntity> condition) {
         condition = Optionals.of(condition, Wrappers.lambdaQuery());
         if (SecurityUtils.isSuperAdmin(userId)) {
             // 内部超级管理员查询所有权限
