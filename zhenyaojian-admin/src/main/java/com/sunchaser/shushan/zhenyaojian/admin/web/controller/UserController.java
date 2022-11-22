@@ -19,6 +19,7 @@ import com.sunchaser.shushan.zhenyaojian.framework.service.UserService;
 import com.sunchaser.shushan.zhenyaojian.framework.util.SecurityUtils;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,6 +57,7 @@ public class UserController {
         return SingleResponse.success(userInfo);
     }
 
+    @PreAuthorize("hasAuthority('xxx')")
     @GetMapping("/user/menu")
     public MultiResponse<MenuTreeNode> menuInfo() {
         return MultiResponse.success(permissionService.menuInfo());

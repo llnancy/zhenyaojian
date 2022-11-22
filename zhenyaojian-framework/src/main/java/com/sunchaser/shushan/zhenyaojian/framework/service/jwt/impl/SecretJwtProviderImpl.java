@@ -4,27 +4,37 @@ import com.sunchaser.shushan.zhenyaojian.framework.config.property.JwtProperties
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+
+import java.security.Key;
 
 /**
- * jwt implementation with none sign
+ * jwt implementation based on secret encryption
  *
  * @author sunchaser admin@lilu.org.cn
  * @since JDK8 2022/11/3
  */
-public class NoneSignJwtServiceImpl extends AbstractJwtService {
+public class SecretJwtProviderImpl extends AbstractJwtProvider {
 
-    public NoneSignJwtServiceImpl(JwtProperties jwtProperties) {
+    public SecretJwtProviderImpl(JwtProperties jwtProperties) {
         super(jwtProperties);
     }
 
     @Override
     protected String doCreateJwt(JwtBuilder jwtBuilder) {
-        return jwtBuilder.compact();
+        return jwtBuilder.signWith(getSecretKey())
+                .compact();
     }
 
     @Override
     protected JwtParser buildJwtParser() {
         return Jwts.parserBuilder()
+                .setSigningKey(getSecretKey())
                 .build();
+    }
+
+    private Key getSecretKey() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getSecret()));
     }
 }

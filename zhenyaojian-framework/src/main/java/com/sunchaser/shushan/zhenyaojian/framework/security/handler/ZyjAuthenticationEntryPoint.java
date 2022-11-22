@@ -14,6 +14,7 @@ import java.io.IOException;
 
 /**
  * 处理认证异常 AuthenticationException
+ * 匿名用户访问无权限资源时的异常处理
  *
  * @author sunchaser admin@lilu.org.cn
  * @since JDK8 2022/11/4

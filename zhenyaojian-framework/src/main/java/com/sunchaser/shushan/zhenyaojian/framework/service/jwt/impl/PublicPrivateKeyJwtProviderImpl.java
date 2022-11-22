@@ -21,9 +21,9 @@ import java.security.spec.X509EncodedKeySpec;
  * @author sunchaser admin@lilu.org.cn
  * @since JDK8 2022/11/3
  */
-public class PublicPrivateKeyJwtServiceImpl extends AbstractJwtService {
+public class PublicPrivateKeyJwtProviderImpl extends AbstractJwtProvider {
 
-    public PublicPrivateKeyJwtServiceImpl(JwtProperties jwtProperties) {
+    public PublicPrivateKeyJwtProviderImpl(JwtProperties jwtProperties) {
         super(jwtProperties);
     }
 

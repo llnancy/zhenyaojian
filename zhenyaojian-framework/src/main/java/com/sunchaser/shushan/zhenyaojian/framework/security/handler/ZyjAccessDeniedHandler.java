@@ -5,6 +5,8 @@ import com.sunchaser.shushan.mojian.base.util.JsonUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -14,6 +16,7 @@ import java.io.IOException;
 
 /**
  * 处理权限异常 AccessDeniedException
+ * 登录用户没有权限访问资源时的异常处理
  *
  * @author sunchaser admin@lilu.org.cn
  * @since JDK8 2022/11/4

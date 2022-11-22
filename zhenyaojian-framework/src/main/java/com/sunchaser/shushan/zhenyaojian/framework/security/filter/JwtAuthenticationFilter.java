@@ -2,15 +2,15 @@ package com.sunchaser.shushan.zhenyaojian.framework.security.filter;
 
 import com.sunchaser.shushan.zhenyaojian.framework.config.WebSecurityConfig;
 import com.sunchaser.shushan.zhenyaojian.framework.security.LoginUser;
-import com.sunchaser.shushan.zhenyaojian.framework.service.jwt.JwtService;
+import com.sunchaser.shushan.zhenyaojian.framework.service.jwt.JwtProvider;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -19,7 +19,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -32,7 +31,9 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
+    private static final String BEARER = "Bearer ";
+
+    private final JwtProvider jwtProvider;
 
     private final UserDetailsService userDetailsService;
 
@@ -40,18 +41,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-        String jwt = request.getHeader("Authorization");
-        if (StringUtils.isBlank(jwt) || !jwt.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
+        String jwt = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (StringUtils.isNotBlank(jwt) && jwt.startsWith(BEARER)) {
+            jwt = jwt.substring(BEARER.length());
+            Claims claims = jwtProvider.parseJwt(jwt);
+            if (Objects.nonNull(claims)) {
+                String username = claims.getSubject();
+                LoginUser userDetails = (LoginUser) userDetailsService.loadUserByUsername(username);
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, jwt, userDetails.getAuthorities());
+                // ???
+                // authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
-        jwt = jwt.substring(7);
-        Claims claims = jwtService.parseJwt(jwt);
-        String username = claims.getSubject();
-        LoginUser userDetails = (LoginUser) userDetailsService.loadUserByUsername(username);
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, jwt, Collections.emptyList());
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }
 
