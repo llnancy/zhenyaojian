@@ -17,10 +17,13 @@ import com.sunchaser.shushan.zhenyaojian.system.repository.entity.RoleEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.mapper.RoleMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -131,5 +134,15 @@ public class RoleService extends ServiceImpl<RoleMapper, RoleEntity> implements 
     public void deleteRole(Long id) {
         verifyOpsLegality(id);
         this.removeById(id);
+    }
+
+    public List<RoleEntity> queryRolesByRoleIds(List<Long> roleIds) {
+        if (CollectionUtils.isEmpty(roleIds)) {
+            return Collections.emptyList();
+        }
+        LambdaQueryWrapper<RoleEntity> wrapper = Wrappers.<RoleEntity>lambdaQuery()
+                .select(RoleEntity::getCode)
+                .in(RoleEntity::getId, roleIds);
+        return this.list(wrapper);
     }
 }

@@ -251,21 +251,17 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
      */
     public List<PermissionEntity> queryPermissionsByUserIdAndCondition(Long userId, LambdaQueryWrapper<PermissionEntity> condition) {
         condition = Optionals.of(condition, Wrappers.lambdaQuery());
-        if (SecurityUtils.isSuperAdmin(userId)) {
-            // 内部超级管理员查询所有权限
-            return this.list(condition);
+        if (SecurityUtils.isNotSuperAdmin(userId)) {
+            // userId -> roles
+            List<UserRoleEntity> userRoles = userRoleService.listByUserId(userId);
+            List<Long> roleIds = Streams.mapToList(userRoles, UserRoleEntity::getRoleId);
+            LambdaQueryWrapper<RolePermissionEntity> rpWrapper = Wrappers.<RolePermissionEntity>lambdaQuery()
+                    .in(CollectionUtils.isNotEmpty(roleIds), RolePermissionEntity::getRoleId, roleIds);
+            // roles -> permissions
+            List<RolePermissionEntity> rolePermissions = rolePermissionService.list(rpWrapper);
+            List<Long> permissionIds = Streams.mapToList(rolePermissions, RolePermissionEntity::getPermissionId);
+            condition.in(CollectionUtils.isNotEmpty(permissionIds), PermissionEntity::getId, permissionIds);
         }
-        LambdaQueryWrapper<UserRoleEntity> urWrapper = Wrappers.<UserRoleEntity>lambdaQuery()
-                .eq(UserRoleEntity::getUserId, userId);
-        // userId -> roles
-        List<UserRoleEntity> userRoles = userRoleService.list(urWrapper);
-        List<Long> roleIds = Streams.mapToList(userRoles, UserRoleEntity::getRoleId);
-        LambdaQueryWrapper<RolePermissionEntity> rpWrapper = Wrappers.<RolePermissionEntity>lambdaQuery()
-                .in(CollectionUtils.isNotEmpty(roleIds), RolePermissionEntity::getRoleId, roleIds);
-        // roles -> permissions
-        List<RolePermissionEntity> rolePermissions = rolePermissionService.list(rpWrapper);
-        List<Long> permissionIds = Streams.mapToList(rolePermissions, RolePermissionEntity::getPermissionId);
-        condition.in(CollectionUtils.isNotEmpty(permissionIds), PermissionEntity::getId, permissionIds);
         return this.list(condition);
     }
 

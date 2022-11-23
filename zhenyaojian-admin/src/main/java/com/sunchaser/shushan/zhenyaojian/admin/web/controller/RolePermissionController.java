@@ -5,6 +5,7 @@ import com.sunchaser.shushan.mojian.base.entity.response.MultiResponse;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.AssignRolePermissionRequest;
 import com.sunchaser.shushan.zhenyaojian.framework.service.RolePermissionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,12 +26,14 @@ public class RolePermissionController {
     private final RolePermissionService rolePermissionService;
 
     @PostMapping("/role/permission")
+    @PreAuthorize("hasRole('super-admin') or hasAuthority('system:role-permission:assign')")
     public IResponse assignRolePermission(@Validated @RequestBody AssignRolePermissionRequest request) {
         rolePermissionService.assignRolePermission(request);
         return IResponse.ofSuccess();
     }
 
     @GetMapping("/role/{roleId}/permission")
+    @PreAuthorize("hasRole('super-admin') or hasAuthority('system:role-permission:assign')")
     public MultiResponse<Long> rolePermissions(@PathVariable Long roleId) {
         return MultiResponse.success(rolePermissionService.queryPermissionIdsByRoleId(roleId));
     }
