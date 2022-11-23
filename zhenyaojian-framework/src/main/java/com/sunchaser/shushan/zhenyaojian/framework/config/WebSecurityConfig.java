@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
  * @author sunchaser admin@lilu.org.cn
  * @since JDK8 2022/11/3
  */
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
