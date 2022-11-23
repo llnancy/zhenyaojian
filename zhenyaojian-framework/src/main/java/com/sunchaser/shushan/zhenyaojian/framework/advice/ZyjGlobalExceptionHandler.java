@@ -1,6 +1,11 @@
 package com.sunchaser.shushan.zhenyaojian.framework.advice;
 
 import com.sunchaser.shushan.mojian.web.advice.MjDefaultGlobalExceptionHandler;
+import com.sunchaser.shushan.zhenyaojian.framework.security.handler.ZyjAccessDeniedHandler;
+import com.sunchaser.shushan.zhenyaojian.framework.security.handler.ZyjAuthenticationEntryPoint;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
@@ -11,4 +16,24 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @RestControllerAdvice
 public class ZyjGlobalExceptionHandler extends MjDefaultGlobalExceptionHandler {
+
+    /**
+     * 将异常 {@link AccessDeniedException} 向外抛出，转交给 {@link ZyjAccessDeniedHandler} 进行处理。
+     *
+     * @param ade {@link AccessDeniedException}
+     */
+    @ExceptionHandler({AccessDeniedException.class})
+    public void handleAccessDeniedException(AccessDeniedException ade) {
+        throw ade;
+    }
+
+    /**
+     * 将异常 {@link AuthenticationException} 向外抛出，转交给 {@link ZyjAuthenticationEntryPoint} 进行处理。
+     *
+     * @param ae {@link AuthenticationException}
+     */
+    @ExceptionHandler({AuthenticationException.class})
+    public void handleAuthenticationException(AuthenticationException ae) {
+        throw ae;
+    }
 }

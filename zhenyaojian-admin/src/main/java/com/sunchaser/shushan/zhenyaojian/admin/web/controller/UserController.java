@@ -57,29 +57,32 @@ public class UserController {
         return SingleResponse.success(userInfo);
     }
 
-    @PreAuthorize("hasAuthority('xxx')")
     @GetMapping("/user/menu")
     public MultiResponse<MenuTreeNode> menuInfo() {
         return MultiResponse.success(permissionService.menuInfo());
     }
 
     @PostMapping("/user")
+    @PreAuthorize("hasRole('super-admin') or hasAuthority('system:user:create')")
     public SingleResponse<Long> createUser(@Validated @RequestBody UserOpsCommand request) {
         return SingleResponse.success(userService.createUser(request));
     }
 
     @PatchMapping("/user")
+    @PreAuthorize("hasRole('super-admin') or hasAuthority('system:user:update')")
     public IResponse updateUser(@Validated @RequestBody UserOpsCommand request) {
         userService.updateUser(request);
         return IResponse.ofSuccess();
     }
 
     @GetMapping("/users")
+    @PreAuthorize("hasRole('super-admin') or hasAuthority('system:user:list')")
     public MultiPageResponse<UserInfo> users(UserPageRequest request) {
         return userService.users(request);
     }
 
     @DeleteMapping("/user/{id}")
+    @PreAuthorize("hasRole('super-admin') or hasAuthority('system:user:delete')")
     public IResponse deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return IResponse.ofSuccess();

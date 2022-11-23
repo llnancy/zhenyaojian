@@ -23,6 +23,7 @@ public class ZyjLogoutSuccessHandler implements LogoutSuccessHandler {
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         response.setStatus(HttpStatus.OK.value());
         response.getWriter().write(JsonUtils.toJsonString(ResponseEnum.LOGOUT_SUCCESS.toResponse()));

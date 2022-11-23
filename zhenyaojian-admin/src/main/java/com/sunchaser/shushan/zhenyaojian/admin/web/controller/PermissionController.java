@@ -10,6 +10,7 @@ import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionDeta
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.service.PermissionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,11 +34,13 @@ public class PermissionController {
     private final PermissionService permissionService;
 
     @PostMapping("/permission")
+    @PreAuthorize("hasRole('super-admin') or hasAuthority('system:permission:create')")
     public SingleResponse<Long> createPermission(@Validated @RequestBody PermissionOpsCommand command) {
         return SingleResponse.success(permissionService.createPermission(command));
     }
 
     @PatchMapping("/permission")
+    @PreAuthorize("hasRole('super-admin') or hasAuthority('system:permission:update')")
     @MjLog
     public IResponse updatePermission(@Validated({Update.class}) @RequestBody PermissionOpsCommand command) {
         permissionService.updatePermission(command);
@@ -45,16 +48,19 @@ public class PermissionController {
     }
 
     @GetMapping("/permissions")
+    @PreAuthorize("hasRole('super-admin') or hasAuthority('system:permission:list')")
     public MultiResponse<PermissionDetailTreeNode> permissions(@RequestParam(required = false) String name) {
         return MultiResponse.success(permissionService.permissionDetailTreeList(name));
     }
 
     @GetMapping("/permissions/tree")
+    @PreAuthorize("hasRole('super-admin') or hasAuthority('system:permission:create')")
     public MultiResponse<PermissionTreeNode> permissionsTree(@RequestParam String filter) {
         return MultiResponse.success(permissionService.permissionsTree(filter));
     }
 
     @DeleteMapping("/permission/{id}")
+    @PreAuthorize("hasRole('super-admin') or hasAuthority('system:permission:delete')")
     public IResponse deletePermission(@PathVariable Long id) {
         permissionService.deletePermission(id);
         return IResponse.ofSuccess();

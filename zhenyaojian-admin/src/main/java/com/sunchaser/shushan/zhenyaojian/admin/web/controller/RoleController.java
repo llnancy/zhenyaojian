@@ -8,6 +8,7 @@ import com.sunchaser.shushan.zhenyaojian.framework.model.request.RolePageRequest
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.RoleItemInfo;
 import com.sunchaser.shushan.zhenyaojian.framework.service.RoleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,22 +31,26 @@ public class RoleController {
     private final RoleService roleService;
 
     @PostMapping("/role")
+    @PreAuthorize("hasRole('super-admin') or hasAuthority('system:role:create')")
     public SingleResponse<Long> createRole(@Validated @RequestBody RoleOpsCommand command) {
         return SingleResponse.success(roleService.createRole(command));
     }
 
     @PatchMapping("/role")
+    @PreAuthorize("hasRole('super-admin') or hasAuthority('system:role:update')")
     public IResponse updateRole(@Validated @RequestBody RoleOpsCommand command) {
         roleService.updateRole(command);
         return IResponse.ofSuccess();
     }
 
     @GetMapping("/roles")
+    @PreAuthorize("hasRole('super-admin') or hasAuthority('system:role:list')")
     public MultiPageResponse<RoleItemInfo> roles(RolePageRequest request) {
         return roleService.roles(request);
     }
 
     @DeleteMapping("/role/{id}")
+    @PreAuthorize("hasRole('super-admin') or hasAuthority('system:role:delete')")
     public IResponse deleteRole(@PathVariable Long id) {
         roleService.deleteRole(id);
         return IResponse.ofSuccess();
