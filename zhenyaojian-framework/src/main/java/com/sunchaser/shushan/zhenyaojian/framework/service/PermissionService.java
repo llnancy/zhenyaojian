@@ -106,6 +106,9 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
      */
     private void verifyPathUniqueness(PermissionOpsCommand command) {
         String path = command.getPath();
+        if (PermissionTypeEnum.isButton(command.getType())) {
+            return;
+        }
         if (ReUtil.isMatch(PatternPool.URL_HTTP, path)) {
             return;
         }
