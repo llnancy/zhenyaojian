@@ -1,5 +1,5 @@
 FROM openjdk:8-jre-alpine
-ADD ./target/sunchaser-zhenyaojian.jar /app.jar
+ADD ./zhenyaojian-admin/target/sunchaser-zhenyaojian.jar /app.jar
 CMD ["--server.port=8080"]
 ENV spring.profiles.active="pro"
 RUN apk add --no-cache tzdata && \
