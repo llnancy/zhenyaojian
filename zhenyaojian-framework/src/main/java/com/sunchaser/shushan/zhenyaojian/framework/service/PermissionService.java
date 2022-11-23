@@ -178,7 +178,10 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
     public List<PermissionDetailTreeNode> permissionDetailTreeList(String name) {
         LambdaQueryWrapper<PermissionEntity> condition = Wrappers.<PermissionEntity>lambdaQuery()
                 .likeRight(StringUtils.isNotBlank(name), PermissionEntity::getName, name);
-        return TreeBuilder.build(queryCurrentUserPermissionsByCondition(condition), permissionMapstruct::convertToPermissionDetailTreeNode);
+        return TreeBuilder.build(
+                queryCurrentUserPermissionsByCondition(condition),
+                permissionMapstruct::convertToPermissionDetailTreeNode
+        );
     }
 
     /**
@@ -217,15 +220,23 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
     }
 
     /**
-     * 获取当前登录用户拥有的权限（不包含已隐藏的菜单）
-     * userId -> roles -> permissions
+     * 获取当前登录用户拥有的权限（不包含已隐藏的菜单，不包含按钮权限）
      *
      * @return 权限列表
      */
     public List<PermissionEntity> queryCurrentUserPermissions() {
-        return queryPermissionsByUserId(SecurityUtils.getLoginUserId());
+        LambdaQueryWrapper<PermissionEntity> condition = Wrappers.<PermissionEntity>lambdaQuery()
+                .eq(PermissionEntity::getStatus, TableStatusFieldEnum.NORMAL.ordinal())
+                .in(PermissionEntity::getType, PermissionTypeEnum.CATALOG.ordinal(), PermissionTypeEnum.MENU.ordinal());
+        return queryCurrentUserPermissionsByCondition(condition);
     }
 
+    /**
+     * 根据条件查询指定用户拥有的权限
+     *
+     * @param condition query condition {@link LambdaQueryWrapper}
+     * @return list of {@link PermissionEntity}
+     */
     private List<PermissionEntity> queryCurrentUserPermissionsByCondition(LambdaQueryWrapper<PermissionEntity> condition) {
         return queryPermissionsByUserIdAndCondition(SecurityUtils.getLoginUserId(), condition);
     }
@@ -236,7 +247,7 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
      * @param userId user id
      * @return list of {@link PermissionEntity}
      */
-    public List<PermissionEntity> queryPermissionsByUserId(Long userId) {
+    public List<PermissionEntity> queryNormalPermissionsByUserId(Long userId) {
         LambdaQueryWrapper<PermissionEntity> condition = Wrappers.<PermissionEntity>lambdaQuery()
                 .eq(PermissionEntity::getStatus, TableStatusFieldEnum.NORMAL.ordinal());
         return queryPermissionsByUserIdAndCondition(userId, condition);

@@ -67,7 +67,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 role -> StringUtils.isNotBlank(role.getCode()),
                 role -> new SimpleGrantedAuthority(DEFAULT_ROLE_PREFIX + role.getCode())
         );
-        List<PermissionEntity> permissions = permissionService.queryPermissionsByUserId(userId);
+        List<PermissionEntity> permissions = permissionService.queryNormalPermissionsByUserId(userId);
         Set<SimpleGrantedAuthority> permissionAuthorities = Streams.filterAndMapToSet(
                 permissions,
                 permission -> StringUtils.isNotBlank(permission.getPermission()),
