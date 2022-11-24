@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Sets;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiPageResponse;
 import com.sunchaser.shushan.zhenyaojian.framework.config.WebSecurityConfig;
 import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.UserMapstruct;
@@ -15,19 +14,15 @@ import com.sunchaser.shushan.zhenyaojian.framework.model.request.UserOpsCommand;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.UserPageRequest;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.UserInfo;
 import com.sunchaser.shushan.zhenyaojian.framework.util.SecurityUtils;
-import com.sunchaser.shushan.zhenyaojian.framework.util.Streams;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.RoleEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserEntity;
-import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserRoleEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -42,8 +37,6 @@ import java.util.Set;
 public class UserService extends ServiceImpl<UserMapper, UserEntity> implements IService<UserEntity> {
 
     private final RoleService roleService;
-
-    private final UserRoleService userRoleService;
 
     private final UserMapstruct userMapstruct;
 
@@ -67,26 +60,21 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
      * @param command {@link UserOpsCommand}
      * @return user ID {@link Long}
      */
-    @Transactional(rollbackFor = Exception.class)
     public Long createUser(UserOpsCommand command) {
         verifyAccountUniqueness(command);
         verifyPhoneNumberUniqueness(command);
         verifyEmailUniqueness(command);
-        verifyRoleExistence(command);
         UserEntity user = userMapstruct.convert(command);
         this.save(user);
-        Long userId = user.getId();
-        userRoleService.batchInsert(userId, command.getRoleIds());
-        return userId;
+        return user.getId();
     }
 
     /**
      * 校验角色存在性
      *
-     * @param command {@link UserOpsCommand}
+     * @param roleIds set of role id
      */
-    private void verifyRoleExistence(UserOpsCommand command) {
-        Set<Long> roleIds = command.getRoleIds();
+    public void verifyRoleIdsExistence(Set<Long> roleIds) {
         if (CollectionUtils.isEmpty(roleIds)) {
             return;
         }
@@ -94,6 +82,16 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
                 .in(RoleEntity::getId, roleIds);
         long count = roleService.count(wrapper);
         Preconditions.checkArgument(roleIds.size() == count, "分配的角色不存在");
+    }
+
+    /**
+     * 校验用户 ID 存在性
+     *
+     * @param userId user id {@link Long}
+     */
+    public void verifyUserIdExistence(Long userId) {
+        UserEntity exist = this.getById(userId);
+        Preconditions.checkArgument(Objects.nonNull(exist), "用户不存在");
     }
 
     /**
@@ -149,25 +147,12 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
      *
      * @param command {@link UserOpsCommand}
      */
-    @Transactional(rollbackFor = Exception.class)
     public void updateUser(UserOpsCommand command) {
         Long userId = command.getId();
         verifyOpsLegality(userId);
         verifyAccountUniqueness(command);
         verifyPhoneNumberUniqueness(command);
         verifyEmailUniqueness(command);
-        verifyRoleExistence(command);
-        Set<Long> newRoleIds = command.getRoleIds();
-        if (CollectionUtils.isNotEmpty(newRoleIds)) {
-            List<UserRoleEntity> oldUserRoles = userRoleService.listByUserId(userId);
-            Set<Long> oldRoleIds = Streams.mapToSet(oldUserRoles, UserRoleEntity::getRoleId);
-            // 待删除：旧角色列表相对于新角色列表的差集
-            Sets.SetView<Long> removeRoleIds = Sets.difference(oldRoleIds, newRoleIds);
-            // 待新增：新角色列表相对于旧角色列表的差集
-            Sets.SetView<Long> insertRoleIds = Sets.difference(newRoleIds, oldRoleIds);
-            userRoleService.removeByUserIdAndRoleIds(userId, removeRoleIds);
-            userRoleService.batchInsert(userId, insertRoleIds);
-        }
         UserEntity user = userMapstruct.convert(command);
         // 动态 SQL
         LambdaUpdateWrapper<UserEntity> wrapper = Wrappers.<UserEntity>lambdaUpdate()
@@ -211,11 +196,9 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
      *
      * @param id user id {@link Long}
      */
-    @Transactional(rollbackFor = Exception.class)
     public void deleteUser(Long id) {
         verifyOpsLegality(id);
         Preconditions.checkArgument(SecurityUtils.isNotLoginUser(id), "不允许操作当前登录账户");
-        userRoleService.removeByUserId(id);
         this.removeById(id);
     }
 }

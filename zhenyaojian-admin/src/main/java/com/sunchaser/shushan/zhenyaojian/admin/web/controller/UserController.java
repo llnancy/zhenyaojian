@@ -63,26 +63,26 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    @PreAuthorize("hasAuthority('system:user:create')")
+    @PreAuthorize("@ss.hasAuthority('system:user:create')")
     public SingleResponse<Long> createUser(@Validated @RequestBody UserOpsCommand request) {
         return SingleResponse.success(userService.createUser(request));
     }
 
     @PatchMapping("/user")
-    @PreAuthorize("hasAuthority('system:user:update')")
+    @PreAuthorize("@ss.hasAuthority('system:user:update')")
     public IResponse updateUser(@Validated @RequestBody UserOpsCommand request) {
         userService.updateUser(request);
         return IResponse.ofSuccess();
     }
 
     @GetMapping("/users")
-    @PreAuthorize("hasAuthority('system:user:list')")
+    @PreAuthorize("@ss.hasAuthority('system:user:list')")
     public MultiPageResponse<UserInfo> users(UserPageRequest request) {
         return userService.users(request);
     }
 
     @DeleteMapping("/user/{id}")
-    @PreAuthorize("hasAuthority('system:user:delete')")
+    @PreAuthorize("@ss.hasAuthority('system:user:delete')")
     public IResponse deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return IResponse.ofSuccess();

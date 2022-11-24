@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * role service
@@ -136,7 +137,7 @@ public class RoleService extends ServiceImpl<RoleMapper, RoleEntity> implements 
         this.removeById(id);
     }
 
-    public List<RoleEntity> queryRolesByRoleIds(List<Long> roleIds) {
+    public List<RoleEntity> listByRoleIds(Set<Long> roleIds) {
         if (CollectionUtils.isEmpty(roleIds)) {
             return Collections.emptyList();
         }

@@ -22,7 +22,6 @@ import com.sunchaser.shushan.zhenyaojian.framework.util.Streams;
 import com.sunchaser.shushan.zhenyaojian.framework.util.TreeBuilder;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.PermissionEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.RolePermissionEntity;
-import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserRoleEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.mapper.PermissionMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
@@ -30,8 +29,10 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.BiConsumer;
 
 /**
@@ -162,10 +163,10 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
                 .set(StringUtils.isNotBlank(command.getName()), PermissionEntity::getName, permission.getName())
                 .set(Objects.nonNull(command.getParentId()), PermissionEntity::getParentId, permission.getParentId())
                 .set(Objects.nonNull(command.getType()), PermissionEntity::getType, permission.getType())
-                .set(StringUtils.isNotBlank(command.getIcon()), PermissionEntity::getIcon, permission.getIcon())
-                .set(StringUtils.isNotBlank(command.getPath()), PermissionEntity::getPath, permission.getPath())
-                .set(StringUtils.isNotBlank(command.getComponent()), PermissionEntity::getComponent, permission.getComponent())
-                .set(StringUtils.isNotBlank(command.getPermission()), PermissionEntity::getPermission, permission.getPermission())
+                .set(Objects.nonNull(command.getIcon()), PermissionEntity::getIcon, permission.getIcon())
+                .set(Objects.nonNull(command.getPath()), PermissionEntity::getPath, permission.getPath())
+                .set(Objects.nonNull(command.getComponent()), PermissionEntity::getComponent, permission.getComponent())
+                .set(Objects.nonNull(command.getPermission()), PermissionEntity::getPermission, permission.getPermission())
                 .set(Objects.nonNull(command.getSortValue()), PermissionEntity::getSortValue, permission.getSortValue())
                 .set(Objects.nonNull(command.getStatus()), PermissionEntity::getStatus, permission.getStatus())
                 .eq(PermissionEntity::getId, id);
@@ -235,13 +236,14 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
     }
 
     /**
-     * 根据条件查询指定用户拥有的权限
+     * 根据条件查询当前登录用户拥有的权限
      *
      * @param condition query condition {@link LambdaQueryWrapper}
      * @return list of {@link PermissionEntity}
      */
     private List<PermissionEntity> queryCurrentUserPermissionsByCondition(LambdaQueryWrapper<PermissionEntity> condition) {
-        return queryPermissionsByUserIdAndCondition(SecurityUtils.getLoginUserId(), condition);
+        Long userId = SecurityUtils.getLoginUserId();
+        return queryPermissionsByUserIdAndRoleIdsAndCondition(userId, userRoleService.queryRoleIdsByUserId(userId), condition);
     }
 
     /**
@@ -250,31 +252,36 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
      * @param userId user id
      * @return list of {@link PermissionEntity}
      */
-    public List<PermissionEntity> queryNormalPermissionsByUserId(Long userId) {
+    public List<PermissionEntity> queryNormalPermissionsByUserIdAndRoleIds(Long userId, Set<Long> roleIds) {
         LambdaQueryWrapper<PermissionEntity> condition = Wrappers.<PermissionEntity>lambdaQuery()
                 .eq(PermissionEntity::getStatus, TableStatusFieldEnum.NORMAL.ordinal());
-        return queryPermissionsByUserIdAndCondition(userId, condition);
+        return queryPermissionsByUserIdAndRoleIdsAndCondition(userId, roleIds, condition);
     }
 
     /**
      * 根据条件查询指定用户所拥有的权限
      *
      * @param userId    user id
+     * @param roleIds   user's role id set
      * @param condition query condition {@link LambdaQueryWrapper}
      * @return list of {@link PermissionEntity}
      */
-    public List<PermissionEntity> queryPermissionsByUserIdAndCondition(Long userId, LambdaQueryWrapper<PermissionEntity> condition) {
+    public List<PermissionEntity> queryPermissionsByUserIdAndRoleIdsAndCondition(Long userId, Set<Long> roleIds, LambdaQueryWrapper<PermissionEntity> condition) {
+        boolean notSuperAdmin = SecurityUtils.isNotSuperAdmin(userId);
+        if (notSuperAdmin && CollectionUtils.isEmpty(roleIds)) {
+            return Collections.emptyList();
+        }
         condition = Optionals.of(condition, Wrappers.lambdaQuery());
-        if (SecurityUtils.isNotSuperAdmin(userId)) {
-            // userId -> roles
-            List<UserRoleEntity> userRoles = userRoleService.listByUserId(userId);
-            List<Long> roleIds = Streams.mapToList(userRoles, UserRoleEntity::getRoleId);
+        if (notSuperAdmin) {
             LambdaQueryWrapper<RolePermissionEntity> rpWrapper = Wrappers.<RolePermissionEntity>lambdaQuery()
-                    .in(CollectionUtils.isNotEmpty(roleIds), RolePermissionEntity::getRoleId, roleIds);
-            // roles -> permissions
+                    .in(RolePermissionEntity::getRoleId, roleIds);
+            // roleIds -> permissions
             List<RolePermissionEntity> rolePermissions = rolePermissionService.list(rpWrapper);
             List<Long> permissionIds = Streams.mapToList(rolePermissions, RolePermissionEntity::getPermissionId);
-            condition.in(CollectionUtils.isNotEmpty(permissionIds), PermissionEntity::getId, permissionIds);
+            if (CollectionUtils.isEmpty(permissionIds)) {
+                return Collections.emptyList();
+            }
+            condition.in(PermissionEntity::getId, permissionIds);
         }
         return this.list(condition);
     }
