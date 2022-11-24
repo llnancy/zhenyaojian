@@ -31,26 +31,26 @@ public class RoleController {
     private final RoleService roleService;
 
     @PostMapping("/role")
-    @PreAuthorize("hasAuthority('system:role:create')")
+    @PreAuthorize("@ss.hasAuthority('system:role:create')")
     public SingleResponse<Long> createRole(@Validated @RequestBody RoleOpsCommand command) {
         return SingleResponse.success(roleService.createRole(command));
     }
 
     @PatchMapping("/role")
-    @PreAuthorize("hasAuthority('system:role:update')")
+    @PreAuthorize("@ss.hasAuthority('system:role:update')")
     public IResponse updateRole(@Validated @RequestBody RoleOpsCommand command) {
         roleService.updateRole(command);
         return IResponse.ofSuccess();
     }
 
     @GetMapping("/roles")
-    @PreAuthorize("hasAuthority('system:role:list')")
+    @PreAuthorize("@ss.hasAuthority('system:role:list')")
     public MultiPageResponse<RoleItemInfo> roles(RolePageRequest request) {
         return roleService.roles(request);
     }
 
     @DeleteMapping("/role/{id}")
-    @PreAuthorize("hasAuthority('system:role:delete')")
+    @PreAuthorize("@ss.hasAuthority('system:role:delete')")
     public IResponse deleteRole(@PathVariable Long id) {
         roleService.deleteRole(id);
         return IResponse.ofSuccess();

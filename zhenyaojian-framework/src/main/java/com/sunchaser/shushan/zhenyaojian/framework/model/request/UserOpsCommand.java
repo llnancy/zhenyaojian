@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 /**
  * user ops command
@@ -26,11 +25,6 @@ public class UserOpsCommand {
      */
     @NotNull(message = "ID 不能为空", groups = {Update.class})
     private Long id;
-
-    /**
-     * 所属角色
-     */
-    private Set<Long> roleIds;
 
     /**
      * 用户账号
@@ -71,14 +65,4 @@ public class UserOpsCommand {
      * 用户状态
      */
     private Integer status;
-
-    /**
-     * 所属部门ID
-     */
-    private Long departmentId;
-
-    /**
-     * 所属岗位ID
-     */
-    private Long positionId;
 }

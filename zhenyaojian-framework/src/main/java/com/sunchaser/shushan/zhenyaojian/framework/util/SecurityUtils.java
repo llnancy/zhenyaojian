@@ -1,6 +1,5 @@
 package com.sunchaser.shushan.zhenyaojian.framework.util;
 
-import com.google.common.base.Preconditions;
 import com.sunchaser.shushan.zhenyaojian.framework.security.LoginUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,6 +36,10 @@ public final class SecurityUtils {
 
     public static boolean isNotLoginUser(Long userId) {
         return !isLoginUser(userId);
+    }
+
+    public static boolean isSuperAdmin(LoginUser loginUser) {
+        return isSuperAdmin(loginUser.getUserId());
     }
 
     public static boolean isSuperAdmin(Long id) {

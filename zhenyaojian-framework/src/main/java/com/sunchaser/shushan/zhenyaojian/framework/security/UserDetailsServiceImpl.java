@@ -12,9 +12,9 @@ import com.sunchaser.shushan.zhenyaojian.framework.util.Streams;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.PermissionEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.RoleEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserEntity;
-import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserRoleEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -36,6 +36,7 @@ import java.util.Set;
  */
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     public static final String DEFAULT_ROLE_PREFIX = "ROLE_";
@@ -60,14 +61,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         Preconditions.checkArgument(ObjectUtils.notEqual(TableStatusFieldEnum.FORBIDDEN.ordinal(), userEntity.getStatus()), "对不起，您的账号已被停用，请联系管理员");
         Long userId = userEntity.getId();
-        List<UserRoleEntity> userRoles = userRoleService.listByUserId(userId);
-        List<RoleEntity> roles = roleService.queryRolesByRoleIds(Streams.mapToList(userRoles, UserRoleEntity::getRoleId));
+        Set<Long> roleIds = userRoleService.queryRoleIdsByUserId(userId);
+        List<RoleEntity> roles = roleService.listByRoleIds(roleIds);
         Set<SimpleGrantedAuthority> roleAuthorities = Streams.filterAndMapToSet(
                 roles,
                 role -> StringUtils.isNotBlank(role.getCode()),
                 role -> new SimpleGrantedAuthority(DEFAULT_ROLE_PREFIX + role.getCode())
         );
-        List<PermissionEntity> permissions = permissionService.queryNormalPermissionsByUserId(userId);
+        List<PermissionEntity> permissions = permissionService.queryNormalPermissionsByUserIdAndRoleIds(userId, roleIds);
         Set<SimpleGrantedAuthority> permissionAuthorities = Streams.filterAndMapToSet(
                 permissions,
                 permission -> StringUtils.isNotBlank(permission.getPermission()),

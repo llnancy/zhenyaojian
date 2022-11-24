@@ -80,8 +80,11 @@ public class RolePermissionService extends ServiceImpl<RolePermissionMapper, Rol
      * @param permissionIds list of permissionId
      */
     private void removeByRoleIdAndPermissionIds(Long roleId, Set<Long> permissionIds) {
+        if (CollectionUtils.isEmpty(permissionIds)) {
+            return;
+        }
         LambdaQueryWrapper<RolePermissionEntity> wrapper = selectPermissionIdEqRoleIdWrapper(roleId)
-                .in(CollectionUtils.isNotEmpty(permissionIds), RolePermissionEntity::getPermissionId, permissionIds);
+                .in(RolePermissionEntity::getPermissionId, permissionIds);
         this.remove(wrapper);
     }
 

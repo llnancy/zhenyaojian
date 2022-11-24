@@ -34,13 +34,13 @@ public class PermissionController {
     private final PermissionService permissionService;
 
     @PostMapping("/permission")
-    @PreAuthorize("hasAuthority('system:permission:create')")
+    @PreAuthorize("@ss.hasAuthority('system:permission:create')")
     public SingleResponse<Long> createPermission(@Validated @RequestBody PermissionOpsCommand command) {
         return SingleResponse.success(permissionService.createPermission(command));
     }
 
     @PatchMapping("/permission")
-    @PreAuthorize("hasAuthority('system:permission:update')")
+    @PreAuthorize("@ss.hasAuthority('system:permission:update')")
     @MjLog
     public IResponse updatePermission(@Validated({Update.class}) @RequestBody PermissionOpsCommand command) {
         permissionService.updatePermission(command);
@@ -48,19 +48,19 @@ public class PermissionController {
     }
 
     @GetMapping("/permissions")
-    @PreAuthorize("hasAuthority('system:permission:list')")
+    @PreAuthorize("@ss.hasAuthority('system:permission:list')")
     public MultiResponse<PermissionDetailTreeNode> permissions(@RequestParam(required = false) String name) {
         return MultiResponse.success(permissionService.permissionDetailTreeList(name));
     }
 
     @GetMapping("/permissions/tree")
-    @PreAuthorize("hasAuthority('system:permission:list')")
+    @PreAuthorize("@ss.hasAuthority('system:permission:list')")
     public MultiResponse<PermissionTreeNode> permissionsTree(@RequestParam String filter) {
         return MultiResponse.success(permissionService.permissionsTree(filter));
     }
 
     @DeleteMapping("/permission/{id}")
-    @PreAuthorize("hasAuthority('system:permission:delete')")
+    @PreAuthorize("@ss.hasAuthority('system:permission:delete')")
     public IResponse deletePermission(@PathVariable Long id) {
         permissionService.deletePermission(id);
         return IResponse.ofSuccess();

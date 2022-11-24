@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Sets;
+import com.sunchaser.shushan.zhenyaojian.framework.model.request.AssignUserRoleRequest;
 import com.sunchaser.shushan.zhenyaojian.framework.util.Streams;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserRoleEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.mapper.UserRoleMapper;
@@ -27,6 +29,8 @@ import java.util.Set;
 @Slf4j
 public class UserRoleService extends ServiceImpl<UserRoleMapper, UserRoleEntity> implements IService<UserRoleEntity> {
 
+    private final UserService userService;
+
     public void batchInsert(Long userId, Set<Long> roleIds) {
         if (CollectionUtils.isEmpty(roleIds)) {
             return;
@@ -42,20 +46,40 @@ public class UserRoleService extends ServiceImpl<UserRoleMapper, UserRoleEntity>
     }
 
     public List<UserRoleEntity> listByUserId(Long userId) {
-        return this.list(eqUserIdWrapper(userId));
-    }
-
-    public void removeByUserId(Long userId) {
-        this.remove(eqUserIdWrapper(userId));
+        return this.list(selectRoleIdEqUserIdWrapper(userId));
     }
 
     public void removeByUserIdAndRoleIds(Long userId, Set<Long> roleIds) {
-        LambdaQueryWrapper<UserRoleEntity> wrapper = eqUserIdWrapper(userId).in(UserRoleEntity::getRoleId, roleIds);
+        if (CollectionUtils.isEmpty(roleIds)) {
+            return;
+        }
+        LambdaQueryWrapper<UserRoleEntity> wrapper = selectRoleIdEqUserIdWrapper(userId)
+                .in(UserRoleEntity::getRoleId, roleIds);
         this.remove(wrapper);
     }
 
-    private LambdaQueryWrapper<UserRoleEntity> eqUserIdWrapper(Long userId) {
+    private LambdaQueryWrapper<UserRoleEntity> selectRoleIdEqUserIdWrapper(Long userId) {
         return Wrappers.<UserRoleEntity>lambdaQuery()
+                .select(UserRoleEntity::getRoleId)
                 .eq(Objects.nonNull(userId), UserRoleEntity::getUserId, userId);
+    }
+
+    public void assignUserRole(AssignUserRoleRequest request) {
+        Long userId = request.getUserId();
+        userService.verifyUserIdExistence(userId);
+        Set<Long> newRoleIds = request.getRoleIds();
+        userService.verifyRoleIdsExistence(newRoleIds);
+        Set<Long> oldRoleIds = queryRoleIdsByUserId(userId);
+        if (CollectionUtils.isNotEmpty(oldRoleIds)) {
+            Sets.SetView<Long> removeRoleIds = Sets.difference(oldRoleIds, newRoleIds);
+            newRoleIds = Sets.difference(newRoleIds, oldRoleIds);
+            removeByUserIdAndRoleIds(userId, removeRoleIds);
+        }
+        batchInsert(userId, newRoleIds);
+    }
+
+    public Set<Long> queryRoleIdsByUserId(Long userId) {
+        List<UserRoleEntity> list = listByUserId(userId);
+        return Streams.mapToSet(list, UserRoleEntity::getRoleId);
     }
 }

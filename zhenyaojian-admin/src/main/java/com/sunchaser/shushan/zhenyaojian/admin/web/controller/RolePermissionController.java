@@ -26,14 +26,14 @@ public class RolePermissionController {
     private final RolePermissionService rolePermissionService;
 
     @PostMapping("/role/permission")
-    @PreAuthorize("hasAuthority('system:role-permission:assign')")
+    @PreAuthorize("@ss.hasAuthority('system:role-permission:assign')")
     public IResponse assignRolePermission(@Validated @RequestBody AssignRolePermissionRequest request) {
         rolePermissionService.assignRolePermission(request);
         return IResponse.ofSuccess();
     }
 
     @GetMapping("/role/{roleId}/permission")
-    @PreAuthorize("hasAuthority('system:role-permission:assign')")
+    @PreAuthorize("@ss.hasAuthority('system:role-permission:assign')")
     public MultiResponse<Long> rolePermissions(@PathVariable Long roleId) {
         return MultiResponse.success(rolePermissionService.queryPermissionIdsByRoleId(roleId));
     }
