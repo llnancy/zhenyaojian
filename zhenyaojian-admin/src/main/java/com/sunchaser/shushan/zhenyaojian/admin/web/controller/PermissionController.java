@@ -6,8 +6,8 @@ import com.sunchaser.shushan.mojian.base.entity.response.SingleResponse;
 import com.sunchaser.shushan.mojian.log.annotation.MjLog;
 import com.sunchaser.shushan.mojian.web.validation.groups.Update;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.PermissionOpsCommand;
+import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionBaseTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionDetailTreeNode;
-import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.service.PermissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -55,7 +55,7 @@ public class PermissionController {
 
     @GetMapping("/permissions/tree")
     @PreAuthorize("@ss.hasAuthority('system:permission:list')")
-    public MultiResponse<PermissionTreeNode> permissionsTree(@RequestParam String filter) {
+    public MultiResponse<PermissionBaseTreeNode> permissionsTree(@RequestParam String filter) {
         return MultiResponse.success(permissionService.permissionsTree(filter));
     }
 

@@ -5,7 +5,7 @@ import com.sunchaser.shushan.mojian.base.entity.response.MultiPageResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.SingleResponse;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.RoleOpsCommand;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.RolePageRequest;
-import com.sunchaser.shushan.zhenyaojian.framework.model.response.RoleItemInfo;
+import com.sunchaser.shushan.zhenyaojian.framework.model.response.RoleInfoResponse;
 import com.sunchaser.shushan.zhenyaojian.framework.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,7 +45,7 @@ public class RoleController {
 
     @GetMapping("/roles")
     @PreAuthorize("@ss.hasAuthority('system:role:list')")
-    public MultiPageResponse<RoleItemInfo> roles(RolePageRequest request) {
+    public MultiPageResponse<RoleInfoResponse> roles(RolePageRequest request) {
         return roleService.roles(request);
     }
 
