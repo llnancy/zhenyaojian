@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Elements;
 
 /**
  * JwtProvider configuration
@@ -19,12 +18,13 @@ import org.springframework.security.config.Elements;
  */
 @Configuration
 @EnableConfigurationProperties({JwtProperties.class})
-@ConditionalOnProperty(prefix = Elements.JWT, value = "enabled", matchIfMissing = true)
+@ConditionalOnProperty(prefix = JwtProperties.ZYJ_JWT, value = "enabled", matchIfMissing = true)
 public class JwtProviderAutoConfiguration {
 
-    // jwt.sign-type 只能用短横线，不能用驼峰
-
-    public static final String JWT_SIGN_TYPE = "jwt.sign-type";
+    /**
+     * zyj.jwt.sign-type 中只能用短横线，不能用驼峰
+     */
+    public static final String JWT_SIGN_TYPE = JwtProperties.ZYJ_JWT + ".sign-type";
 
     @Bean
     @ConditionalOnProperty(name = JWT_SIGN_TYPE, havingValue = "NONE")
