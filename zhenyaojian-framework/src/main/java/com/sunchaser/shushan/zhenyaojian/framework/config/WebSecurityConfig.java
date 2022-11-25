@@ -1,17 +1,21 @@
 package com.sunchaser.shushan.zhenyaojian.framework.config;
 
 import com.sunchaser.shushan.zhenyaojian.framework.security.filter.JwtAuthenticationFilter;
+import de.codecentric.boot.admin.server.config.AdminServerProperties;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -25,7 +29,7 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 
     public static final String LOGIN_SERVLET_PATH = "/auth/login";
 
@@ -41,10 +45,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final LogoutSuccessHandler logoutSuccessHandler;
 
+    private final AdminServerProperties adminServerProperties;
+
     @Bean
-    @Override
-    protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
@@ -52,8 +57,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return B_CRYPT_PASSWORD_ENCODER;
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // Disable CSRF (cross site request forgery)
         http.csrf().disable();
         // Disable Frame
@@ -65,9 +70,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // No session will be created or used by spring security
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+        String contextPath = adminServerProperties.getContextPath();
         http.authorizeRequests()
                 // The pattern does not contain the servlet context-path, see AntPathRequestMatcher.matcher method.
                 .antMatchers(LOGIN_SERVLET_PATH)
+                .permitAll()
+                // Spring Boot Admin Server 的安全配置
+                .antMatchers(contextPath, contextPath + "/**")
+                .permitAll()
+                .requestMatchers(EndpointRequest.toAnyEndpoint())
+                .permitAll()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                 .permitAll()
                 // Disallow everything else..
                 .anyRequest()
@@ -84,5 +97,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Add JwtAuthenticationFilter
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
 }
