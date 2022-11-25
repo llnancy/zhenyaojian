@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import static org.springframework.security.config.Elements.JWT;
-
 /**
  * jwt properties
  *
@@ -14,8 +12,10 @@ import static org.springframework.security.config.Elements.JWT;
  */
 @Getter
 @Setter
-@ConfigurationProperties(prefix = JWT)
+@ConfigurationProperties(prefix = JwtProperties.ZYJ_JWT)
 public class JwtProperties {
+
+    public static final String ZYJ_JWT = ZyjFrameworkProperties.ZYJ + ".jwt";
 
     /**
      * jwt 过期时间
