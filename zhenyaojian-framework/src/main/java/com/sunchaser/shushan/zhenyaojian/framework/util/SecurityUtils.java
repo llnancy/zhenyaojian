@@ -1,6 +1,7 @@
 package com.sunchaser.shushan.zhenyaojian.framework.util;
 
 import com.sunchaser.shushan.zhenyaojian.framework.security.LoginUser;
+import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -20,6 +21,10 @@ public final class SecurityUtils {
     public static LoginUser getLoginUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (LoginUser) authentication.getPrincipal();
+    }
+
+    public static UserEntity getLoginUserEntity() {
+        return getLoginUser().getUserEntity();
     }
 
     public static String getLoginUsername() {
