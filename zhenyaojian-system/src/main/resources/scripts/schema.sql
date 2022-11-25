@@ -82,7 +82,7 @@ DROP TABLE if EXISTS `zyj_permission`;
 CREATE TABLE `sunchaser_zyj`.`zyj_permission`
 (
     `id`          bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
-    `name`        varchar(12)  NOT NULL COMMENT '权限名称',
+    `name`        varchar(32)  NOT NULL COMMENT '权限名称',
     `parent_id`   bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '父级权限ID',
     `type`        tinyint(1) UNSIGNED NOT NULL COMMENT '权限类型（0：目录；1：菜单；2：按钮）',
     `icon`        varchar(128) NOT NULL DEFAULT '' COMMENT '权限图标',
