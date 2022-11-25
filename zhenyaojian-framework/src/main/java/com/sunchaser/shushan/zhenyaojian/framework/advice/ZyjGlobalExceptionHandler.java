@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ZyjGlobalExceptionHandler extends MjDefaultGlobalExceptionHandler {
 
     /**
-     * 将异常 {@link AccessDeniedException} 向外抛出，转交给 {@link ZyjAccessDeniedHandler} 进行处理。
+     * 将捕获到的 {@link AccessDeniedException} 异常继续向外抛出，转交给 {@link ZyjAccessDeniedHandler} 进行处理。
      *
      * @param ade {@link AccessDeniedException}
      */
@@ -28,7 +28,7 @@ public class ZyjGlobalExceptionHandler extends MjDefaultGlobalExceptionHandler {
     }
 
     /**
-     * 将异常 {@link AuthenticationException} 向外抛出，转交给 {@link ZyjAuthenticationEntryPoint} 进行处理。
+     * 将捕获到的 {@link AuthenticationException} 异常继续向外抛出，转交给 {@link ZyjAuthenticationEntryPoint} 进行处理。
      *
      * @param ae {@link AuthenticationException}
      */
