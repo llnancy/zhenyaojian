@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  * @since JDK8 2022/11/20
  */
 @Data
-public class RoleItemInfo {
+public class RoleInfoResponse {
 
     /**
      * 角色 ID

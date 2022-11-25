@@ -65,4 +65,17 @@ public class UserOpsCommand {
      * 用户状态
      */
     private Integer status;
+
+    /**
+     * 操作类型枚举
+     */
+    private UserOpsTypeEnum userOpsType;
+
+    public enum UserOpsTypeEnum {
+
+        /**
+         * 重置密码操作
+         */
+        RESET_PASSWORD
+    }
 }
