@@ -5,11 +5,8 @@ server:
 spring:
   application:
     name: shushan-zhenyaojian
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/sunchaser_zyj?useUnicode=true&characterEncoding=UTF-8&useSSL=false
-    username: root
-    password: 123456
+  profiles:
+    active: dev
   mvc:
     hiddenmethod:
       filter:
@@ -17,15 +14,22 @@ spring:
   jackson:
     deserialization:
       fail-on-unknown-properties: false
-
-# 打印执行 sql，生产环境关闭
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
-# JWT 配置
-jwt:
-  sign-type: public_private_key
-  secret: K7S8Kri2kAdzFOTTz1Emf8bVN/L+Gku4i9CqMVs7+j8=
-  public-key-location: public.key
-  private-key-location: private.key
+  boot:
+    admin:
+      context-path: /observe/server
+      client:
+        url: http://localhost:8081/zyj/admin/observe/server
+zyj:
+  # 重置用户密码时的默认密码
+  default-password: SunChaser666
+  # JWT 配置
+  jwt:
+    sign-type: public_private_key
+    secret: K7S8Kri2kAdzFOTTz1Emf8bVN/L+Gku4i9CqMVs7+j8=
+    public-key-location: public.key
+    private-key-location: private.key
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
