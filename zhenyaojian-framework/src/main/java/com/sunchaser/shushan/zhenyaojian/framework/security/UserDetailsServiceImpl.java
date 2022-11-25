@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
-import com.sunchaser.shushan.zhenyaojian.framework.enums.TableStatusFieldEnum;
+import com.sunchaser.shushan.mojian.base.enums.TableStatusFieldEnum;
 import com.sunchaser.shushan.zhenyaojian.framework.service.PermissionService;
 import com.sunchaser.shushan.zhenyaojian.framework.service.RoleService;
 import com.sunchaser.shushan.zhenyaojian.framework.service.UserRoleService;
