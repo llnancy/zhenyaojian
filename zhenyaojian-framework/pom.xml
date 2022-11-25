@@ -78,11 +78,11 @@
             <groupId>com.sunchaser.shushan</groupId>
             <artifactId>zhenyaojian-system</artifactId>
         </dependency>
-        <!-- cn.hutool/hutool-all -->
+        <!-- cn.hutool/hutool-core -->
         <dependency>
             <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>5.8.9</version>
+            <artifactId>hutool-core</artifactId>
+            <version>5.8.10</version>
         </dependency>
         <!-- com.google.guava/guava -->
         <dependency>
@@ -144,6 +144,18 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok-mapstruct-binding</artifactId>
             <version>0.2.0</version>
+        </dependency>
+        <!-- de.codecentric/spring-boot-admin-starter-server -->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-server</artifactId>
+            <version>2.7.7</version>
+        </dependency>
+        <!-- de.codecentric/spring-boot-admin-starter-client -->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>2.7.7</version>
         </dependency>
     </dependencies>
 </project>
