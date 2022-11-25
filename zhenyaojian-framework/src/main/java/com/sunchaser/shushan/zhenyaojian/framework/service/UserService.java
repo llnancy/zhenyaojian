@@ -8,11 +8,14 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.base.Preconditions;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiPageResponse;
+import com.sunchaser.shushan.mojian.base.util.Optionals;
 import com.sunchaser.shushan.zhenyaojian.framework.config.WebSecurityConfig;
+import com.sunchaser.shushan.zhenyaojian.framework.config.property.ZyjFrameworkProperties;
 import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.UserMapstruct;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.UserOpsCommand;
+import com.sunchaser.shushan.zhenyaojian.framework.model.request.UserOpsCommand.UserOpsTypeEnum;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.UserPageRequest;
-import com.sunchaser.shushan.zhenyaojian.framework.model.response.UserInfo;
+import com.sunchaser.shushan.zhenyaojian.framework.model.response.UserInfoResponse;
 import com.sunchaser.shushan.zhenyaojian.framework.util.SecurityUtils;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.RoleEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserEntity;
@@ -21,6 +24,12 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -34,11 +43,32 @@ import java.util.Set;
  */
 @Service
 @RequiredArgsConstructor
-public class UserService extends ServiceImpl<UserMapper, UserEntity> implements IService<UserEntity> {
+public class UserService extends ServiceImpl<UserMapper, UserEntity> implements IService<UserEntity>, ApplicationContextAware, InitializingBean {
+
+    private static String DEFAULT_PASSWORD;
+
+    private ApplicationContext applicationContext;
 
     private final RoleService roleService;
 
     private final UserMapstruct userMapstruct;
+
+    private static ZyjFrameworkProperties zyjFrameworkProperties;
+
+    @Autowired
+    public void setZyjFrameworkProperties(ZyjFrameworkProperties zyjFrameworkProperties) {
+        UserService.zyjFrameworkProperties = zyjFrameworkProperties;
+    }
+
+    @Override
+    public void setApplicationContext(@NotNull ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        DEFAULT_PASSWORD = applicationContext.getId();
+    }
 
     /**
      * 提供给 {@link UserMapstruct} 转换器使用的密码加密静态方法。
@@ -47,7 +77,10 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
      * @param password 明文密码
      * @return 密文
      */
-    public static String encryptPassword(String password) {
+    public static String encryptPassword(String password, UserOpsTypeEnum userOpsType) {
+        if (userOpsType == UserOpsTypeEnum.RESET_PASSWORD) {
+            password = Optionals.of(zyjFrameworkProperties.getDefaultPassword(), DEFAULT_PASSWORD);
+        }
         if (StringUtils.isBlank(password)) {
             return password;
         }
@@ -156,7 +189,7 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
         UserEntity user = userMapstruct.convert(command);
         // 动态 SQL
         LambdaUpdateWrapper<UserEntity> wrapper = Wrappers.<UserEntity>lambdaUpdate()
-                .set(StringUtils.isNotBlank(command.getPassword()), UserEntity::getPassword, user.getPassword())
+                .set(StringUtils.isNotBlank(user.getPassword()), UserEntity::getPassword, user.getPassword())
                 .set(StringUtils.isNotBlank(command.getNickName()), UserEntity::getNickName, user.getNickName())
                 .set(StringUtils.isNotBlank(command.getAvatar()), UserEntity::getAvatar, user.getAvatar())
                 .set(StringUtils.isNotBlank(command.getSex()), UserEntity::getSex, user.getSex())
@@ -180,15 +213,15 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
      * Paging query users.
      *
      * @param request {@link UserPageRequest}
-     * @return paging data of {@link UserInfo}
+     * @return paging data of {@link UserInfoResponse}
      */
-    public MultiPageResponse<UserInfo> users(UserPageRequest request) {
+    public MultiPageResponse<UserInfoResponse> users(UserPageRequest request) {
         String account = request.getAccount();
         LambdaQueryWrapper<UserEntity> wrapper = Wrappers.<UserEntity>lambdaQuery()
                 .likeRight(StringUtils.isNotBlank(account), UserEntity::getAccount, account);
         Page<UserEntity> page = new Page<>(request.getPageNo(), request.getPageSize());
         Page<UserEntity> list = this.getBaseMapper().selectPage(page, wrapper);
-        return MultiPageResponse.success(list, userMapstruct::convertToUserInfo);
+        return MultiPageResponse.success(list, userMapstruct::convert);
     }
 
     /**

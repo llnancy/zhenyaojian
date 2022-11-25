@@ -9,14 +9,14 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.google.common.base.Preconditions;
+import com.sunchaser.shushan.mojian.base.enums.TableStatusFieldEnum;
 import com.sunchaser.shushan.mojian.base.util.Optionals;
 import com.sunchaser.shushan.zhenyaojian.framework.enums.PermissionTypeEnum;
-import com.sunchaser.shushan.zhenyaojian.framework.enums.TableStatusFieldEnum;
 import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.PermissionMapstruct;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.PermissionOpsCommand;
-import com.sunchaser.shushan.zhenyaojian.framework.model.response.MenuTreeNode;
+import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionBaseTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionDetailTreeNode;
-import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionTreeNode;
+import com.sunchaser.shushan.zhenyaojian.framework.model.response.RouterTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.util.SecurityUtils;
 import com.sunchaser.shushan.zhenyaojian.framework.util.Streams;
 import com.sunchaser.shushan.zhenyaojian.framework.util.TreeBuilder;
@@ -51,12 +51,12 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
 
     private final PermissionMapstruct permissionMapstruct;
 
-    private static final BiConsumer<MenuTreeNode, List<MenuTreeNode>> MENU_TREE_BI_CONSUMER = (root, children) -> {
+    private static final BiConsumer<RouterTreeNode, List<RouterTreeNode>> MENU_TREE_BI_CONSUMER = (root, children) -> {
         if (CollectionUtils.isEmpty(children)) {
             return;
         }
         if (PermissionTypeEnum.isCatalog(root.getType())) {
-            MenuTreeNode first = children.get(0);
+            RouterTreeNode first = children.get(0);
             root.setRedirect(first.getPath());
         }
     };
@@ -64,12 +64,12 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
     /**
      * build menu tree node
      *
-     * @return list of {@link MenuTreeNode}
+     * @return list of {@link RouterTreeNode}
      */
-    public List<MenuTreeNode> menuInfo() {
+    public List<RouterTreeNode> routerInfo() {
         return TreeBuilder.build(
                 queryCurrentUserPermissions(),
-                permissionMapstruct::convertToMenuTreeNode,
+                permissionMapstruct::convertToRouterTreeNode,
                 MENU_TREE_BI_CONSUMER
         );
     }
@@ -196,12 +196,12 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
      * 且不能选择已隐藏的菜单
      *
      * @param filter 过滤条件
-     * @return list of {@link PermissionTreeNode}
+     * @return list of {@link PermissionBaseTreeNode}
      */
-    public List<PermissionTreeNode> permissionsTree(String filter) {
+    public List<PermissionBaseTreeNode> permissionsTree(String filter) {
         return TreeBuilder.build(
                 queryCurrentUserPermissions(),
-                permissionMapstruct::convertToPermissionTreeNode,
+                permissionMapstruct::convertToPermissionBaseTreeNode,
                 (root, children) -> PermissionFilterEnum.valueOf(filter).filter(root)
         );
     }
@@ -301,7 +301,7 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
          */
         FILTER_CATALOG() {
             @Override
-            void filter(PermissionTreeNode treeNode) {
+            void filter(PermissionBaseTreeNode treeNode) {
                 if (PermissionTypeEnum.isNotCatalog(treeNode.getType())) {
                     treeNode.setDisabled(Boolean.TRUE);
                 }
@@ -313,7 +313,7 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
          */
         FILTER_MENU() {
             @Override
-            void filter(PermissionTreeNode treeNode) {
+            void filter(PermissionBaseTreeNode treeNode) {
                 if (PermissionTypeEnum.isNotMenu(treeNode.getType())) {
                     treeNode.setDisabled(Boolean.TRUE);
                 }
@@ -323,9 +323,9 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
         /**
          * filter strategy
          *
-         * @param treeNode {@link PermissionTreeNode}
+         * @param treeNode {@link PermissionBaseTreeNode}
          */
-        void filter(PermissionTreeNode treeNode) {
+        void filter(PermissionBaseTreeNode treeNode) {
         }
     }
 }

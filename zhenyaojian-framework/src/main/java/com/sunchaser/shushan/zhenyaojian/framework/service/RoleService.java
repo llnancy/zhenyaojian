@@ -11,7 +11,7 @@ import com.sunchaser.shushan.mojian.base.entity.response.MultiPageResponse;
 import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.RoleMapstruct;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.RoleOpsCommand;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.RolePageRequest;
-import com.sunchaser.shushan.zhenyaojian.framework.model.response.RoleItemInfo;
+import com.sunchaser.shushan.zhenyaojian.framework.model.response.RoleInfoResponse;
 import com.sunchaser.shushan.zhenyaojian.framework.util.SecurityUtils;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.RoleEntity;
 import com.sunchaser.shushan.zhenyaojian.system.repository.mapper.RoleMapper;
@@ -115,9 +115,9 @@ public class RoleService extends ServiceImpl<RoleMapper, RoleEntity> implements 
      * Paging query roles.
      *
      * @param request {@link RolePageRequest}
-     * @return paging data of {@link RoleItemInfo}
+     * @return paging data of {@link RoleInfoResponse}
      */
-    public MultiPageResponse<RoleItemInfo> roles(RolePageRequest request) {
+    public MultiPageResponse<RoleInfoResponse> roles(RolePageRequest request) {
         String name = request.getName();
         LambdaQueryWrapper<RoleEntity> wrapper = Wrappers.<RoleEntity>lambdaQuery()
                 .likeRight(StringUtils.isNotBlank(name), RoleEntity::getName, name)
