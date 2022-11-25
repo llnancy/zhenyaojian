@@ -14,7 +14,7 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class PermissionTreeNode extends TreeNode {
+public class PermissionBaseTreeNode extends TreeNode {
 
     @JsonIgnore
     private Integer type;

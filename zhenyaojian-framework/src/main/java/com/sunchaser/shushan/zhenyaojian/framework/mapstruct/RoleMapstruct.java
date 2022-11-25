@@ -1,7 +1,7 @@
 package com.sunchaser.shushan.zhenyaojian.framework.mapstruct;
 
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.RoleOpsCommand;
-import com.sunchaser.shushan.zhenyaojian.framework.model.response.RoleItemInfo;
+import com.sunchaser.shushan.zhenyaojian.framework.model.response.RoleInfoResponse;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.RoleEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
@@ -24,10 +24,10 @@ public interface RoleMapstruct {
     RoleEntity convert(RoleOpsCommand command);
 
     /**
-     * convert {@link RoleEntity} to {@link RoleItemInfo}
+     * convert {@link RoleEntity} to {@link RoleInfoResponse}
      *
      * @param roleEntity {@link RoleEntity}
-     * @return {@link RoleItemInfo}
+     * @return {@link RoleInfoResponse}
      */
-    RoleItemInfo convert(RoleEntity roleEntity);
+    RoleInfoResponse convert(RoleEntity roleEntity);
 }

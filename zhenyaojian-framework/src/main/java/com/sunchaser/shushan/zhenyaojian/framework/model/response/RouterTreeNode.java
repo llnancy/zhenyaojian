@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- * menu tree node
+ * router tree node
  *
  * @author sunchaser admin@lilu.org.cn
  * @since JDK8 2022/11/9
@@ -14,7 +14,7 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class MenuTreeNode extends TreeNode {
+public class RouterTreeNode extends TreeNode {
 
     @JsonIgnore
     private Integer type;

@@ -7,7 +7,7 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 
 /**
- * permission detail tree node
+ * permission detail info tree node
  *
  * @author sunchaser admin@lilu.org.cn
  * @since JDK8 2022/11/11

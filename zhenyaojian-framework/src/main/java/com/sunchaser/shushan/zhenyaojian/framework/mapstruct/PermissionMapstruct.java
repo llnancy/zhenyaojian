@@ -1,9 +1,9 @@
 package com.sunchaser.shushan.zhenyaojian.framework.mapstruct;
 
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.PermissionOpsCommand;
-import com.sunchaser.shushan.zhenyaojian.framework.model.response.MenuTreeNode;
+import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionBaseTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionDetailTreeNode;
-import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionTreeNode;
+import com.sunchaser.shushan.zhenyaojian.framework.model.response.RouterTreeNode;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.PermissionEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -27,23 +27,23 @@ public interface PermissionMapstruct {
     PermissionEntity convert(PermissionOpsCommand command);
 
     /**
-     * convert {@link PermissionEntity} to {@link MenuTreeNode}
+     * convert {@link PermissionEntity} to {@link RouterTreeNode}
      *
      * @param permissionEntity {@link PermissionEntity}
-     * @return {@link MenuTreeNode}
+     * @return {@link RouterTreeNode}
      */
     @Mapping(source = "name", target = "meta.title")
     @Mapping(source = "icon", target = "meta.icon")
     @Mapping(source = "permission", target = "meta.permission")
-    MenuTreeNode convertToMenuTreeNode(PermissionEntity permissionEntity);
+    RouterTreeNode convertToRouterTreeNode(PermissionEntity permissionEntity);
 
     /**
-     * convert {@link PermissionEntity} to {@link PermissionTreeNode}
+     * convert {@link PermissionEntity} to {@link PermissionBaseTreeNode}
      *
      * @param permissionEntity {@link PermissionEntity}
-     * @return {@link PermissionTreeNode}
+     * @return {@link PermissionBaseTreeNode}
      */
-    PermissionTreeNode convertToPermissionTreeNode(PermissionEntity permissionEntity);
+    PermissionBaseTreeNode convertToPermissionBaseTreeNode(PermissionEntity permissionEntity);
 
     /**
      * convert {@link PermissionEntity} to {@link PermissionDetailTreeNode}

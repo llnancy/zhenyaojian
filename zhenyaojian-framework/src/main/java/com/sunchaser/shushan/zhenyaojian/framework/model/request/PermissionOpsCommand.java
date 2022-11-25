@@ -33,7 +33,7 @@ public class PermissionOpsCommand {
      * 权限名称
      */
     @NotBlank(message = "权限名称不能为空")
-    @Length(max = 12, message = "权限名称不能超过 12 个字符")
+    @Length(max = 32, message = "权限名称不能超过 32 个字符")
     private String name;
 
     /**

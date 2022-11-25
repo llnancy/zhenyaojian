@@ -1,7 +1,6 @@
 package com.sunchaser.shushan.zhenyaojian.framework.mapstruct;
 
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.UserOpsCommand;
-import com.sunchaser.shushan.zhenyaojian.framework.model.response.UserInfo;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.UserInfoResponse;
 import com.sunchaser.shushan.zhenyaojian.framework.service.UserService;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserEntity;
@@ -21,13 +20,13 @@ public interface UserMapstruct {
 
     /**
      * convert {@link UserOpsCommand} to {@link UserEntity}.
-     * The expression attribute indicates a call to {@link UserService#encryptPassword(String)} static method
+     * The expression attribute indicates a call to {@link UserService#encryptPassword(String, UserOpsCommand.UserOpsTypeEnum)} static method
      * that is placed outside the class
      *
      * @param command {@link UserOpsCommand}
      * @return {@link UserEntity}
      */
-    @Mapping(target = "password", expression = "java(UserService.encryptPassword(command.getPassword()))")
+    @Mapping(target = "password", expression = "java(UserService.encryptPassword(command.getPassword(), command.getUserOpsType()))")
     @Mapping(target = "nickName", defaultExpression = "java(StringUtils.EMPTY)")
     @Mapping(target = "avatar", defaultExpression = "java(java.lang.String.format(\"https://images.nowcoder.com/head/%dt.png\", java.util.concurrent.ThreadLocalRandom.current().nextInt(1000)))")
     UserEntity convert(UserOpsCommand command);
@@ -39,12 +38,4 @@ public interface UserMapstruct {
      * @return {@link UserInfoResponse}
      */
     UserInfoResponse convert(UserEntity userEntity);
-
-    /**
-     * convert {@link UserEntity} to {@link UserInfo}
-     *
-     * @param userEntity {@link UserEntity}
-     * @return {@link UserInfo}
-     */
-    UserInfo convertToUserInfo(UserEntity userEntity);
 }

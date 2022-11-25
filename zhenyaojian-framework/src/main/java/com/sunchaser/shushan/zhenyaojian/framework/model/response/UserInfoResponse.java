@@ -1,23 +1,22 @@
 package com.sunchaser.shushan.zhenyaojian.framework.model.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 /**
- * user info response
+ * user info
  *
  * @author sunchaser admin@lilu.org.cn
- * @since JDK8 2022/11/5
+ * @since JDK8 2022/11/17
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class UserInfoResponse {
+
+    /**
+     * 主键ID
+     */
+    private Long id;
 
     /**
      * 用户账号
@@ -55,12 +54,7 @@ public class UserInfoResponse {
     private Integer status;
 
     /**
-     * 创建时间
+     * 更新时间
      */
-    private LocalDateTime createTime;
-
-    /**
-     * 角色信息
-     */
-    private RoleInfo roleInfo;
+    private LocalDateTime updateTime;
 }
