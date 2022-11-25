@@ -1,7 +1,9 @@
 package com.sunchaser.shushan.zhenyaojian.framework.security.handler;
 
+import com.google.common.net.MediaType;
+import com.sunchaser.shushan.mojian.base.enums.ResponseEnum;
 import com.sunchaser.shushan.mojian.base.util.JsonUtils;
-import com.sunchaser.shushan.zhenyaojian.framework.enums.ResponseEnum;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -23,8 +25,7 @@ public class ZyjLogoutSuccessHandler implements LogoutSuccessHandler {
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-
-        response.setHeader("Content-type", "application/json;charset=UTF-8");
+        response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8.toString());
         response.setStatus(HttpStatus.OK.value());
         response.getWriter().write(JsonUtils.toJsonString(ResponseEnum.LOGOUT_SUCCESS.toResponse()));
     }
