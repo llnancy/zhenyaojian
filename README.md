@@ -110,9 +110,9 @@ sunchaser-zhenyaojian
 
 # 环境要求
 
-- `JDK8+`
-- `MySQL5.7+`
-- `Maven3.6+`
+- JDK8+
+- MySQL5.7+
+- Maven3.6+
 
 # 项目演示
 
