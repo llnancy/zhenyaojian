@@ -16,8 +16,8 @@
 
 # 概述
 
-`sunchaser-zhenyaojian` 是一个基于 `RBAC` 模型的轻量级权限管理系统，使用 `Spring Boot`、`Spring Security`
-和 `MyBatis-Plus` 构建，其核心设计目标是开发迅速、学习简单、轻量级、易扩展。
+`sunchaser-zhenyaojian` 是一个轻量级权限管理系统，基于 `Spring Boot`、`Spring Security` 和 `MyBatis-Plus`
+构建，其核心设计目标是开发迅速、学习简单、轻量级、易扩展。
 
 # 特性
 
@@ -28,11 +28,11 @@
 - 容器化：提供 `Docker`
   镜像，并实时更新推送 [`dockerhub`](https://hub.docker.com/repository/docker/sunchaserlilu/sunchaser-zhenyaojian)
   ，可一键进行容器化部署。
-- 可观测性：集成 `Spring Boot Admin` 轻松观测当前应用。
+- 可观测性：集成 `Spring Boot Admin` 观测当前应用。
 
 # 系统功能
 
-基于 `RBAC` 模型实现了权限管理的核心功能，包含用户管理、角色管理及菜单管理。具体功能如下图所示：
+基于 `RBAC` 模型实现了权限管理的核心功能，包含用户管理、角色管理及菜单管理。具体功能点如下图所示：
 
 ![系统功能](./docs/system_functions.svg)
 
@@ -83,18 +83,18 @@ sunchaser-zhenyaojian
 
 ## 后端
 
-| 技术                      | 说明                         | 官网                                                                                                   |
-|-------------------------|----------------------------|------------------------------------------------------------------------------------------------------|
-| `Spring Boot`           | 基础服务框架                     | [https://spring.io/projects/spring-boot](https://spring.io/projects/spring-boot)                     |
-| `Spring Security`       | 认证和授权框架                    | [https://spring.io/projects/spring-security](https://spring.io/projects/spring-security)             |
-| `MyBatis-Plus`          | 对 `ORM` 框架 `MyBatis` 的增强工具 | [https://baomidou.com](https://baomidou.com)                                                         |
-| `MyBatis-Plus-Generate` | 基于 `MyBatis-Plus` 的代码生成器   | [https://baomidou.com/pages/779a6e/](https://baomidou.com/pages/779a6e/)                             |
-| `JWT`                   | `JWT` 登录                   | [https://github.com/jwtk/jjwt](https://github.com/jwtk/jjwt)                                         |
-| `Lombok`                | 简化 `Bean` 对象               | [https://projectlombok.org](https://projectlombok.org)                                               |
-| `Mapstruct`             | `Java Bean` 对象转化映射器        | [https://mapstruct.org](https://mapstruct.org)                                                       |
-| `Hutool`                | 小而全的 `Java` 工具类库           | [https://hutool.cn](https://hutool.cn)                                                               |
-| `Guava`                 | `Google` 核心 `Java` 类库      | [https://github.com/google/guava](https://github.com/google/guava)                                   |
-| `Spring Boot Admin`     | `Spring Boot` 服务监控         | [https://github.com/codecentric/spring-boot-admin](https://github.com/codecentric/spring-boot-admin) |
+| 技术                      | 说明                        | 官网                                                                                                   |
+|-------------------------|---------------------------|------------------------------------------------------------------------------------------------------|
+| `Spring Boot`           | 基础服务框架                    | [https://spring.io/projects/spring-boot](https://spring.io/projects/spring-boot)                     |
+| `Spring Security`       | 认证和授权框架                   | [https://spring.io/projects/spring-security](https://spring.io/projects/spring-security)             |
+| `MyBatis-Plus`          | `ORM` 框架：对 `MyBatis` 进行增强 | [https://baomidou.com](https://baomidou.com)                                                         |
+| `MyBatis-Plus-Generate` | 基于 `MyBatis-Plus` 的代码生成器  | [https://baomidou.com/pages/779a6e/](https://baomidou.com/pages/779a6e/)                             |
+| `JWT`                   | `JWT` 登录认证                | [https://github.com/jwtk/jjwt](https://github.com/jwtk/jjwt)                                         |
+| `Lombok`                | 简化 `Bean` 对象              | [https://projectlombok.org](https://projectlombok.org)                                               |
+| `Mapstruct`             | `Java Bean` 对象转化映射器       | [https://mapstruct.org](https://mapstruct.org)                                                       |
+| `Hutool`                | 小而全的 `Java` 工具类库          | [https://hutool.cn](https://hutool.cn)                                                               |
+| `Guava`                 | `Google` 核心 `Java` 类库     | [https://github.com/google/guava](https://github.com/google/guava)                                   |
+| `Spring Boot Admin`     | `Spring Boot` 服务监控        | [https://github.com/codecentric/spring-boot-admin](https://github.com/codecentric/spring-boot-admin) |
 
 ## 前端
 
@@ -129,7 +129,7 @@ todo...
 - `git clone https://github.com/sunchaser-lilu/sunchaser-zhenyaojian.git`
 - `IDEA` 导入项目
 - 连接 `MySQL` 执行 `zhenyaojian-system/src/main/resources/scripts/schema.sql` 数据库初始化脚本
-- 修改 `zhenyaojian-admin/src/main/resources/application-dev.yml` 配置文件，更新 `MySQL` 连接地址、用户名和密码
+- 修改 `zhenyaojian-admin/src/main/resources/application-dev.yml` 配置文件，更新 `MySQL` 连接地址、用户名及密码等
 - 运行 `com.sunchaser.shushan.zhenyaojian.admin.ZhenYaoJianApplication.main` 方法即可启动后端服务
 
 ## `Docker` 运行
@@ -144,10 +144,14 @@ todo...
 
 我们非常欢迎您的贡献，您可以通过以下方式和我们一起共建：
 
-- 在您的公司或个人项目中使用 `sunchaser-zhenyaojian`。
+- 在您的公司或个人项目中使用 [sunchaser-zhenyaojian](https://github.com/sunchaser-lilu/sunchaser-zhenyaojian)。
 - 通过 [Issue](https://github.com/sunchaser-lilu/sunchaser-zhenyaojian/issues) 报告 `Bug` 或进行提问。
 - 提交 [Pull Request](https://github.com/sunchaser-lilu/sunchaser-zhenyaojian/pulls) 优化现有代码。
 
 # 捐赠
 
 如果该项目对您有所帮助，可以请作者喝一杯咖啡。
+
+| 支付宝                                        | 微信                                            |
+|--------------------------------------------|-----------------------------------------------|
+| ![支付宝](https://cdn.lilu.org.cn/alipay.png) | ![微信](https://cdn.lilu.org.cn/wechat-pay.png) |
