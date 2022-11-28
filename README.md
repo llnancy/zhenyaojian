@@ -83,30 +83,30 @@ sunchaser-zhenyaojian
 
 ## 后端
 
-| 技术                      | 说明                        | 官网                                                                                                   |
-|-------------------------|---------------------------|------------------------------------------------------------------------------------------------------|
-| `Spring Boot`           | 基础服务框架                    | [https://spring.io/projects/spring-boot](https://spring.io/projects/spring-boot)                     |
-| `Spring Security`       | 认证和授权框架                   | [https://spring.io/projects/spring-security](https://spring.io/projects/spring-security)             |
-| `MyBatis-Plus`          | `ORM` 框架：对 `MyBatis` 进行增强 | [https://baomidou.com](https://baomidou.com)                                                         |
-| `MyBatis-Plus-Generate` | 基于 `MyBatis-Plus` 的代码生成器  | [https://baomidou.com/pages/779a6e/](https://baomidou.com/pages/779a6e/)                             |
-| `JWT`                   | `JWT` 登录认证                | [https://github.com/jwtk/jjwt](https://github.com/jwtk/jjwt)                                         |
-| `Lombok`                | 简化 `Bean` 对象              | [https://projectlombok.org](https://projectlombok.org)                                               |
-| `Mapstruct`             | `Java Bean` 对象转化映射器       | [https://mapstruct.org](https://mapstruct.org)                                                       |
-| `Hutool`                | 小而全的 `Java` 工具类库          | [https://hutool.cn](https://hutool.cn)                                                               |
-| `Guava`                 | `Google` 核心 `Java` 类库     | [https://github.com/google/guava](https://github.com/google/guava)                                   |
-| `Spring Boot Admin`     | `Spring Boot` 服务监控        | [https://github.com/codecentric/spring-boot-admin](https://github.com/codecentric/spring-boot-admin) |
+| 技术                    | 说明                     | 官网                                                                                                   |
+|-----------------------|------------------------|------------------------------------------------------------------------------------------------------|
+| Spring Boot           | 基础服务框架                 | [https://spring.io/projects/spring-boot](https://spring.io/projects/spring-boot)                     |
+| Spring Security       | 认证和授权框架                | [https://spring.io/projects/spring-security](https://spring.io/projects/spring-security)             |
+| MyBatis-Plus          | ORM 框架：对 MyBatis 增强    | [https://baomidou.com](https://baomidou.com)                                                         |
+| MyBatis-Plus-Generate | 基于 MyBatis-Plus 的代码生成器 | [https://baomidou.com/pages/779a6e/](https://baomidou.com/pages/779a6e/)                             |
+| JWT                   | JWT 登录认证               | [https://github.com/jwtk/jjwt](https://github.com/jwtk/jjwt)                                         |
+| Lombok                | 简化 Bean 对象             | [https://projectlombok.org](https://projectlombok.org)                                               |
+| Mapstruct             | Java Bean 对象转化映射器      | [https://mapstruct.org](https://mapstruct.org)                                                       |
+| Hutool                | 小而全的 Java 工具类库         | [https://hutool.cn](https://hutool.cn)                                                               |
+| Guava                 | Google 核心 Java 类库      | [https://github.com/google/guava](https://github.com/google/guava)                                   |
+| Spring Boot Admin     | Spring Boot 服务监控       | [https://github.com/codecentric/spring-boot-admin](https://github.com/codecentric/spring-boot-admin) |
 
 ## 前端
 
-| 技术               | 说明                          | 官网                                                                                       |
-|------------------|-----------------------------|------------------------------------------------------------------------------------------|
-| `Vue2`           | 基础前端框架                      | [https://v2.vuejs.org](https://v2.vuejs.org)                                             |
-| `Vue-Router`     | 路由框架                        | [https://router.vuejs.org](https://router.vuejs.org)                                     |
-| `Vuex`           | 全局状态管理框架                    | [https://router.vuejs.org](https://router.vuejs.org)                                     |
-| `Axios`          | 基于 `Promise` 的 `HTTP` 客户端   | [https://axios-http.com](https://axios-http.com)                                         |
-| `Nprogress`      | 页面加载进度条组件                   | [https://github.com/rstacruz/nprogress](https://github.com/rstacruz/nprogress)           |
-| `Ant-Design-Vue` | `UI`组件库                     | [https://1x.antdv.com/docs/vue/introduce-cn](https://1x.antdv.com/docs/vue/introduce-cn) |
-| `Vue Antd Admin` | `Ant Design Pro` 的 `Vue` 实现 | [https://github.com/iczer/vue-antd-admin](https://github.com/iczer/vue-antd-admin)       |
+| 技术             | 说明                      | 官网                                                                                       |
+|----------------|-------------------------|------------------------------------------------------------------------------------------|
+| Vue2           | 基础前端框架                  | [https://v2.vuejs.org](https://v2.vuejs.org)                                             |
+| Vue-Router     | 路由框架                    | [https://router.vuejs.org](https://router.vuejs.org)                                     |
+| Vuex           | 全局状态管理框架                | [https://router.vuejs.org](https://router.vuejs.org)                                     |
+| Axios          | 基于 Promise 的 HTTP 客户端   | [https://axios-http.com](https://axios-http.com)                                         |
+| NProgress      | 页面加载进度条组件               | [https://github.com/rstacruz/nprogress](https://github.com/rstacruz/nprogress)           |
+| Ant-Design-Vue | UI 组件库                  | [https://1x.antdv.com/docs/vue/introduce-cn](https://1x.antdv.com/docs/vue/introduce-cn) |
+| Vue Antd Admin | Ant Design Pro 的 Vue 实现 | [https://github.com/iczer/vue-antd-admin](https://github.com/iczer/vue-antd-admin)       |
 
 # 环境要求
 
