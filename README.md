@@ -98,6 +98,8 @@ sunchaser-zhenyaojian
 
 ## 前端
 
+前端项目代码仓库：[https://github.com/sunchaser-lilu/zhenyaojian-ui](https://github.com/sunchaser-lilu/zhenyaojian-ui)
+
 | 技术             | 说明                      | 官网                                                                                       |
 |----------------|-------------------------|------------------------------------------------------------------------------------------|
 | Vue2           | 基础前端框架                  | [https://v2.vuejs.org](https://v2.vuejs.org)                                             |
@@ -147,6 +149,12 @@ todo...
 - 在您的公司或个人项目中使用 [sunchaser-zhenyaojian](https://github.com/sunchaser-lilu/sunchaser-zhenyaojian)。
 - 通过 [Issue](https://github.com/sunchaser-lilu/sunchaser-zhenyaojian/issues) 报告 `Bug` 或进行提问。
 - 提交 [Pull Request](https://github.com/sunchaser-lilu/sunchaser-zhenyaojian/pulls) 优化现有代码。
+
+# 许可证
+
+[Apache License 2.0](https://github.com/sunchaser-lilu/sunchaser-zhenyaojian/blob/master/LICENSE)
+
+Copyright (c) 2022-present sunchaser-lilu
 
 # 捐赠
 
