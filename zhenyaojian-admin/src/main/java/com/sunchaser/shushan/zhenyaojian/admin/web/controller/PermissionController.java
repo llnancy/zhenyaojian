@@ -3,7 +3,7 @@ package com.sunchaser.shushan.zhenyaojian.admin.web.controller;
 import com.sunchaser.shushan.mojian.base.entity.response.IResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.SingleResponse;
-import com.sunchaser.shushan.mojian.log.annotation.MjLog;
+import com.sunchaser.shushan.mojian.log.annotation.AccessLog;
 import com.sunchaser.shushan.mojian.web.validation.groups.Update;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.PermissionOpsCommand;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionBaseTreeNode;
@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
+@AccessLog
 public class PermissionController {
 
     private final PermissionService permissionService;
@@ -41,7 +42,6 @@ public class PermissionController {
 
     @PatchMapping("/permission")
     @PreAuthorize("@ss.hasAuthority('system:permission:update')")
-    @MjLog
     public IResponse updatePermission(@Validated({Update.class}) @RequestBody PermissionOpsCommand command) {
         permissionService.updatePermission(command);
         return IResponse.ofSuccess();
