@@ -112,8 +112,8 @@ CREATE TABLE `zyj_system_log`
     `exception_detail`   longtext COMMENT '异常详情',
     `start_time`         datetime     DEFAULT NULL COMMENT '开始时间',
     `end_time`           datetime     DEFAULT NULL COMMENT '结束时间',
-    `consume_time`       datetime     DEFAULT NULL COMMENT '消耗时间',
-    `create_user`        varchar(255) DEFAULT NULL COMMENT '创建人',
+    `rt`                 int(11) unsigned DEFAULT NULL COMMENT '消耗时间',
+    `create_user`        varchar(64)  DEFAULT NULL COMMENT '创建人',
     `create_time`        datetime     DEFAULT NULL COMMENT '创建时间',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统日志记录表';
