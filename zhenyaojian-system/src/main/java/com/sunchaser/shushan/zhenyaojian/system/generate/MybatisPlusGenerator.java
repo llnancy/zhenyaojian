@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.TemplateType;
 import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
+import static com.baomidou.mybatisplus.generator.config.rules.DbColumnType.INTEGER;
 import com.baomidou.mybatisplus.generator.config.rules.IColumnType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.baomidou.mybatisplus.generator.fill.Column;
@@ -16,8 +17,6 @@ import com.baomidou.mybatisplus.generator.keywords.MySqlKeyWordsHandler;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
-
-import static com.baomidou.mybatisplus.generator.config.rules.DbColumnType.INTEGER;
 
 /**
  * mybatis plus 3.5.1 版本以上的代码生成器
@@ -57,12 +56,13 @@ public class MybatisPlusGenerator {
                             .moduleName("system") // 设置父包模块名
                             .entity("repository.entity") // entity 包名
                             .mapper("repository.mapper") // mapper 包名
-                            .service("service") // service 包名
-                            .serviceImpl("service.impl") // service impl 包名
+                            // .service("service") // service 包名
+                            // .serviceImpl("service.impl") // service impl 包名
                             .pathInfo(Collections.singletonMap(OutputFile.xml, "./zhenyaojian-system/src/main/resources/mapper")); // 指定 xml 文件生成的路径
                 })
                 .strategyConfig(builder -> {
-                    builder.addTablePrefix("zyj_") // 增加过滤表前缀
+                    builder.addInclude("zyj_system_log")
+                            .addTablePrefix("zyj_") // 增加过滤表前缀
                             .entityBuilder() // Entity 策略配置
                             .enableLombok() // 开启 lombok
                             .formatFileName("%sEntity") // 实体类以 Entity 结尾
@@ -70,9 +70,9 @@ public class MybatisPlusGenerator {
                             .addTableFills(new Column("create_user", FieldFill.INSERT))
                             .addTableFills(new Column("create_time", FieldFill.INSERT))
                             .addTableFills(new Column("update_user", FieldFill.INSERT_UPDATE))
-                            .addTableFills(new Column("update_time", FieldFill.INSERT_UPDATE))
-                            .serviceBuilder() // Service 策略配置
-                            .formatServiceFileName("I%sService");// service 接口以 Service 结尾
+                            .addTableFills(new Column("update_time", FieldFill.INSERT_UPDATE));
+                            // .serviceBuilder() // Service 策略配置
+                            // .formatServiceFileName("I%sService");// service 接口以 Service 结尾
                 })
                 .templateConfig(builder -> {
                     builder.disable(TemplateType.CONTROLLER, TemplateType.SERVICE, TemplateType.SERVICEIMPL) // 不生成 controller/service/serviceImpl
