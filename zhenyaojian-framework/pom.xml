@@ -84,6 +84,12 @@
             <artifactId>hutool-core</artifactId>
             <version>5.8.10</version>
         </dependency>
+        <!-- cn.hutool/hutool-extra -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-extra</artifactId>
+            <version>5.8.10</version>
+        </dependency>
         <!-- com.google.guava/guava -->
         <dependency>
             <groupId>com.google.guava</groupId>

@@ -2,6 +2,7 @@ package com.sunchaser.shushan.zhenyaojian.admin.web.controller;
 
 import com.sunchaser.shushan.mojian.base.entity.response.IResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiResponse;
+import com.sunchaser.shushan.mojian.log.annotation.AccessLog;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.AssignUserRoleRequest;
 import com.sunchaser.shushan.zhenyaojian.framework.service.UserRoleService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
+@AccessLog
 public class UserRoleController {
 
     private final UserRoleService userRoleService;
