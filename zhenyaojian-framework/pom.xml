@@ -84,12 +84,6 @@
             <artifactId>hutool-core</artifactId>
             <version>5.8.10</version>
         </dependency>
-        <!-- cn.hutool/hutool-extra -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-extra</artifactId>
-            <version>5.8.10</version>
-        </dependency>
         <!-- com.google.guava/guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -128,10 +122,18 @@
         <!-- mojian framework -->
         <dependency>
             <groupId>com.sunchaser.shushan</groupId>
-            <artifactId>sunchaser-mojian-all</artifactId>
+            <artifactId>sunchaser-mojian-log</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/resources/lib/sunchaser-mojian-all-0.0.1-SNAPSHOT.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.sunchaser.shushan</groupId>
+            <artifactId>sunchaser-mojian-web</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sunchaser.shushan</groupId>
+            <artifactId>sunchaser-mojian-base</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <!-- org.mapstruct/mapstruct -->
         <dependency>
