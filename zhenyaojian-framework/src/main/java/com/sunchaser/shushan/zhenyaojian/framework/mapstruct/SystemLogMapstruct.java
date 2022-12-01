@@ -3,6 +3,7 @@ package com.sunchaser.shushan.zhenyaojian.framework.mapstruct;
 import com.sunchaser.shushan.mojian.log.entity.AccessLogBean;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.SystemLogEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
 /**
@@ -20,5 +21,6 @@ public interface SystemLogMapstruct {
      * @param accessLogBean {@link AccessLogBean}
      * @return {@link SystemLogEntity}
      */
+    @Mapping(target = "status", expression = "java(accessLogBean.getStatus().ordinal())")
     SystemLogEntity convert(AccessLogBean accessLogBean);
 }
