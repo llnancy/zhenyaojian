@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
  * 系统日志记录表
  *
  * @author sunchaser admin@lilu.org.cn
- * @since JDK8 2022/11/30
+ * @since JDK8 2022/12/02
  */
 @Data
 @AllArgsConstructor
@@ -40,9 +40,9 @@ public class SystemLogEntity implements Serializable {
     private String requestIp;
 
     /**
-     * 浏览器 UA
+     * 设备类型
      */
-    private String userAgent;
+    private String deviceType;
 
     /**
      * 浏览器名称
@@ -57,13 +57,27 @@ public class SystemLogEntity implements Serializable {
     /**
      * 地理位置
      */
-    private String geoLocation;
+    private String region;
 
     /**
-     * 日志类型
+     * 请求地址
      */
-    @TableField("`type`")
-    private String type;
+    private String requestUri;
+
+    /**
+     * HTTP 请求方式
+     */
+    private String requestMethod;
+
+    /**
+     * 请求类名
+     */
+    private String className;
+
+    /**
+     * 请求方法名
+     */
+    private String methodName;
 
     /**
      * 操作者 ID
@@ -81,44 +95,31 @@ public class SystemLogEntity implements Serializable {
     private String operatorDesc;
 
     /**
-     * 类路径
-     */
-    private String classPath;
-
-    /**
-     * 请求方法
-     */
-    private String requestMethod;
-
-    /**
-     * 请求地址
-     */
-    private String requestMapping;
-
-    /**
-     * HTTP 请求方式
-     */
-    private String httpMethod;
-
-    /**
      * 请求参数
      */
-    private String requestParameters;
+    private String parameters;
 
     /**
      * 返回值
      */
-    private String returnValue;
+    private String response;
 
     /**
      * 异常描述
      */
-    private String exceptionDesc;
+    private String exception;
 
     /**
-     * 异常详情
+     * 请求状态（0：成功，1：异常）
      */
-    private String exceptionDetail;
+    @TableField("`status`")
+    private Integer status;
+
+    /**
+     * 日志类型
+     */
+    @TableField("`type`")
+    private String type;
 
     /**
      * 开始时间
@@ -131,7 +132,7 @@ public class SystemLogEntity implements Serializable {
     private LocalDateTime endTime;
 
     /**
-     * 消耗时间
+     * 消耗时间（单位：ms）
      */
     private Integer rt;
 
