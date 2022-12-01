@@ -32,3 +32,4 @@ build/
 
 **/.flattened-pom.xml
 .DS_Store
+/ip2region/
