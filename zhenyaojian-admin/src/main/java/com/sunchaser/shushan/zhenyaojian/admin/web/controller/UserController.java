@@ -4,6 +4,8 @@ import com.sunchaser.shushan.mojian.base.entity.response.IResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiPageResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.SingleResponse;
+import com.sunchaser.shushan.mojian.log.annotation.AccessLog;
+import com.sunchaser.shushan.mojian.log.annotation.LogIgnore;
 import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.UserMapstruct;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.UserOpsCommand;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.UserPageRequest;
@@ -33,6 +35,7 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
+@AccessLog
 public class UserController {
 
     private final UserService userService;
@@ -42,11 +45,13 @@ public class UserController {
     private final UserMapstruct userMapstruct;
 
     @GetMapping("/user/info")
+    @LogIgnore
     public SingleResponse<UserInfoResponse> info() {
         return SingleResponse.success(userMapstruct.convert(SecurityUtils.getLoginUserEntity()));
     }
 
     @GetMapping("/user/router")
+    @LogIgnore
     public MultiResponse<RouterTreeNode> routerInfo() {
         List<RouterTreeNode> routerTreeNodes = permissionService.routerInfo();
         return MultiResponse.success(routerTreeNodes);

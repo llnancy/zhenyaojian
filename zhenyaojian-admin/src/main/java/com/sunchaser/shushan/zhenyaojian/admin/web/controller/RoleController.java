@@ -3,6 +3,7 @@ package com.sunchaser.shushan.zhenyaojian.admin.web.controller;
 import com.sunchaser.shushan.mojian.base.entity.response.IResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiPageResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.SingleResponse;
+import com.sunchaser.shushan.mojian.log.annotation.AccessLog;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.RoleOpsCommand;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.RolePageRequest;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.RoleInfoResponse;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
+@AccessLog
 public class RoleController {
 
     private final RoleService roleService;

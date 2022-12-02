@@ -18,6 +18,10 @@ public final class SecurityUtils {
     private SecurityUtils() {
     }
 
+    static {
+        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+    }
+
     public static LoginUser getLoginUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (LoginUser) authentication.getPrincipal();
