@@ -63,8 +63,7 @@ sunchaser-zhenyaojian
 │     │ │                     ├── service 业务实现层
 │     │ │                     │ └── jwt JWT 模块及实现
 │     │ │                     └── util 系统工具类
-│     │ └── resources
-│     │     └── lib 魔剑微服务脚手架依赖（暂未上传至中央仓库，通过本地文件系统进行依赖）
+│     │ └── resources 存放 JWT 公私钥文件
 │     └── test 测试模块
 └── zhenyaojian-system 核心系统模块
     └── src/main
@@ -83,18 +82,21 @@ sunchaser-zhenyaojian
 
 ## 后端
 
-| 技术                | 说明                     | 官网                                                                                                   |
-|-------------------|------------------------|------------------------------------------------------------------------------------------------------|
-| Spring Boot       | 基础服务框架                 | [https://spring.io/projects/spring-boot](https://spring.io/projects/spring-boot)                     |
-| Spring Security   | 认证和授权框架                | [https://spring.io/projects/spring-security](https://spring.io/projects/spring-security)             |
-| MyBatis-Plus      | ORM 框架：对 MyBatis 增强    | [https://baomidou.com](https://baomidou.com)                                                         |
-| MP-Generate       | 基于 MyBatis-Plus 的代码生成器 | [https://baomidou.com/pages/779a6e/](https://baomidou.com/pages/779a6e/)                             |
-| JWT               | JWT 登录认证               | [https://github.com/jwtk/jjwt](https://github.com/jwtk/jjwt)                                         |
-| Lombok            | 简化 Bean 对象             | [https://projectlombok.org](https://projectlombok.org)                                               |
-| Mapstruct         | Java Bean 对象转化映射器      | [https://mapstruct.org](https://mapstruct.org)                                                       |
-| Hutool            | 小而全的 Java 工具类库         | [https://hutool.cn](https://hutool.cn)                                                               |
-| Guava             | Google 核心 Java 类库      | [https://github.com/google/guava](https://github.com/google/guava)                                   |
-| Spring Boot Admin | Spring Boot 服务监控       | [https://github.com/codecentric/spring-boot-admin](https://github.com/codecentric/spring-boot-admin) |
+| 技术                | 说明                     | 官网                                                                                                       |
+|-------------------|------------------------|----------------------------------------------------------------------------------------------------------|
+| Spring Boot       | 基础服务框架                 | [https://spring.io/projects/spring-boot](https://spring.io/projects/spring-boot)                         |
+| Spring Security   | 认证和授权框架                | [https://spring.io/projects/spring-security](https://spring.io/projects/spring-security)                 |
+| sunchaser-mojian  | 魔剑 - 微服务业务开发脚手架        | [https://github.com/sunchaser-lilu/sunchaser-mojian](https://github.com/sunchaser-lilu/sunchaser-mojian) |
+| MyBatis-Plus      | ORM 框架：对 MyBatis 增强    | [https://baomidou.com](https://baomidou.com)                                                             |
+| MP-Generate       | 基于 MyBatis-Plus 的代码生成器 | [https://baomidou.com/pages/779a6e/](https://baomidou.com/pages/779a6e/)                                 |
+| JWT               | JWT 登录认证               | [https://github.com/jwtk/jjwt](https://github.com/jwtk/jjwt)                                             |
+| Lombok            | 简化 Bean 对象             | [https://projectlombok.org](https://projectlombok.org)                                                   |
+| Mapstruct         | Java Bean 对象转化映射器      | [https://mapstruct.org](https://mapstruct.org)                                                           |
+| Hutool            | 小而全的 Java 工具类库         | [https://hutool.cn](https://hutool.cn)                                                                   |
+| Guava             | Google 核心 Java 类库      | [https://github.com/google/guava](https://github.com/google/guava)                                       |
+| Spring Boot Admin | Spring Boot 服务监控       | [https://github.com/codecentric/spring-boot-admin](https://github.com/codecentric/spring-boot-admin)     |
+
+> 注：`sunchaser-mojian` 项目暂未发布至中央仓库，需前往 `GitHub` 仓库下载至本地后进行 `install` 使用。
 
 ## 前端
 
