@@ -4,6 +4,7 @@ import com.sunchaser.shushan.mojian.base.entity.response.IResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.SingleResponse;
 import com.sunchaser.shushan.mojian.log.annotation.AccessLog;
+import com.sunchaser.shushan.mojian.log.enums.AccessType;
 import com.sunchaser.shushan.mojian.web.validation.groups.Update;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.PermissionOpsCommand;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionBaseTreeNode;
@@ -54,6 +55,7 @@ public class PermissionController {
     }
 
     @GetMapping("/permissions/tree")
+    @AccessLog(type = AccessType.SELECT)
     @PreAuthorize("@ss.hasAuthority('system:permission:list')")
     public MultiResponse<PermissionBaseTreeNode> permissionsTree(@RequestParam String filter) {
         return MultiResponse.success(permissionService.permissionsTree(filter));

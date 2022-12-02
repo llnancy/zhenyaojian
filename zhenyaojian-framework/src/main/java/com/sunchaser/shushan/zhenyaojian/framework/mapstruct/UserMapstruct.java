@@ -28,7 +28,7 @@ public interface UserMapstruct {
      */
     @Mapping(target = "password", expression = "java(UserService.encryptPassword(command.getPassword(), command.getUserOpsType()))")
     @Mapping(target = "nickName", defaultExpression = "java(StringUtils.EMPTY)")
-    @Mapping(target = "avatar", defaultExpression = "java(java.lang.String.format(\"https://images.nowcoder.com/head/%dt.png\", java.util.concurrent.ThreadLocalRandom.current().nextInt(1000)))")
+    @Mapping(target = "avatar", defaultExpression = "java(String.format(\"https://images.nowcoder.com/head/%dt.png\", java.util.concurrent.ThreadLocalRandom.current().nextInt(1000)))")
     UserEntity convert(UserOpsCommand command);
 
     /**
