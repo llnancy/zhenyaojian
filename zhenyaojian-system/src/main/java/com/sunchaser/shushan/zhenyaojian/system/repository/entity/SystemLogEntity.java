@@ -40,6 +40,11 @@ public class SystemLogEntity implements Serializable {
     private String requestIp;
 
     /**
+     * 用户代理 UA
+     */
+    private String userAgent;
+
+    /**
      * 设备类型
      */
     private String deviceType;
@@ -80,21 +85,6 @@ public class SystemLogEntity implements Serializable {
     private String methodName;
 
     /**
-     * 操作者 ID
-     */
-    private String userId;
-
-    /**
-     * 操作者账户
-     */
-    private String userAccount;
-
-    /**
-     * 操作描述
-     */
-    private String operatorDesc;
-
-    /**
      * 请求参数
      */
     private String parameters;
@@ -108,6 +98,22 @@ public class SystemLogEntity implements Serializable {
      * 异常描述
      */
     private String exception;
+
+    /**
+     * 操作者 ID
+     */
+    private String userId;
+
+    /**
+     * 操作者账户
+     */
+    private String userAccount;
+
+    /**
+     * 操作描述
+     */
+    @TableField("`description`")
+    private String description;
 
     /**
      * 请求状态（0：成功，1：异常）
