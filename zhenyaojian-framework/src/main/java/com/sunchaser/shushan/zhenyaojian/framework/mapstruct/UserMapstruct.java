@@ -2,7 +2,7 @@ package com.sunchaser.shushan.zhenyaojian.framework.mapstruct;
 
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.UserOpsCommand;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.UserInfoResponse;
-import com.sunchaser.shushan.zhenyaojian.framework.service.UserService;
+import com.sunchaser.shushan.zhenyaojian.framework.service.system.UserService;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.UserEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.Mapper;

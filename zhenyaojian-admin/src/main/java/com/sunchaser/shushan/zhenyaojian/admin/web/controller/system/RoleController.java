@@ -1,4 +1,4 @@
-package com.sunchaser.shushan.zhenyaojian.admin.web.controller;
+package com.sunchaser.shushan.zhenyaojian.admin.web.controller.system;
 
 import com.sunchaser.shushan.mojian.base.entity.response.IResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiPageResponse;
@@ -7,7 +7,7 @@ import com.sunchaser.shushan.mojian.log.annotation.AccessLog;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.RoleOpsCommand;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.RolePageRequest;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.RoleInfoResponse;
-import com.sunchaser.shushan.zhenyaojian.framework.service.RoleService;
+import com.sunchaser.shushan.zhenyaojian.framework.service.system.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;

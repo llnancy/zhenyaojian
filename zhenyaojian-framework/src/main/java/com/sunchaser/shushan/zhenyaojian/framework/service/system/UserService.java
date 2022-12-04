@@ -1,4 +1,4 @@
-package com.sunchaser.shushan.zhenyaojian.framework.service;
+package com.sunchaser.shushan.zhenyaojian.framework.service.system;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -219,9 +219,9 @@ public class UserService extends ServiceImpl<UserMapper, UserEntity> implements 
         String account = request.getAccount();
         LambdaQueryWrapper<UserEntity> wrapper = Wrappers.<UserEntity>lambdaQuery()
                 .likeRight(StringUtils.isNotBlank(account), UserEntity::getAccount, account);
-        Page<UserEntity> page = new Page<>(request.getPageNo(), request.getPageSize());
-        Page<UserEntity> list = this.getBaseMapper().selectPage(page, wrapper);
-        return MultiPageResponse.success(list, userMapstruct::convert);
+        Page<UserEntity> page = Page.of(request.getPageNo(), request.getPageSize());
+        page = this.getBaseMapper().selectPage(page, wrapper);
+        return MultiPageResponse.success(page, userMapstruct::convert);
     }
 
     /**
