@@ -1,4 +1,4 @@
-package com.sunchaser.shushan.zhenyaojian.framework.service;
+package com.sunchaser.shushan.zhenyaojian.framework.service.system;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;

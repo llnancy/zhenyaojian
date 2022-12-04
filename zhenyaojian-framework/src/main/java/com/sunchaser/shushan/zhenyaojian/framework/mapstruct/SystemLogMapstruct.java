@@ -1,6 +1,7 @@
 package com.sunchaser.shushan.zhenyaojian.framework.mapstruct;
 
 import com.sunchaser.shushan.mojian.log.entity.AccessLogBean;
+import com.sunchaser.shushan.zhenyaojian.framework.model.response.SystemLogResponse;
 import com.sunchaser.shushan.zhenyaojian.framework.util.SecurityUtils;
 import com.sunchaser.shushan.zhenyaojian.system.repository.entity.SystemLogEntity;
 import org.mapstruct.Mapper;
@@ -27,4 +28,12 @@ public interface SystemLogMapstruct {
     @Mapping(target = "userId", expression = "java(SecurityUtils.getLoginUserId().toString())")
     @Mapping(target = "userAccount", expression = "java(SecurityUtils.getLoginUsername())")
     SystemLogEntity convert(AccessLogBean accessLogBean);
+
+    /**
+     * convert {@link SystemLogEntity} to {@link SystemLogResponse}
+     *
+     * @param systemLogEntity {@link SystemLogEntity}
+     * @return {@link SystemLogResponse}
+     */
+    SystemLogResponse convert(SystemLogEntity systemLogEntity);
 }

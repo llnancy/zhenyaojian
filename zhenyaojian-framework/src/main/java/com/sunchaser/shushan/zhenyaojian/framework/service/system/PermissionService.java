@@ -1,4 +1,4 @@
-package com.sunchaser.shushan.zhenyaojian.framework.service;
+package com.sunchaser.shushan.zhenyaojian.framework.service.system;
 
 import cn.hutool.core.lang.PatternPool;
 import cn.hutool.core.util.ReUtil;

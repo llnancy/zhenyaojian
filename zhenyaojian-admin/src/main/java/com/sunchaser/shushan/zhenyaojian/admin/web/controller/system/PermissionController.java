@@ -1,4 +1,4 @@
-package com.sunchaser.shushan.zhenyaojian.admin.web.controller;
+package com.sunchaser.shushan.zhenyaojian.admin.web.controller.system;
 
 import com.sunchaser.shushan.mojian.base.entity.response.IResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiResponse;
@@ -9,7 +9,7 @@ import com.sunchaser.shushan.mojian.web.validation.groups.Update;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.PermissionOpsCommand;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionBaseTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.PermissionDetailTreeNode;
-import com.sunchaser.shushan.zhenyaojian.framework.service.PermissionService;
+import com.sunchaser.shushan.zhenyaojian.framework.service.system.PermissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;

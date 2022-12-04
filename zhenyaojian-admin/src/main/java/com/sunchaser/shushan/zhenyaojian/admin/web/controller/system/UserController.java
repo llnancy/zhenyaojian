@@ -1,4 +1,4 @@
-package com.sunchaser.shushan.zhenyaojian.admin.web.controller;
+package com.sunchaser.shushan.zhenyaojian.admin.web.controller.system;
 
 import com.sunchaser.shushan.mojian.base.entity.response.IResponse;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiPageResponse;
@@ -11,8 +11,8 @@ import com.sunchaser.shushan.zhenyaojian.framework.model.request.UserOpsCommand;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.UserPageRequest;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.RouterTreeNode;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.UserInfoResponse;
-import com.sunchaser.shushan.zhenyaojian.framework.service.PermissionService;
-import com.sunchaser.shushan.zhenyaojian.framework.service.UserService;
+import com.sunchaser.shushan.zhenyaojian.framework.service.system.PermissionService;
+import com.sunchaser.shushan.zhenyaojian.framework.service.system.UserService;
 import com.sunchaser.shushan.zhenyaojian.framework.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
