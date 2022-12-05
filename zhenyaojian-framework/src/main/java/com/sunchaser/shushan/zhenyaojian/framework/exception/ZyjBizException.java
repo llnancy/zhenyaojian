@@ -11,6 +11,8 @@ import com.sunchaser.shushan.mojian.base.exception.MjBaseBizException;
  */
 public class ZyjBizException extends MjBaseBizException {
 
+    private static final long serialVersionUID = -8187128395084777090L;
+
     public ZyjBizException(Response response, Object... args) {
         super(response, args);
     }
