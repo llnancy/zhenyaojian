@@ -18,6 +18,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 /**
@@ -42,6 +43,8 @@ public class WebSecurityConfig {
     private final AuthenticationEntryPoint authenticationEntryPoint;
 
     private final AccessDeniedHandler accessDeniedHandler;
+
+    private final LogoutHandler logoutHandler;
 
     private final LogoutSuccessHandler logoutSuccessHandler;
 
@@ -91,8 +94,10 @@ public class WebSecurityConfig {
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler);
 
+        // logout
         http.logout()
                 .logoutUrl(LOGOUT_SERVLET_PATH)
+                .addLogoutHandler(logoutHandler)
                 .logoutSuccessHandler(logoutSuccessHandler);
 
         // Add JwtAuthenticationFilter

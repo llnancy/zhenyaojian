@@ -2,7 +2,7 @@ package com.sunchaser.shushan.zhenyaojian.admin.web.controller;
 
 import com.sunchaser.shushan.mojian.base.entity.response.SingleResponse;
 import com.sunchaser.shushan.mojian.log.annotation.AccessLog;
-import com.sunchaser.shushan.mojian.log.annotation.LogIgnore;
+import com.sunchaser.shushan.mojian.log.enums.AccessType;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.LoginRequest;
 import com.sunchaser.shushan.zhenyaojian.framework.service.LoginService;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-@AccessLog
 public class LoginController {
 
     private final LoginService loginService;
 
     @PostMapping("/login")
-    @LogIgnore
+    @AccessLog(type = AccessType.LOGIN)
     public SingleResponse<String> login(@RequestBody LoginRequest loginRequest) {
         return SingleResponse.success(loginService.login(loginRequest));
     }

@@ -1,11 +1,12 @@
 package com.sunchaser.shushan.zhenyaojian.framework.service.observability;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sunchaser.shushan.mojian.base.entity.response.MultiPageResponse;
+import com.sunchaser.shushan.mojian.log.enums.AccessType;
 import com.sunchaser.shushan.zhenyaojian.framework.mapstruct.SystemLogMapstruct;
 import com.sunchaser.shushan.zhenyaojian.framework.model.request.SystemLogPageRequest;
 import com.sunchaser.shushan.zhenyaojian.framework.model.response.SystemLogResponse;
@@ -35,8 +36,9 @@ public class SystemLogService extends ServiceImpl<SystemLogMapper, SystemLogEnti
      */
     public MultiPageResponse<SystemLogResponse> logs(SystemLogPageRequest request) {
         String type = request.getType();
-        Wrapper<SystemLogEntity> wrapper = Wrappers.<SystemLogEntity>lambdaQuery()
-                .eq(StringUtils.isNotBlank(type), SystemLogEntity::getType, type);
+        LambdaQueryWrapper<SystemLogEntity> wrapper = Wrappers.<SystemLogEntity>lambdaQuery()
+                .eq(StringUtils.isNotBlank(type), SystemLogEntity::getType, type)
+                .ne(StringUtils.isBlank(type), SystemLogEntity::getType, AccessType.LOGIN.toString());
         Page<SystemLogEntity> page = Page.of(request.getPageNo(), request.getPageSize());
         page = this.getBaseMapper().selectPage(page, wrapper);
         return MultiPageResponse.success(page, systemLogMapstruct::convert);
