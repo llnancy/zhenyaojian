@@ -123,8 +123,8 @@ public class RoleService extends ServiceImpl<RoleMapper, RoleEntity> implements 
                 .likeRight(StringUtils.isNotBlank(name), RoleEntity::getName, name)
                 .orderByAsc(RoleEntity::getSortValue);
         Page<RoleEntity> page = Page.of(request.getPageNo(), request.getPageSize());
-        Page<RoleEntity> list = this.getBaseMapper().selectPage(page, wrapper);
-        return MultiPageResponse.success(list, roleMapstruct::convert);
+        page = this.getBaseMapper().selectPage(page, wrapper);
+        return MultiPageResponse.success(page, roleMapstruct::convert);
     }
 
     /**
