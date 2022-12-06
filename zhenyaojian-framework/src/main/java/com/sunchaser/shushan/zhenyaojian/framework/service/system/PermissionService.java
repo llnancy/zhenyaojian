@@ -283,6 +283,7 @@ public class PermissionService extends ServiceImpl<PermissionMapper, PermissionE
             }
             condition.in(PermissionEntity::getId, permissionIds);
         }
+        condition.orderByAsc(PermissionEntity::getSortValue);
         return this.list(condition);
     }
 
