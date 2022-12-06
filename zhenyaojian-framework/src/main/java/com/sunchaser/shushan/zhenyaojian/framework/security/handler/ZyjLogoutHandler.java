@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author sunchaser admin@lilu.org.cn
  * @since JDK8 2022/12/5
  */
-@Component
+// @Component
 @Slf4j
 public class ZyjLogoutHandler implements LogoutHandler {
 
