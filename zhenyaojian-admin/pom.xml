@@ -3,8 +3,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>com.sunchaser.shushan</groupId>
-        <artifactId>sunchaser-zhenyaojian</artifactId>
+        <groupId>io.github.llnancy</groupId>
+        <artifactId>zhenyaojian</artifactId>
         <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -12,11 +12,7 @@
     <artifactId>zhenyaojian-admin</artifactId>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <mainClass>com.sunchaser.shushan.zhenyaojian.admin.ZhenYaoJianApplication</mainClass>
+        <mainClass>io.github.llnancy.zhenyaojian.admin.ZhenYaoJianApplication</mainClass>
     </properties>
 
     <dependencies>
@@ -26,13 +22,13 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sunchaser.shushan</groupId>
+            <groupId>io.github.llnancy</groupId>
             <artifactId>zhenyaojian-framework</artifactId>
         </dependency>
     </dependencies>
 
     <build>
-        <finalName>sunchaser-zhenyaojian</finalName>
+        <finalName>zhenyaojian</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

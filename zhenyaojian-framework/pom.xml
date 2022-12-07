@@ -3,8 +3,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>com.sunchaser.shushan</groupId>
-        <artifactId>sunchaser-zhenyaojian</artifactId>
+        <groupId>io.github.llnancy</groupId>
+        <artifactId>zhenyaojian</artifactId>
         <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -12,10 +12,6 @@
     <artifactId>zhenyaojian-framework</artifactId>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jjwt.version>0.11.5</jjwt.version>
     </properties>
 
@@ -75,7 +71,7 @@
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sunchaser.shushan</groupId>
+            <groupId>io.github.llnancy</groupId>
             <artifactId>zhenyaojian-system</artifactId>
         </dependency>
         <!-- cn.hutool/hutool-core -->
@@ -121,18 +117,18 @@
         </dependency>
         <!-- mojian framework -->
         <dependency>
-            <groupId>com.sunchaser.shushan</groupId>
-            <artifactId>sunchaser-mojian-log</artifactId>
+            <groupId>io.github.llnancy</groupId>
+            <artifactId>mojian-log</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.sunchaser.shushan</groupId>
-            <artifactId>sunchaser-mojian-web</artifactId>
+            <groupId>io.github.llnancy</groupId>
+            <artifactId>mojian-web</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.sunchaser.shushan</groupId>
-            <artifactId>sunchaser-mojian-base</artifactId>
+            <groupId>io.github.llnancy</groupId>
+            <artifactId>mojian-base</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <!-- org.mapstruct/mapstruct -->

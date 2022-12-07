@@ -1,12 +1,12 @@
 <div align="center">
     <img src="https://cdn.lilu.org.cn/sunchaser-logo.png" alt="logo" />
-    <h2 align="center">sunchaser-zhenyaojian</h2>
+    <h2 align="center">zhenyaojian</h2>
     <div align="center">
-        镇妖剑权限管理系统
+        镇妖剑 - 权限管理系统
         <br /><br />
         <img src="https://img.shields.io/circleci/project/github/badges/shields/master?color=%231ab1ad&label=master" alt="project" />
         <img src="https://img.shields.io/badge/JDK-8.0+-0e83c" alt="java-version" />
-        <img src="https://img.shields.io/github/license/sunchaser-lilu/sunchaser-rpc?color=FF5531" alt="license" />
+        <img src="https://img.shields.io/github/license/llnancy/zhenyaojian?color=FF5531" alt="license" />
     </div>
 </div>
 
@@ -16,7 +16,7 @@
 
 # 概述
 
-`sunchaser-zhenyaojian` 是一个轻量级权限管理系统，基于 `Spring Boot`、`Spring Security` 和 `MyBatis-Plus`
+`zhenyaojian` 是一个轻量级权限管理系统，基于 `Spring Boot`、`Spring Security` 和 `MyBatis-Plus`
 构建，其核心设计目标是开发迅速、学习简单、轻量级、易扩展。
 
 # 特性
@@ -39,7 +39,7 @@
 # 项目结构
 
 ```text
-sunchaser-zhenyaojian
+zhenyaojian
 ├── docs 项目文档
 ├── zhenyaojian-admin 管理后台模块
 │ └── src/main
@@ -82,25 +82,25 @@ sunchaser-zhenyaojian
 
 ## 后端
 
-| 技术                | 说明                     | 官网                                                                                                       |
-|-------------------|------------------------|----------------------------------------------------------------------------------------------------------|
-| Spring Boot       | 基础服务框架                 | [https://spring.io/projects/spring-boot](https://spring.io/projects/spring-boot)                         |
-| Spring Security   | 认证和授权框架                | [https://spring.io/projects/spring-security](https://spring.io/projects/spring-security)                 |
-| sunchaser-mojian  | 魔剑 - 微服务业务开发脚手架        | [https://github.com/sunchaser-lilu/sunchaser-mojian](https://github.com/sunchaser-lilu/sunchaser-mojian) |
-| MyBatis-Plus      | ORM 框架：对 MyBatis 增强    | [https://baomidou.com](https://baomidou.com)                                                             |
-| MP-Generate       | 基于 MyBatis-Plus 的代码生成器 | [https://baomidou.com/pages/779a6e/](https://baomidou.com/pages/779a6e/)                                 |
-| JWT               | JWT 登录认证               | [https://github.com/jwtk/jjwt](https://github.com/jwtk/jjwt)                                             |
-| Lombok            | 简化 Bean 对象             | [https://projectlombok.org](https://projectlombok.org)                                                   |
-| Mapstruct         | Java Bean 对象转化映射器      | [https://mapstruct.org](https://mapstruct.org)                                                           |
-| Hutool            | 小而全的 Java 工具类库         | [https://hutool.cn](https://hutool.cn)                                                                   |
-| Guava             | Google 核心 Java 类库      | [https://github.com/google/guava](https://github.com/google/guava)                                       |
-| Spring Boot Admin | Spring Boot 服务监控       | [https://github.com/codecentric/spring-boot-admin](https://github.com/codecentric/spring-boot-admin)     |
+| 技术                | 说明                     | 官网                                                                                                   |
+|-------------------|------------------------|------------------------------------------------------------------------------------------------------|
+| Spring Boot       | 基础服务框架                 | [https://spring.io/projects/spring-boot](https://spring.io/projects/spring-boot)                     |
+| Spring Security   | 认证和授权框架                | [https://spring.io/projects/spring-security](https://spring.io/projects/spring-security)             |
+| mojian            | 魔剑 - 业务开发工具集           | [https://github.com/llnancy/mojian](https://github.com/llnancy/mojian)                               |
+| MyBatis-Plus      | ORM 框架：对 MyBatis 增强    | [https://baomidou.com](https://baomidou.com)                                                         |
+| MP-Generate       | 基于 MyBatis-Plus 的代码生成器 | [https://baomidou.com/pages/779a6e/](https://baomidou.com/pages/779a6e/)                             |
+| JWT               | JWT 登录认证               | [https://github.com/jwtk/jjwt](https://github.com/jwtk/jjwt)                                         |
+| Lombok            | 简化 Bean 对象             | [https://projectlombok.org](https://projectlombok.org)                                               |
+| Mapstruct         | Java Bean 对象转化映射器      | [https://mapstruct.org](https://mapstruct.org)                                                       |
+| Hutool            | 小而全的 Java 工具类库         | [https://hutool.cn](https://hutool.cn)                                                               |
+| Guava             | Google 核心 Java 类库      | [https://github.com/google/guava](https://github.com/google/guava)                                   |
+| Spring Boot Admin | Spring Boot 服务监控       | [https://github.com/codecentric/spring-boot-admin](https://github.com/codecentric/spring-boot-admin) |
 
-> 注：`sunchaser-mojian` 项目暂未发布至中央仓库，需前往 `GitHub` 仓库下载至本地后进行 `install` 使用。
+> 注：`mojian` 项目暂未发布至中央仓库，需前往 `GitHub` 仓库下载至本地后进行 `install` 使用。
 
 ## 前端
 
-前端项目代码仓库：[https://github.com/sunchaser-lilu/zhenyaojian-ui](https://github.com/sunchaser-lilu/zhenyaojian-ui)
+前端项目代码仓库：[https://github.com/llnancy/zhenyaojian-ui](https://github.com/llnancy/zhenyaojian-ui)
 
 | 技术             | 说明                      | 官网                                                                                       |
 |----------------|-------------------------|------------------------------------------------------------------------------------------|
@@ -130,11 +130,11 @@ todo...
 
 ## 本地运行
 
-- `git clone https://github.com/sunchaser-lilu/sunchaser-zhenyaojian.git`
+- `git clone https://github.com/llnancy/zhenyaojian.git`
 - `IDEA` 导入项目
 - 连接 `MySQL` 执行 `zhenyaojian-system/src/main/resources/scripts/schema.sql` 数据库初始化脚本
 - 修改 `zhenyaojian-admin/src/main/resources/application-dev.yml` 配置文件，更新 `MySQL` 连接地址、用户名及密码等
-- 运行 `com.sunchaser.shushan.zhenyaojian.admin.ZhenYaoJianApplication.main` 方法即可启动后端服务
+- 运行 `io.github.llnancy.zhenyaojian.admin.ZhenYaoJianApplication.main` 方法即可启动后端服务
 
 ## `Docker` 运行
 
@@ -148,15 +148,15 @@ todo...
 
 我们非常欢迎您的贡献，您可以通过以下方式和我们一起共建：
 
-- 在您的公司或个人项目中使用 [sunchaser-zhenyaojian](https://github.com/sunchaser-lilu/sunchaser-zhenyaojian)。
-- 通过 [Issue](https://github.com/sunchaser-lilu/sunchaser-zhenyaojian/issues) 报告 `Bug` 或进行提问。
-- 提交 [Pull Request](https://github.com/sunchaser-lilu/sunchaser-zhenyaojian/pulls) 优化现有代码。
+- 在您的公司或个人项目中使用 [zhenyaojian](https://github.com/llnancy/zhenyaojian)。
+- 通过 [Issue](https://github.com/llnancy/zhenyaojian/issues) 报告 `Bug` 或进行提问。
+- 提交 [Pull Request](https://github.com/llnancy/zhenyaojian/pulls) 优化现有代码。
 
 # 许可证
 
-[Apache License 2.0](https://github.com/sunchaser-lilu/sunchaser-zhenyaojian/blob/master/LICENSE)
+[Apache License 2.0](https://github.com/llnancy/zhenyaojian/blob/master/LICENSE)
 
-Copyright (c) 2022-present sunchaser-lilu
+Copyright (c) 2022-present llnancy
 
 # 捐赠
 
