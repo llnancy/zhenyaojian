@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.sunchaser.shushan</groupId>
-    <artifactId>sunchaser-zhenyaojian</artifactId>
+    <groupId>io.github.llnancy</groupId>
+    <artifactId>zhenyaojian</artifactId>
     <packaging>pom</packaging>
     <version>${revision}</version>
 
@@ -14,9 +14,9 @@
     </description>
 
     <modules>
+        <module>zhenyaojian-admin</module>
         <module>zhenyaojian-framework</module>
         <module>zhenyaojian-system</module>
-        <module>zhenyaojian-admin</module>
     </modules>
 
     <properties>
@@ -44,12 +44,12 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>com.sunchaser.shushan</groupId>
+                <groupId>io.github.llnancy</groupId>
                 <artifactId>zhenyaojian-framework</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>com.sunchaser.shushan</groupId>
+                <groupId>io.github.llnancy</groupId>
                 <artifactId>zhenyaojian-system</artifactId>
                 <version>${revision}</version>
             </dependency>

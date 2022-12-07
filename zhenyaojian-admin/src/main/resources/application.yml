@@ -4,7 +4,7 @@ server:
     context-path: /zyj/admin
 spring:
   application:
-    name: shushan-zhenyaojian
+    name: zhenyaojian
   profiles:
     active: dev
   mvc:
