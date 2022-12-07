@@ -43,11 +43,11 @@ zhenyaojian
 ├── docs 项目文档
 ├── zhenyaojian-admin 管理后台模块
 │ └── src/main
-│      ├── java/com/sunchaser/shushan/zhenyaojian/admin/web/controller 控制器
+│      ├── java/io/github/llnancy/zhenyaojian/admin/web/controller 控制器
 │      └── resources 配置文件
 ├── zhenyaojian-framework 核心框架模块
 │ └── src/main
-│     │ ├── java/com/sunchaser/shushan/zhenyaojian/framework
+│     │ ├── java/io/github/llnancy/zhenyaojian/framework
 │     │ │                     ├── advice 全局异常处理
 │     │ │                     ├── config 配置文件
 │     │ │                     │ └── property 属性配置类
@@ -67,7 +67,7 @@ zhenyaojian
 │     └── test 测试模块
 └── zhenyaojian-system 核心系统模块
     └── src/main
-         ├── java/com/sunchaser/shushan/zhenyaojian/system
+         ├── java/io/github/llnancy/zhenyaojian/system
          │                     ├── generate MyBatis-Plus 代码生成器
          │                     └── repository
          │                         ├── entity 领域模型
