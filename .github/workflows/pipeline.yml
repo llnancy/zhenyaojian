@@ -41,12 +41,12 @@ jobs:
         id: docker_meta
         uses: docker/metadata-action@v3
         with:
-          images: sunchaserlilu/sunchaser-zhenyaojian
+          images: llnancy/zhenyaojian
           flavor: latest=true
           tags: ${{ steps.project_meta.outputs.version }}
           labels: |
             maintainer=admin@lilu.org.cn
-            org.opencontainers.image.title=sunchaser-zhenyaojian
+            org.opencontainers.image.title=zhenyaojian
             org.opencontainers.image.version=${{ steps.project_meta.outputs.version }}
 
       - name: Login in to Docker Hub

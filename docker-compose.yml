@@ -3,7 +3,7 @@ version: "3.9"
 services:
   zhenyaojian:
     restart: always
-    image: sunchaserlilu/zhenyaojian:latest
+    image: llnancy/zhenyaojian:latest
     pull_policy: always
     container_name: zhenyaojian
     environment:
