@@ -119,17 +119,14 @@
         <dependency>
             <groupId>io.github.llnancy</groupId>
             <artifactId>mojian-log</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>io.github.llnancy</groupId>
             <artifactId>mojian-web</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>io.github.llnancy</groupId>
             <artifactId>mojian-base</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <!-- org.mapstruct/mapstruct -->
         <dependency>

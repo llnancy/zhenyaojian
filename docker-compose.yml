@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  zhenyaojian:
+    restart: always
+    image: sunchaserlilu/zhenyaojian:latest
+    pull_policy: always
+    container_name: zhenyaojian
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/sunchaser_zyj?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 123456
+      SPRING_BOOT_ADMIN_CLIENT_URL: http://zhenyaojian:8080
+
+# 自定义 networks
+#networks:
+#  default:
+#    external:
+#      name: nginx_backend
