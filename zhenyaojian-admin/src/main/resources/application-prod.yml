@@ -1,9 +1,13 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/sunchaser_zyj?useUnicode=true&characterEncoding=UTF-8&useSSL=false
-    username: root
-    password: 123456
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  boot:
+    admin:
+      client:
+        url: ${SPRING_BOOT_ADMIN_CLIENT_URL}${server.servlet.context-path}${spring.boot.admin.context-path}
 zyj:
   # 重置用户密码时的默认密码
-  default-password: SunChaser
+  default-password: ${ZYJ_DEFAULT_PASSWORD:zhenyaojian}

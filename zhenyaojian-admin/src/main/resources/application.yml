@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
   servlet:
     context-path: /zyj/admin
 spring:
@@ -18,7 +18,7 @@ spring:
     admin:
       context-path: /observe/server
       client:
-        url: http://localhost:8081/zyj/admin/observe/server
+        url: http://127.0.0.1:${server.port}${server.servlet.context-path}${spring.boot.admin.context-path}
 zyj:
   # 重置用户密码时的默认密码
   default-password: SunChaser666
