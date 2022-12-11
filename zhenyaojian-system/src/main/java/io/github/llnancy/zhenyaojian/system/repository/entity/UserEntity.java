@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
  * 用户表
  *
  * @author sunchaser admin@lilu.org.cn
- * @since JDK8 2022/11/07
+ * @since JDK8 2022/12/11
  */
 @Data
 @AllArgsConstructor
@@ -71,16 +71,6 @@ public class UserEntity implements Serializable {
      * 电话号码
      */
     private String phoneNumber;
-
-    /**
-     * 所属部门ID
-     */
-    private Long departmentId;
-
-    /**
-     * 所属岗位ID
-     */
-    private Long positionId;
 
     /**
      * 用户状态（0：正常；1：停用）
