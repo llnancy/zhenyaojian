@@ -22,9 +22,10 @@ public class JwtHelper {
 
     /*
     public static void main(String[] args) {
-        generateSecret();
+        generateRsaKey();
+        // generateSecret();
     }
-     */
+    */
 
     public static void generateRsaKey() {
         KeyPair keyPair = Keys.keyPairFor(SignatureAlgorithm.RS256);
