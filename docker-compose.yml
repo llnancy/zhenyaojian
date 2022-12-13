@@ -5,13 +5,22 @@ services:
     restart: always
     image: llnancy/zhenyaojian:latest
     pull_policy: always
+    # 指定网络模式为桥接模式
+    network_mode: bridge
     container_name: zhenyaojian
+    ports:
+      - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/sunchaser_zyj?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/sunchaser_zyj?useUnicode=true&characterEncoding=UTF-8&useSSL=false
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 123456
-      SPRING_BOOT_ADMIN_CLIENT_URL: http://zhenyaojian:8080
-
+      SPRING_BOOT_ADMIN_CLIENT_URL: http://127.0.0.1:8080
+      zyj.jwt.sign-type: public_private_key
+      zyj.jwt.public-key-location: /public.key
+      zyj.jwt.private-key-location: /private.key
+    volumes:
+      - /home/llnancy/workspace/public.key:/public.key
+      - /home/llnancy/workspace/private.key:/private.key
 # 自定义 networks
 #networks:
 #  default:
