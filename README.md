@@ -34,7 +34,7 @@
 
 基于 `RBAC` 模型实现了权限管理的核心功能，包含用户管理、角色管理及菜单管理。具体功能点如下图所示：
 
-![系统功能](./docs/system_functions.svg)
+![系统功能](assets/system_functions.svg)
 
 # 项目结构
 
@@ -74,7 +74,9 @@ zhenyaojian
          │                         └── mapper MyBatis Mapper
          └── resources
              ├── mapper MyBatis Mapper XML
-             ├── scripts 数据库初始化脚本
+             ├── scripts 数据库脚本
+             │      ├── initdb.sql 初始化数据脚本
+             │      └── schema.sql 初始化表结构脚本
              └── templates 代码生成模板
 ```
 
@@ -96,7 +98,7 @@ zhenyaojian
 | Guava             | Google 核心 Java 类库      | [https://github.com/google/guava](https://github.com/google/guava)                                   |
 | Spring Boot Admin | Spring Boot 服务监控       | [https://github.com/codecentric/spring-boot-admin](https://github.com/codecentric/spring-boot-admin) |
 
-> 注：`mojian` 项目暂未发布至中央仓库，需前往 `GitHub` 仓库下载至本地后进行 `install` 使用。
+> `mojian` 项目是本人开发的一个专注于业务开发的工具集，目前已发布至中央仓库，欢迎 `star`。
 
 ## 前端
 
@@ -124,7 +126,11 @@ zhenyaojian
 
 ## 效果展示
 
-todo...
+![menu.png](assets/menu.png)
+![user.png](assets/user.png)
+![role.png](assets/role.png)
+![operate_log.png](assets/operate_log.png)
+![login_log.png](assets/login_log.png)
 
 # 项目部署
 
@@ -135,10 +141,15 @@ todo...
 - 连接 `MySQL` 执行 `zhenyaojian-system/src/main/resources/scripts/schema.sql` 数据库初始化脚本
 - 修改 `zhenyaojian-admin/src/main/resources/application-dev.yml` 配置文件，更新 `MySQL` 连接地址、用户名及密码等
 - 运行 `io.github.llnancy.zhenyaojian.admin.ZhenYaoJianApplication.main` 方法即可启动后端服务
+- 默认初始账号密码为 `admin/123456`
 
 ## `Docker` 运行
 
-todo...
+需自行修改 `docker-compose.yml` 文件中的数据库连接地址、用户名及密码等配置。一键启动命令如下：
+
+```shell
+docker-compose -f docker-compose.yml up -d
+```
 
 # 致谢
 
