@@ -1,8 +1,8 @@
 <div align="center">
     <img src="https://cdn.lilu.org.cn/zhenyaojian-logo.png" alt="logo" style="width: 180px; height: 180px" />
-    <h1 align="center" style="margin-top: 0 !important;">zhenyaojian</h1>
+    <h1 align="center">zhenyaojian</h1>
     <div align="center">
-        镇妖剑 - 权限管理系统
+        ⚔ 镇妖剑 - 权限管理系统
         <br /><br />
         <img src="https://img.shields.io/circleci/project/github/badges/shields/master?color=%231ab1ad&label=master" alt="project" />
         <img src="https://img.shields.io/badge/JDK-8.0+-0e83c" alt="java-version" />
