@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -78,6 +79,9 @@ public class WebSecurityConfig {
         config.setAllowedHeaders(all);
         config.setAllowedOrigins(all);
         config.setAllowedMethods(all);
+        config.setAllowCredentials(Boolean.TRUE);
+        config.setExposedHeaders(Collections.singletonList(HttpHeaders.AUTHORIZATION));
+        config.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
