@@ -124,7 +124,7 @@ zhenyaojian
 
 在线体验地址：[https://lilu.org.cn/zhenyaojian/](https://lilu.org.cn/zhenyaojian/)
 
-> 账号密码：admin/123456
+> 账号密码：llnancy/123456
 
 ## 效果展示
 
