@@ -1,6 +1,6 @@
 <div align="center">
-    <img src="https://cdn.lilu.org.cn/zhenyaojian-logo.png" alt="logo" style="width: 150px; height: 150px" />
-    <h2 align="center">zhenyaojian</h2>
+    <img src="https://cdn.lilu.org.cn/zhenyaojian-logo.png" alt="logo" style="width: 180px; height: 180px" />
+    <h1 align="center" style="margin-top: 0 !important;">zhenyaojian</h1>
     <div align="center">
         镇妖剑 - 权限管理系统
         <br /><br />
