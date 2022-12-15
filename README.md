@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://cdn.lilu.org.cn/sunchaser-logo.png" alt="logo" />
+    <img src="https://cdn.lilu.org.cn/zhenyaojian-logo.png" alt="logo" style="width: 150px; height: 150px" />
     <h2 align="center">zhenyaojian</h2>
     <div align="center">
         镇妖剑 - 权限管理系统
