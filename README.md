@@ -34,7 +34,7 @@
 
 基于 `RBAC` 模型实现了权限管理的核心功能，包含用户管理、角色管理及菜单管理。具体功能点如下图所示：
 
-![系统功能](assets/system_functions.svg)
+![系统功能](https://raw.githubusercontent.com/llnancy/zhenyaojian/master/assets/system_functions.svg)
 
 # 项目结构
 
@@ -126,11 +126,11 @@ zhenyaojian
 
 ## 效果展示
 
-![menu.png](assets/menu.png)
-![user.png](assets/user.png)
-![role.png](assets/role.png)
-![operate_log.png](assets/operate_log.png)
-![login_log.png](assets/login_log.png)
+![menu.png](https://raw.githubusercontent.com/llnancy/zhenyaojian/master/assets/menu.png)
+![user.png](https://raw.githubusercontent.com/llnancy/zhenyaojian/master/assets/user.png)
+![role.png](https://raw.githubusercontent.com/llnancy/zhenyaojian/master/assets/role.png)
+![operate_log.png](https://raw.githubusercontent.com/llnancy/zhenyaojian/master/assets/operate_log.png)
+![login_log.png](https://raw.githubusercontent.com/llnancy/zhenyaojian/master/assets/login_log.png)
 
 # 项目部署
 
