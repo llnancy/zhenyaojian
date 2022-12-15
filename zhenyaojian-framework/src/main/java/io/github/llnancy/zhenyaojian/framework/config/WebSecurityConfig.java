@@ -77,7 +77,7 @@ public class WebSecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         List<String> all = Collections.singletonList(CorsConfiguration.ALL);
         config.setAllowedHeaders(all);
-        config.setAllowedOrigins(all);
+        config.setAllowedOriginPatterns(all);
         config.setAllowedMethods(all);
         config.setAllowCredentials(Boolean.TRUE);
         config.setExposedHeaders(Collections.singletonList(HttpHeaders.AUTHORIZATION));
