@@ -21,7 +21,7 @@ jobs:
           cache: 'maven'
 
       - name: Cache Maven Dependency
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
