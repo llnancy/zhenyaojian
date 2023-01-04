@@ -1,9 +1,11 @@
 package io.github.llnancy.zhenyaojian.framework.mapstruct;
 
+import io.github.llnancy.mojian.base.util.JsonUtils;
+import io.github.llnancy.mojian.log.entity.AccessLogBean;
+import io.github.llnancy.zhenyaojian.framework.model.request.LoginRequest;
 import io.github.llnancy.zhenyaojian.framework.model.response.SystemLogResponse;
 import io.github.llnancy.zhenyaojian.framework.util.SecurityUtils;
 import io.github.llnancy.zhenyaojian.system.repository.entity.SystemLogEntity;
-import io.github.llnancy.mojian.log.entity.AccessLogBean;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -25,9 +27,15 @@ public interface SystemLogMapstruct {
      */
     @Mapping(target = "status", expression = "java(accessLogBean.getStatus().ordinal())")
     @Mapping(target = "type", expression = "java(accessLogBean.getAccessType().name())")
-    @Mapping(target = "userId", expression = "java(SecurityUtils.getLoginUserId().toString())")
-    @Mapping(target = "userAccount", expression = "java(SecurityUtils.getLoginUsername())")
+    // @Mapping(target = "userId", expression = "java(SecurityUtils.getLoginUserId().toString())")
+    @Mapping(target = "userAccount", expression = "java(getLoginAccount(accessLogBean))")
     SystemLogEntity convert(AccessLogBean accessLogBean);
+
+    default String getLoginAccount(AccessLogBean accessLogBean) {
+        String parameters = accessLogBean.getParameters();
+        LoginRequest request = JsonUtils.toObject(parameters, LoginRequest.class);
+        return request.getAccount();
+    }
 
     /**
      * convert {@link SystemLogEntity} to {@link SystemLogResponse}

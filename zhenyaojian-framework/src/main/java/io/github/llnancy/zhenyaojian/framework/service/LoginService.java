@@ -9,7 +9,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 /**
  * login service
@@ -41,6 +46,11 @@ public class LoginService {
         return jwtProvider.createJwt(loginUser.getUsername());
     }
 
+    /**
+     * {@link AbstractAuthenticationProcessingFilter#doFilter(ServletRequest, ServletResponse, FilterChain)}
+     *
+     * @param authenticate {@link Authentication}
+     */
     private void successfulAuthentication(Authentication authenticate) {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(authenticate);

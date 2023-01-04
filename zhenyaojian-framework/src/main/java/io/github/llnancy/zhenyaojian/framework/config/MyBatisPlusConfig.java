@@ -54,10 +54,16 @@ public class MyBatisPlusConfig implements MetaObjectHandler {
      */
     @Override
     public void insertFill(MetaObject metaObject) {
+        String username;
+        try {
+            username = SecurityUtils.getLoginUsername();
+        } catch (Exception e) {
+            username = "system";
+        }
         this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, LocalDateTime.now());
-        this.strictInsertFill(metaObject, "createUser", String.class, SecurityUtils.getLoginUsername());
+        this.strictInsertFill(metaObject, "createUser", String.class, username);
         this.strictInsertFill(metaObject, UPDATE_TIME, LocalDateTime.class, LocalDateTime.now());
-        this.strictUpdateFill(metaObject, UPDATE_USER, String.class, SecurityUtils.getLoginUsername());
+        this.strictUpdateFill(metaObject, UPDATE_USER, String.class, username);
     }
 
     /**
