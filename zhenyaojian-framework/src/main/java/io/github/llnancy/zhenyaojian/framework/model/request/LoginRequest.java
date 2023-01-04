@@ -1,5 +1,7 @@
 package io.github.llnancy.zhenyaojian.framework.model.request;
 
+import io.github.llnancy.mojian.desensitize.annotation.Desensitize;
+import io.github.llnancy.mojian.desensitize.strategy.impl.PasswordDesensitizeStrategy;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +21,7 @@ public class LoginRequest {
 
     private String account;
 
+    @Desensitize(strategy = PasswordDesensitizeStrategy.class)
     private String password;
 
     private String verifyCode;
