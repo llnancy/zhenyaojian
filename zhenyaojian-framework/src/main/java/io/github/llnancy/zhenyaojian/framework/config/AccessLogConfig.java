@@ -1,9 +1,10 @@
 package io.github.llnancy.zhenyaojian.framework.config;
 
-import io.github.llnancy.zhenyaojian.framework.mapstruct.SystemLogMapstruct;
-import io.github.llnancy.zhenyaojian.system.repository.mapper.SystemLogMapper;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.github.llnancy.mojian.log.event.AccessLogAsyncEventListener;
 import io.github.llnancy.mojian.log.event.AccessLogEventListener;
+import io.github.llnancy.zhenyaojian.framework.mapstruct.SystemLogMapstruct;
+import io.github.llnancy.zhenyaojian.system.repository.mapper.SystemLogMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
@@ -39,7 +40,14 @@ public class AccessLogConfig implements AsyncConfigurer {
 
     @Override
     public Executor getAsyncExecutor() {
-        return new ThreadPoolExecutor(10, 10, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<>(1000));
+        return new ThreadPoolExecutor(
+                10,
+                10,
+                60,
+                TimeUnit.SECONDS,
+                new ArrayBlockingQueue<>(1000),
+                new ThreadFactoryBuilder().setNameFormat("log-pool-%d").build()
+        );
     }
 
     @Override
