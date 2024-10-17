@@ -1,5 +1,5 @@
 --- 初始用户名密码为 admin/123456
-INSERT INTO `sunchaser_zyj`.`zyj_user` (`id`, `account`, `password`, `nick_name`, `avatar`, `sex`, `email`, `phone_number`, `status`, `is_deleted`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES (1, 'admin', '$2a$10$EOjcQYs1lBXeWFfcYXExY.pCjTQ5aLdzu126w7hBbeRUMq21w.HjK', '超级管理员', 'https://images.lilu.org.cn/website/base/avatar.png', '男', 'admin@lilu.org.cn', '10086', 0, 0, 'system', NOW(), 'system', NOW());
+INSERT INTO `sunchaser_zyj`.`zyj_user` (`id`, `account`, `password`, `nick_name`, `avatar`, `sex`, `email`, `phone_number`, `status`, `is_deleted`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES (1, 'admin', '$2a$10$EOjcQYs1lBXeWFfcYXExY.pCjTQ5aLdzu126w7hBbeRUMq21w.HjK', '超级管理员', 'https://cdn.lilu.org.cn/website/base/avatar.png', '男', 'admin@lilu.org.cn', '10086', 0, 0, 'system', NOW(), 'system', NOW());
 
 INSERT INTO `sunchaser_zyj`.`zyj_role` (`id`, `code`, `name`, `sort_value`, `status`, `is_deleted`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES (1, 'super-admin', '超级管理员', 0, 0, 0, 'system', NOW(), 'system', NOW());
 
