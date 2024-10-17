@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://cdn.lilu.org.cn/zhenyaojian-logo.png" alt="logo" style="width: 180px; height: 180px" />
+    <img src="https://images.lilu.org.cn/website/logo/zhenyaojian-logo.png" alt="logo" style="width: 180px; height: 180px" />
     <h1 align="center">zhenyaojian</h1>
     <div align="center">
         ⚔ 镇妖剑 - 权限管理系统
@@ -177,4 +177,4 @@ Copyright (c) 2022-present llnancy
 
 | 支付宝                                        | 微信                                            |
 |--------------------------------------------|-----------------------------------------------|
-| ![支付宝](https://cdn.lilu.org.cn/website/base/alipay.png) | ![微信](https://cdn.lilu.org.cn/website/base/wechat-pay.png) |
+| ![支付宝](https://images.lilu.org.cn/website/base/alipay.png) | ![微信](https://images.lilu.org.cn/website/base/wechat-pay.png) |
