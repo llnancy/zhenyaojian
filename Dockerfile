@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-alpine
+FROM openjdk:8u342-jre-slim-buster
 ADD ./zhenyaojian-admin/target/zhenyaojian.jar /app.jar
 CMD ["--server.port=8080"]
 ENV spring.profiles.active="pro"
